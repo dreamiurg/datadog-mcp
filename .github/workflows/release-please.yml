@@ -1,0 +1,46 @@
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+        id: release
+        with:
+          release-type: node
+
+      # Build and publish when a release is created
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        if: ${{ steps.release.outputs.release_created }}
+
+      - name: Use Node.js 20
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm ci
+
+      - name: Run checks
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm run check
+
+      - name: Run tests
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm run test
+
+      - name: Build
+        if: ${{ steps.release.outputs.release_created }}
+        run: npm run build
