@@ -8,7 +8,7 @@ A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that p
 ## Installation
 
 ```bash
-npx https://github.com/dreamiurg/datadog-mcp-server --help
+npx github:dreamiurg/datadog-mcp-server --help
 ```
 
 **Requirements:** Node.js 18+
@@ -23,7 +23,7 @@ Most MCP-compatible tools use a similar JSON configuration. The core server conf
     "datadog": {
       "command": "npx",
       "args": [
-        "https://github.com/dreamiurg/datadog-mcp-server",
+        "github:dreamiurg/datadog-mcp-server",
         "--apiKey", "<YOUR_API_KEY>",
         "--appKey", "<YOUR_APP_KEY>",
         "--site", "datadoghq.com"
@@ -38,7 +38,7 @@ Most MCP-compatible tools use a similar JSON configuration. The core server conf
 Add via CLI or edit the config file directly:
 
 ```bash
-claude mcp add datadog -- npx https://github.com/dreamiurg/datadog-mcp-server \
+claude mcp add datadog -- npx github:dreamiurg/datadog-mcp-server \
   --apiKey <YOUR_API_KEY> \
   --appKey <YOUR_APP_KEY> \
   --site datadoghq.com
@@ -51,7 +51,7 @@ Or add to `~/.claude.json` (user scope) or `.mcp.json` (project scope):
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["https://github.com/dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
+      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
     }
   }
 }
@@ -66,7 +66,7 @@ Add to `~/.gemini/settings.json`:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["https://github.com/dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
+      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
     }
   }
 }
@@ -79,7 +79,7 @@ Add to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.datadog]
 command = "npx"
-args = ["https://github.com/dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
+args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
 ```
 
 ### Cursor / Windsurf / VS Code
