@@ -1,5 +1,12 @@
-import { createDatadogConfiguration, datadogRequest, handleApiError } from "../lib/index.js";
+import {
+  createDatadogConfiguration,
+  createToolLogger,
+  datadogRequest,
+  handleApiError,
+} from "../lib/index.js";
 import type { LogsAggregateResponse } from "../lib/types.js";
+
+const log = createToolLogger("aggregate-logs");
 
 interface AggregateLogsParams {
   filter?: {
@@ -32,6 +39,7 @@ let initialized = false;
 
 export const aggregateLogs = {
   initialize: () => {
+    log.debug("initialize() called");
     // Validate that configuration can be created (this checks env vars)
     createDatadogConfiguration({
       service: "logs",
@@ -48,6 +56,16 @@ export const aggregateLogs = {
     try {
       const { filter, compute, groupBy, options } = params;
 
+      log.debug(
+        {
+          query: filter?.query,
+          from: filter?.from,
+          to: filter?.to,
+          computeCount: compute?.length || 0,
+          groupByCount: groupBy?.length || 0,
+        },
+        "execute() called",
+      );
       const body = {
         filter,
         compute,
@@ -62,8 +80,10 @@ export const aggregateLogs = {
         body,
       });
 
+      log.info({ bucketCount: data.data?.buckets?.length || 0 }, "aggregate-logs completed");
       return data;
     } catch (error: unknown) {
+      log.error({ query: params.filter?.query, error }, "aggregate-logs failed");
       handleApiError(error, "aggregating logs");
     }
   },

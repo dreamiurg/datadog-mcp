@@ -1,5 +1,12 @@
-import { createDatadogConfiguration, datadogRequest, handleApiError } from "../lib/index.js";
+import {
+  createDatadogConfiguration,
+  createToolLogger,
+  datadogRequest,
+  handleApiError,
+} from "../lib/index.js";
 import type { LogsSearchResponse } from "../lib/types.js";
+
+const log = createToolLogger("search-logs");
 
 interface SearchLogsParams {
   filter?: {
@@ -22,6 +29,7 @@ let initialized = false;
 
 export const searchLogs = {
   initialize: () => {
+    log.debug("initialize() called");
     // Validate that configuration can be created (this checks env vars)
     createDatadogConfiguration({
       service: "logs",
@@ -38,6 +46,7 @@ export const searchLogs = {
     try {
       const { filter, sort, page, limit } = params;
 
+      log.debug({ query: filter?.query, from: filter?.from, to: filter?.to }, "execute() called");
       const body = { filter, sort, page };
 
       const data = await datadogRequest<LogsSearchResponse>({
@@ -51,8 +60,10 @@ export const searchLogs = {
         data.data = data.data.slice(0, limit);
       }
 
+      log.info({ resultCount: data.data?.length || 0 }, "search-logs completed");
       return data;
     } catch (error: unknown) {
+      log.error({ query: params.filter?.query, error }, "search-logs failed");
       handleApiError(error, "searching logs");
     }
   },

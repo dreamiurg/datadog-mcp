@@ -1,5 +1,7 @@
 import { v1 } from "@datadog/datadog-api-client";
-import { createDatadogConfiguration, handleApiError } from "../lib/index.js";
+import { createDatadogConfiguration, createToolLogger, handleApiError } from "../lib/index.js";
+
+const log = createToolLogger("get-events");
 
 interface GetEventsParams {
   start: number;
@@ -16,6 +18,7 @@ let apiInstance: v1.EventsApi | null = null;
 
 export const getEvents = {
   initialize: () => {
+    log.debug("initialize() called");
     const configuration = createDatadogConfiguration({ service: "default" });
     apiInstance = new v1.EventsApi(configuration);
   },
@@ -29,6 +32,7 @@ export const getEvents = {
       const { start, end, priority, sources, tags, unaggregated, excludeAggregation, limit } =
         params;
 
+      log.debug({ start, end, priority }, "execute() called");
       const apiParams: v1.EventsApiListEventsRequest = {
         start,
         end,
@@ -45,8 +49,10 @@ export const getEvents = {
         response.events = response.events.slice(0, limit);
       }
 
+      log.info({ eventCount: response.events?.length || 0 }, "get-events completed");
       return response;
     } catch (error: unknown) {
+      log.error({ start: params.start, end: params.end, error }, "get-events failed");
       handleApiError(error, "fetching events");
     }
   },

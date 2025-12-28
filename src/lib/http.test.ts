@@ -11,6 +11,7 @@ describe("http", () => {
       ...originalEnv,
       DD_API_KEY: "test-api-key",
       DD_APP_KEY: "test-app-key",
+      DD_SITE: "datadoghq.com",
     };
 
     // Mock global fetch

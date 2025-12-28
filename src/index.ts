@@ -6,6 +6,9 @@ import dotenv from "dotenv";
 import minimist from "minimist";
 import { z } from "zod";
 
+// Import logger
+import { logger } from "./lib/index.js";
+
 // Import tools
 import { aggregateLogs } from "./tools/aggregateLogs.js";
 import { getDashboard } from "./tools/getDashboard.js";
@@ -17,6 +20,16 @@ import { getMetrics } from "./tools/getMetrics.js";
 import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitors } from "./tools/getMonitors.js";
 import { searchLogs } from "./tools/searchLogs.js";
+
+// Helper function to mask sensitive credentials for logging
+const maskCredential = (credential: string | undefined): string => {
+  if (!credential || credential.length <= 6) {
+    return "***";
+  }
+  const first3 = credential.slice(0, 3);
+  const last3 = credential.slice(-3);
+  return `${first3}...${last3}`;
+};
 
 // Parse command line arguments
 const argv = minimist(process.argv.slice(2));
@@ -48,31 +61,55 @@ process.env.DD_METRICS_SITE = cleanupUrl(DD_METRICS_SITE);
 
 // Validate required environment variables
 if (!DD_API_KEY) {
-  console.error("Error: DD_API_KEY is required.");
-  console.error("Please provide it via command line argument or .env file.");
-  console.error(" Command line: --apiKey=your_api_key");
+  logger.error("DD_API_KEY is required");
+  logger.error("Please provide it via command line argument or .env file");
+  logger.error("Command line: --apiKey=your_api_key");
   process.exit(1);
 }
 
 if (!DD_APP_KEY) {
-  console.error("Error: DD_APP_KEY is required.");
-  console.error("Please provide it via command line argument or .env file.");
-  console.error(" Command line: --appKey=your_app_key");
+  logger.error("DD_APP_KEY is required");
+  logger.error("Please provide it via command line argument or .env file");
+  logger.error("Command line: --appKey=your_app_key");
   process.exit(1);
 }
 
+// Log server startup with configuration
+logger.info(
+  {
+    version: "1.0.0",
+    site: DD_SITE,
+    logsSite: DD_LOGS_SITE,
+    metricsSite: DD_METRICS_SITE,
+    apiKey: maskCredential(DD_API_KEY),
+    appKey: maskCredential(DD_APP_KEY),
+  },
+  "Starting Datadog MCP Server",
+);
+
 // Initialize Datadog client tools
 // We initialize each tool which will use the appropriate site configuration
+logger.info("Initializing Datadog tools");
 getMonitors.initialize();
+logger.info({ tool: "get-monitors" }, "Tool initialized");
 getMonitor.initialize();
+logger.info({ tool: "get-monitor" }, "Tool initialized");
 getDashboards.initialize();
+logger.info({ tool: "get-dashboards" }, "Tool initialized");
 getDashboard.initialize();
+logger.info({ tool: "get-dashboard" }, "Tool initialized");
 getMetrics.initialize();
+logger.info({ tool: "get-metrics" }, "Tool initialized");
 getMetricMetadata.initialize();
+logger.info({ tool: "get-metric-metadata" }, "Tool initialized");
 getEvents.initialize();
+logger.info({ tool: "get-events" }, "Tool initialized");
 getIncidents.initialize();
+logger.info({ tool: "get-incidents" }, "Tool initialized");
 searchLogs.initialize();
+logger.info({ tool: "search-logs" }, "Tool initialized");
 aggregateLogs.initialize();
+logger.info({ tool: "aggregate-logs" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -92,7 +129,12 @@ server.tool(
     limit: z.number().default(100),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-monitors", args }, "Tool call started");
     const result = await getMonitors.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = Array.isArray(result) ? result.length : 0;
+    logger.debug({ tool: "get-monitors", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -106,7 +148,11 @@ server.tool(
     monitorId: z.number(),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-monitor", args }, "Tool call started");
     const result = await getMonitor.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-monitor", durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -121,7 +167,15 @@ server.tool(
     limit: z.number().default(100),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-dashboards", args }, "Tool call started");
     const result = await getDashboards.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "dashboards" in result && Array.isArray(result.dashboards)
+        ? result.dashboards.length
+        : 0;
+    logger.debug({ tool: "get-dashboards", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -135,7 +189,11 @@ server.tool(
     dashboardId: z.string(),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-dashboard", args }, "Tool call started");
     const result = await getDashboard.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-dashboard", durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -149,7 +207,13 @@ server.tool(
     q: z.string().optional(),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-metrics", args }, "Tool call started");
     const result = await getMetrics.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "metrics" in result && Array.isArray(result.metrics) ? result.metrics.length : 0;
+    logger.debug({ tool: "get-metrics", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -163,7 +227,11 @@ server.tool(
     metricName: z.string(),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-metric-metadata", args }, "Tool call started");
     const result = await getMetricMetadata.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-metric-metadata", durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -184,7 +252,13 @@ server.tool(
     limit: z.number().default(100),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-events", args }, "Tool call started");
     const result = await getEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "events" in result && Array.isArray(result.events) ? result.events.length : 0;
+    logger.debug({ tool: "get-events", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -202,7 +276,15 @@ server.tool(
     limit: z.number().default(100),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-incidents", args }, "Tool call started");
     const result = await getIncidents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "incidents" in result && Array.isArray(result.incidents)
+        ? result.incidents.length
+        : 0;
+    logger.debug({ tool: "get-incidents", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -231,7 +313,13 @@ server.tool(
     limit: z.number().default(100),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "search-logs", args }, "Tool call started");
     const result = await searchLogs.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "logs" in result && Array.isArray(result.logs) ? result.logs.length : 0;
+    logger.debug({ tool: "search-logs", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -280,7 +368,11 @@ server.tool(
       .optional(),
   },
   async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "aggregate-logs", args }, "Tool call started");
     const result = await aggregateLogs.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "aggregate-logs", durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -291,7 +383,12 @@ server.tool(
 const transport = new StdioServerTransport();
 server
   .connect(transport)
-  .then(() => {})
+  .then(() => {
+    logger.info("Server connected successfully");
+  })
   .catch((error: unknown) => {
-    console.error("Failed to start Datadog MCP Server:", error);
+    logger.error(
+      { error: error instanceof Error ? error.message : String(error) },
+      "Server connection failure",
+    );
   });

@@ -9,6 +9,8 @@ const stdio_js_1 = require("@modelcontextprotocol/sdk/server/stdio.js");
 const dotenv_1 = __importDefault(require("dotenv"));
 const minimist_1 = __importDefault(require("minimist"));
 const zod_1 = require("zod");
+// Import logger
+const index_js_1 = require("./lib/index.js");
 // Import tools
 const aggregateLogs_js_1 = require("./tools/aggregateLogs.js");
 const getDashboard_js_1 = require("./tools/getDashboard.js");
@@ -20,6 +22,15 @@ const getMetrics_js_1 = require("./tools/getMetrics.js");
 const getMonitor_js_1 = require("./tools/getMonitor.js");
 const getMonitors_js_1 = require("./tools/getMonitors.js");
 const searchLogs_js_1 = require("./tools/searchLogs.js");
+// Helper function to mask sensitive credentials for logging
+const maskCredential = (credential) => {
+    if (!credential || credential.length <= 6) {
+        return "***";
+    }
+    const first3 = credential.slice(0, 3);
+    const last3 = credential.slice(-3);
+    return `${first3}...${last3}`;
+};
 // Parse command line arguments
 const argv = (0, minimist_1.default)(process.argv.slice(2));
 // Load environment variables from .env file (if it exists)
@@ -43,29 +54,49 @@ process.env.DD_LOGS_SITE = cleanupUrl(DD_LOGS_SITE);
 process.env.DD_METRICS_SITE = cleanupUrl(DD_METRICS_SITE);
 // Validate required environment variables
 if (!DD_API_KEY) {
-    console.error("Error: DD_API_KEY is required.");
-    console.error("Please provide it via command line argument or .env file.");
-    console.error(" Command line: --apiKey=your_api_key");
+    index_js_1.logger.error("DD_API_KEY is required");
+    index_js_1.logger.error("Please provide it via command line argument or .env file");
+    index_js_1.logger.error("Command line: --apiKey=your_api_key");
     process.exit(1);
 }
 if (!DD_APP_KEY) {
-    console.error("Error: DD_APP_KEY is required.");
-    console.error("Please provide it via command line argument or .env file.");
-    console.error(" Command line: --appKey=your_app_key");
+    index_js_1.logger.error("DD_APP_KEY is required");
+    index_js_1.logger.error("Please provide it via command line argument or .env file");
+    index_js_1.logger.error("Command line: --appKey=your_app_key");
     process.exit(1);
 }
+// Log server startup with configuration
+index_js_1.logger.info({
+    version: "1.0.0",
+    site: DD_SITE,
+    logsSite: DD_LOGS_SITE,
+    metricsSite: DD_METRICS_SITE,
+    apiKey: maskCredential(DD_API_KEY),
+    appKey: maskCredential(DD_APP_KEY),
+}, "Starting Datadog MCP Server");
 // Initialize Datadog client tools
 // We initialize each tool which will use the appropriate site configuration
+index_js_1.logger.info("Initializing Datadog tools");
 getMonitors_js_1.getMonitors.initialize();
+index_js_1.logger.info({ tool: "get-monitors" }, "Tool initialized");
 getMonitor_js_1.getMonitor.initialize();
+index_js_1.logger.info({ tool: "get-monitor" }, "Tool initialized");
 getDashboards_js_1.getDashboards.initialize();
+index_js_1.logger.info({ tool: "get-dashboards" }, "Tool initialized");
 getDashboard_js_1.getDashboard.initialize();
+index_js_1.logger.info({ tool: "get-dashboard" }, "Tool initialized");
 getMetrics_js_1.getMetrics.initialize();
+index_js_1.logger.info({ tool: "get-metrics" }, "Tool initialized");
 getMetricMetadata_js_1.getMetricMetadata.initialize();
+index_js_1.logger.info({ tool: "get-metric-metadata" }, "Tool initialized");
 getEvents_js_1.getEvents.initialize();
+index_js_1.logger.info({ tool: "get-events" }, "Tool initialized");
 getIncidents_js_1.getIncidents.initialize();
+index_js_1.logger.info({ tool: "get-incidents" }, "Tool initialized");
 searchLogs_js_1.searchLogs.initialize();
+index_js_1.logger.info({ tool: "search-logs" }, "Tool initialized");
 aggregateLogs_js_1.aggregateLogs.initialize();
+index_js_1.logger.info({ tool: "aggregate-logs" }, "Tool initialized");
 // Set up MCP server
 const server = new mcp_js_1.McpServer({
     name: "datadog",
@@ -79,7 +110,12 @@ server.tool("get-monitors", "Fetch monitors from Datadog with optional filtering
     monitorTags: zod_1.z.string().optional(),
     limit: zod_1.z.number().default(100),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-monitors", args }, "Tool call started");
     const result = await getMonitors_js_1.getMonitors.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = Array.isArray(result) ? result.length : 0;
+    index_js_1.logger.debug({ tool: "get-monitors", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -87,7 +123,11 @@ server.tool("get-monitors", "Fetch monitors from Datadog with optional filtering
 server.tool("get-monitor", "Get detailed information about a specific Datadog monitor by its ID. Use this to retrieve the complete configuration, status, and other details of a single monitor.", {
     monitorId: zod_1.z.number(),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-monitor", args }, "Tool call started");
     const result = await getMonitor_js_1.getMonitor.execute(args);
+    const durationMs = Date.now() - startTime;
+    index_js_1.logger.debug({ tool: "get-monitor", durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -96,7 +136,14 @@ server.tool("get-dashboards", "Retrieve a list of all dashboards from Datadog. U
     filterConfigured: zod_1.z.boolean().optional(),
     limit: zod_1.z.number().default(100),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-dashboards", args }, "Tool call started");
     const result = await getDashboards_js_1.getDashboards.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result && "dashboards" in result && Array.isArray(result.dashboards)
+        ? result.dashboards.length
+        : 0;
+    index_js_1.logger.debug({ tool: "get-dashboards", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -104,7 +151,11 @@ server.tool("get-dashboards", "Retrieve a list of all dashboards from Datadog. U
 server.tool("get-dashboard", "Get the complete definition of a specific Datadog dashboard by its ID. Returns all widgets, layout, and configuration details.", {
     dashboardId: zod_1.z.string(),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-dashboard", args }, "Tool call started");
     const result = await getDashboard_js_1.getDashboard.execute(args);
+    const durationMs = Date.now() - startTime;
+    index_js_1.logger.debug({ tool: "get-dashboard", durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -112,7 +163,14 @@ server.tool("get-dashboard", "Get the complete definition of a specific Datadog 
 server.tool("get-metrics", "List available metrics from Datadog. Optionally use the q parameter to search for specific metrics matching a pattern. Helpful for discovering metrics to use in monitors or dashboards.", {
     q: zod_1.z.string().optional(),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-metrics", args }, "Tool call started");
     const result = await getMetrics_js_1.getMetrics.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result && "metrics" in result && Array.isArray(result.metrics)
+        ? result.metrics.length
+        : 0;
+    index_js_1.logger.debug({ tool: "get-metrics", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -120,7 +178,11 @@ server.tool("get-metrics", "List available metrics from Datadog. Optionally use 
 server.tool("get-metric-metadata", "Retrieve detailed metadata about a specific metric, including its type, description, unit, and other attributes. Use this to understand a metric's meaning and proper usage.", {
     metricName: zod_1.z.string(),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-metric-metadata", args }, "Tool call started");
     const result = await getMetricMetadata_js_1.getMetricMetadata.execute(args);
+    const durationMs = Date.now() - startTime;
+    index_js_1.logger.debug({ tool: "get-metric-metadata", durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -135,7 +197,14 @@ server.tool("get-events", "Search for events in Datadog within a specified time 
     excludeAggregation: zod_1.z.boolean().optional(),
     limit: zod_1.z.number().default(100),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-events", args }, "Tool call started");
     const result = await getEvents_js_1.getEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result && "events" in result && Array.isArray(result.events)
+        ? result.events.length
+        : 0;
+    index_js_1.logger.debug({ tool: "get-events", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -147,7 +216,14 @@ server.tool("get-incidents", "List incidents from Datadog's incident management 
     query: zod_1.z.string().optional(),
     limit: zod_1.z.number().default(100),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "get-incidents", args }, "Tool call started");
     const result = await getIncidents_js_1.getIncidents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result && "incidents" in result && Array.isArray(result.incidents)
+        ? result.incidents.length
+        : 0;
+    index_js_1.logger.debug({ tool: "get-incidents", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -170,7 +246,14 @@ server.tool("search-logs", "Search logs in Datadog with advanced filtering optio
         .optional(),
     limit: zod_1.z.number().default(100),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "search-logs", args }, "Tool call started");
     const result = await searchLogs_js_1.searchLogs.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result && "logs" in result && Array.isArray(result.logs)
+        ? result.logs.length
+        : 0;
+    index_js_1.logger.debug({ tool: "search-logs", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -209,7 +292,11 @@ server.tool("aggregate-logs", "Perform analytical queries and aggregations on lo
     })
         .optional(),
 }, async (args) => {
+    const startTime = Date.now();
+    index_js_1.logger.info({ tool: "aggregate-logs", args }, "Tool call started");
     const result = await aggregateLogs_js_1.aggregateLogs.execute(args);
+    const durationMs = Date.now() - startTime;
+    index_js_1.logger.debug({ tool: "aggregate-logs", durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
     };
@@ -218,7 +305,9 @@ server.tool("aggregate-logs", "Perform analytical queries and aggregations on lo
 const transport = new stdio_js_1.StdioServerTransport();
 server
     .connect(transport)
-    .then(() => { })
+    .then(() => {
+    index_js_1.logger.info("Server connected successfully");
+})
     .catch((error) => {
-    console.error("Failed to start Datadog MCP Server:", error);
+    index_js_1.logger.error({ error: error instanceof Error ? error.message : String(error) }, "Server connection failure");
 });

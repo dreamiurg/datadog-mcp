@@ -38,12 +38,14 @@
     "@modelcontextprotocol/sdk": "^1.25.1",
     "dotenv": "^16.6.1",
     "minimist": "^1.2.8",
+    "pino": "^10.1.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.10",
     "@types/minimist": "^1.2.5",
     "@types/node": "^22.19.3",
+    "@types/pino": "^7.0.4",
     "@vitest/coverage-v8": "^4.0.16",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",

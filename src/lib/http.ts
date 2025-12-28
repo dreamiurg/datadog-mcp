@@ -1,4 +1,7 @@
 import { type DatadogService, getCredentials, getServiceBaseUrl } from "./config.js";
+import { createHttpLogger } from "./logger.js";
+
+const log = createHttpLogger("datadog");
 
 /**
  * Options for making an HTTP request to the Datadog API
@@ -45,25 +48,32 @@ export async function datadogRequest<T = unknown>(options: RequestOptions): Prom
 
   const url = `${baseUrl}${path}`;
 
+  log.debug({ method, url, service }, "HTTP request start");
+
   const headers: HeadersInit = {
     "Content-Type": "application/json",
     "DD-API-KEY": apiKey,
     "DD-APPLICATION-KEY": appKey,
   };
 
+  const startTime = Date.now();
   const response = await fetch(url, {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
   });
+  const durationMs = Date.now() - startTime;
 
   if (!response.ok) {
     const error: HttpError = {
       status: response.status,
       message: await response.text(),
     };
+    log.warn({ method, url, status: response.status, error: error.message }, "HTTP error");
     throw error;
   }
+
+  log.debug({ method, url, status: response.status, durationMs }, "HTTP response received");
 
   return response.json() as Promise<T>;
 }

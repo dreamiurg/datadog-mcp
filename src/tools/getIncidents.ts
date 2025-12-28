@@ -1,5 +1,7 @@
 import { v2 } from "@datadog/datadog-api-client";
-import { createDatadogConfiguration, handleApiError } from "../lib/index.js";
+import { createDatadogConfiguration, createToolLogger, handleApiError } from "../lib/index.js";
+
+const log = createToolLogger("get-incidents");
 
 interface GetIncidentsParams {
   includeArchived?: boolean;
@@ -13,6 +15,7 @@ let apiInstance: v2.IncidentsApi | null = null;
 
 export const getIncidents = {
   initialize: () => {
+    log.debug("initialize() called");
     const configuration = createDatadogConfiguration({
       service: "default",
       unstableOperations: ["v2.listIncidents", "v2.searchIncidents"],
@@ -28,6 +31,7 @@ export const getIncidents = {
     try {
       const { includeArchived, pageSize, pageOffset, query, limit } = params;
 
+      log.debug({ hasQuery: !!query, pageSize, pageOffset }, "execute() called");
       // If a query is provided, use searchIncidents instead of listIncidents
       if (query) {
         const searchParams: v2.IncidentsApiSearchIncidentsRequest = {
@@ -43,6 +47,7 @@ export const getIncidents = {
           response.data.attributes.incidents = incidents.slice(0, limit);
         }
 
+        log.info({ incidentCount: incidents?.length || 0 }, "get-incidents (search) completed");
         return response;
       }
 
@@ -64,8 +69,10 @@ export const getIncidents = {
         response.data = response.data.slice(0, limit);
       }
 
+      log.info({ incidentCount: response.data?.length || 0 }, "get-incidents (list) completed");
       return response;
     } catch (error: unknown) {
+      log.error({ hasQuery: !!params.query, error }, "get-incidents failed");
       handleApiError(error, "fetching incidents");
     }
   },

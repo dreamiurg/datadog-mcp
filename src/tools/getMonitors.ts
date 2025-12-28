@@ -1,5 +1,5 @@
 import { v1 } from "@datadog/datadog-api-client";
-import { createDatadogConfiguration, handleApiError } from "../lib/index.js";
+import { createDatadogConfiguration, createToolLogger, handleApiError } from "../lib/index.js";
 
 interface GetMonitorsParams {
   groupStates?: string[];
@@ -8,10 +8,13 @@ interface GetMonitorsParams {
   limit?: number;
 }
 
+const log = createToolLogger("get-monitors");
+
 let apiInstance: v1.MonitorsApi | null = null;
 
 export const getMonitors = {
   initialize: () => {
+    log.debug("initialize() called");
     const configuration = createDatadogConfiguration({ service: "metrics" });
     apiInstance = new v1.MonitorsApi(configuration);
   },
@@ -20,6 +23,18 @@ export const getMonitors = {
     if (!apiInstance) {
       throw new Error("getMonitors not initialized. Call initialize() first.");
     }
+
+    log.debug(
+      {
+        filters: {
+          groupStates: params.groupStates,
+          tags: params.tags,
+          monitorTags: params.monitorTags,
+          limit: params.limit,
+        },
+      },
+      "executing get-monitors",
+    );
 
     try {
       const { groupStates, tags, monitorTags, limit } = params;
@@ -33,11 +48,15 @@ export const getMonitors = {
       const response = await apiInstance.listMonitors(apiParams);
 
       if (limit && response.length > limit) {
-        return response.slice(0, limit);
+        const result = response.slice(0, limit);
+        log.info({ resultCount: result.length }, "get-monitors completed");
+        return result;
       }
 
+      log.info({ resultCount: response.length }, "get-monitors completed");
       return response;
     } catch (error: unknown) {
+      log.error({ error }, "get-monitors failed");
       handleApiError(error, "fetching monitors");
     }
   },

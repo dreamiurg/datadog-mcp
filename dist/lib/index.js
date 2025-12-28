@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.datadogRequest = exports.handleApiError = exports.DatadogApiError = exports.getServiceBaseUrl = exports.getCredentials = exports.createDatadogConfiguration = void 0;
+exports.createHttpLogger = exports.createToolLogger = exports.logger = exports.datadogRequest = exports.handleApiError = exports.DatadogApiError = exports.getServiceBaseUrl = exports.getCredentials = exports.createDatadogConfiguration = void 0;
 var config_js_1 = require("./config.js");
 Object.defineProperty(exports, "createDatadogConfiguration", { enumerable: true, get: function () { return config_js_1.createDatadogConfiguration; } });
 Object.defineProperty(exports, "getCredentials", { enumerable: true, get: function () { return config_js_1.getCredentials; } });
@@ -10,3 +10,7 @@ Object.defineProperty(exports, "DatadogApiError", { enumerable: true, get: funct
 Object.defineProperty(exports, "handleApiError", { enumerable: true, get: function () { return errors_js_1.handleApiError; } });
 var http_js_1 = require("./http.js");
 Object.defineProperty(exports, "datadogRequest", { enumerable: true, get: function () { return http_js_1.datadogRequest; } });
+var logger_js_1 = require("./logger.js");
+Object.defineProperty(exports, "logger", { enumerable: true, get: function () { return logger_js_1.logger; } });
+Object.defineProperty(exports, "createToolLogger", { enumerable: true, get: function () { return logger_js_1.createToolLogger; } });
+Object.defineProperty(exports, "createHttpLogger", { enumerable: true, get: function () { return logger_js_1.createHttpLogger; } });
