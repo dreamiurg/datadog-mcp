@@ -145,5 +145,39 @@ describe("errors", () => {
         expect(error.statusCode).toBe(404);
       }
     });
+
+    it("logs error for 500+ status codes", () => {
+      const rawError = { status: 500 };
+
+      expect(() => handleApiError(rawError, "server error test")).toThrow(DatadogApiError);
+
+      try {
+        handleApiError(rawError, "server error test");
+      } catch (e) {
+        const error = e as DatadogApiError;
+        expect(error.statusCode).toBe(500);
+        expect(error.context).toBe("server error test");
+      }
+    });
+
+    it("logs warning for 400-499 status codes (non-specific)", () => {
+      const rawError = { status: 401 };
+
+      expect(() => handleApiError(rawError, "auth error test")).toThrow(DatadogApiError);
+
+      try {
+        handleApiError(rawError, "auth error test");
+      } catch (e) {
+        const error = e as DatadogApiError;
+        expect(error.statusCode).toBe(401);
+        expect(error.context).toBe("auth error test");
+      }
+    });
+
+    it("logs error for unknown status codes", () => {
+      const rawError = { status: 0 };
+
+      expect(() => handleApiError(rawError, "unknown status test")).toThrow(DatadogApiError);
+    });
   });
 });
