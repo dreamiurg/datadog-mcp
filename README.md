@@ -1,11 +1,14 @@
 # Datadog MCP Server
 
+[![CI](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
+
 A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that provides read-only access to Datadog resources. Query monitors, dashboards, logs, metrics, events, and incidents directly from Claude or other MCP-compatible clients.
 
 ## Installation
 
 ```bash
-npm install -g datadog-mcp-server
+npx github:dreamiurg/datadog-mcp-server --help
 ```
 
 **Requirements:** Node.js 18+
@@ -20,7 +23,7 @@ Most MCP-compatible tools use a similar JSON configuration. The core server conf
     "datadog": {
       "command": "npx",
       "args": [
-        "datadog-mcp-server",
+        "github:dreamiurg/datadog-mcp-server",
         "--apiKey", "<YOUR_API_KEY>",
         "--appKey", "<YOUR_APP_KEY>",
         "--site", "datadoghq.com"
@@ -35,7 +38,7 @@ Most MCP-compatible tools use a similar JSON configuration. The core server conf
 Add via CLI or edit the config file directly:
 
 ```bash
-claude mcp add datadog -- npx datadog-mcp-server \
+claude mcp add datadog -- npx github:dreamiurg/datadog-mcp-server \
   --apiKey <YOUR_API_KEY> \
   --appKey <YOUR_APP_KEY> \
   --site datadoghq.com
@@ -48,7 +51,7 @@ Or add to `~/.claude.json` (user scope) or `.mcp.json` (project scope):
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
+      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
     }
   }
 }
@@ -63,7 +66,7 @@ Add to `~/.gemini/settings.json`:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
+      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
     }
   }
 }
@@ -76,7 +79,7 @@ Add to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.datadog]
 command = "npx"
-args = ["datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
+args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "<YOUR_API_KEY>", "--appKey", "<YOUR_APP_KEY>", "--site", "datadoghq.com"]
 ```
 
 ### Cursor / Windsurf / VS Code
@@ -202,6 +205,8 @@ npm run build
 | `npm run format` | Format code with Biome |
 | `npm run typecheck` | Run TypeScript type checking |
 | `npm run check` | Run typecheck + lint |
+| `npm test` | Run tests |
+| `npm run test:coverage` | Run tests with coverage report |
 
 ### Testing with MCP Inspector
 
