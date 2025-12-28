@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const node_fs_1 = require("node:fs");
+const node_path_1 = require("node:path");
 const mcp_js_1 = require("@modelcontextprotocol/sdk/server/mcp.js");
 const stdio_js_1 = require("@modelcontextprotocol/sdk/server/stdio.js");
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -11,6 +13,10 @@ const minimist_1 = __importDefault(require("minimist"));
 const zod_1 = require("zod");
 // Import logger
 const index_js_1 = require("./lib/index.js");
+// Read version from package.json (works in both CommonJS and ESM)
+const packageJsonPath = (0, node_path_1.join)(__dirname, "..", "package.json");
+const packageJson = JSON.parse((0, node_fs_1.readFileSync)(packageJsonPath, "utf-8"));
+const VERSION = packageJson.version;
 // Import tools
 const aggregateLogs_js_1 = require("./tools/aggregateLogs.js");
 const getDashboard_js_1 = require("./tools/getDashboard.js");
@@ -71,7 +77,7 @@ if (!DD_APP_KEY) {
 }
 // Log server startup with configuration
 index_js_1.logger.info({
-    version: "1.0.0",
+    version: VERSION,
     site: DD_SITE,
     logsSite: DD_LOGS_SITE,
     metricsSite: DD_METRICS_SITE,
@@ -112,7 +118,7 @@ index_js_1.logger.info({ tool: "get-slo" }, "Tool initialized");
 // Set up MCP server
 const server = new mcp_js_1.McpServer({
     name: "datadog",
-    version: "1.0.0",
+    version: VERSION,
     description: "MCP Server for Datadog API, enabling interaction with Datadog resources",
 });
 // Add tools individually, using their schemas directly
@@ -258,7 +264,7 @@ server.tool("search-logs", "Search and retrieve log entries from Datadog. Use fo
     index_js_1.logger.info({ tool: "search-logs", args }, "Tool call started");
     const result = await searchLogs_js_1.searchLogs.execute(args);
     const durationMs = Date.now() - startTime;
-    const resultCount = result && "logs" in result && Array.isArray(result.logs) ? result.logs.length : 0;
+    const resultCount = result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
     index_js_1.logger.debug({ tool: "search-logs", resultCount, durationMs }, "Tool execution completed");
     return {
         content: [{ type: "text", text: JSON.stringify(result) }],
@@ -393,3 +399,18 @@ server
     .catch((error) => {
     index_js_1.logger.error({ error: error instanceof Error ? error.message : String(error) }, "Server connection failure");
 });
+// Graceful shutdown handling
+const shutdown = async (signal) => {
+    index_js_1.logger.info({ signal }, "Received shutdown signal, closing server...");
+    try {
+        await server.close();
+        index_js_1.logger.info("Server closed successfully");
+        process.exit(0);
+    }
+    catch (error) {
+        index_js_1.logger.error({ error }, "Error during shutdown");
+        process.exit(1);
+    }
+};
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));

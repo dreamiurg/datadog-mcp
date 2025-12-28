@@ -12,7 +12,7 @@ let apiInstance: v1.MonitorsApi | null = null;
 export const getMonitor = {
   initialize: () => {
     log.debug("initialize() called");
-    const configuration = createDatadogConfiguration({ service: "metrics" });
+    const configuration = createDatadogConfiguration({ service: "default" });
     apiInstance = new v1.MonitorsApi(configuration);
   },
 

@@ -31,7 +31,7 @@
     "observability",
     "api"
   ],
-  "author": "GeLi2001",
+  "author": "dreamiurg",
   "license": "MIT",
   "dependencies": {
     "@datadog/datadog-api-client": "^1.49.0",
@@ -68,10 +68,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GeLi2001/datadog-mcp-server.git"
+    "url": "git+https://github.com/dreamiurg/datadog-mcp-server.git"
   },
   "bugs": {
-    "url": "https://github.com/GeLi2001/datadog-mcp-server/issues"
+    "url": "https://github.com/dreamiurg/datadog-mcp-server/issues"
   },
-  "homepage": "https://github.com/GeLi2001/datadog-mcp-server#readme"
+  "homepage": "https://github.com/dreamiurg/datadog-mcp-server#readme"
 }

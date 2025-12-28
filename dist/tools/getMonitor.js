@@ -8,7 +8,7 @@ let apiInstance = null;
 exports.getMonitor = {
     initialize: () => {
         log.debug("initialize() called");
-        const configuration = (0, index_js_1.createDatadogConfiguration)({ service: "metrics" });
+        const configuration = (0, index_js_1.createDatadogConfiguration)({ service: "default" });
         apiInstance = new datadog_api_client_1.v1.MonitorsApi(configuration);
     },
     execute: async (params) => {

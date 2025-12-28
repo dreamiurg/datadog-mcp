@@ -39,7 +39,11 @@ exports.DatadogApiError = DatadogApiError;
  * Type guard to check if an error is a raw API error
  */
 function isRawApiError(error) {
-    return typeof error === "object" && error !== null && ("status" in error || "code" in error);
+    if (typeof error !== "object" || error === null) {
+        return false;
+    }
+    const err = error;
+    return typeof err.status === "number" || typeof err.code === "number";
 }
 /**
  * Handles Datadog API errors consistently across all tools.

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import dotenv from "dotenv";
@@ -8,6 +10,11 @@ import { z } from "zod";
 
 // Import logger
 import { logger } from "./lib/index.js";
+
+// Read version from package.json (works in both CommonJS and ESM)
+const packageJsonPath = join(__dirname, "..", "package.json");
+const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8")) as { version: string };
+const VERSION = packageJson.version;
 
 // Import tools
 import { aggregateLogs } from "./tools/aggregateLogs.js";
@@ -81,7 +88,7 @@ if (!DD_APP_KEY) {
 // Log server startup with configuration
 logger.info(
   {
-    version: "1.0.0",
+    version: VERSION,
     site: DD_SITE,
     logsSite: DD_LOGS_SITE,
     metricsSite: DD_METRICS_SITE,
@@ -126,7 +133,7 @@ logger.info({ tool: "get-slo" }, "Tool initialized");
 // Set up MCP server
 const server = new McpServer({
   name: "datadog",
-  version: "1.0.0",
+  version: VERSION,
   description: "MCP Server for Datadog API, enabling interaction with Datadog resources",
 });
 
@@ -330,7 +337,7 @@ server.tool(
     const result = await searchLogs.execute(args);
     const durationMs = Date.now() - startTime;
     const resultCount =
-      result && "logs" in result && Array.isArray(result.logs) ? result.logs.length : 0;
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
     logger.debug({ tool: "search-logs", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
@@ -504,3 +511,19 @@ server
       "Server connection failure",
     );
   });
+
+// Graceful shutdown handling
+const shutdown = async (signal: string) => {
+  logger.info({ signal }, "Received shutdown signal, closing server...");
+  try {
+    await server.close();
+    logger.info("Server closed successfully");
+    process.exit(0);
+  } catch (error) {
+    logger.error({ error }, "Error during shutdown");
+    process.exit(1);
+  }
+};
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));

@@ -62,12 +62,3 @@ export interface LogsAggregateResponse {
     };
   };
 }
-
-/**
- * Parameters for v2 Incidents API
- */
-export interface ListIncidentsParams {
-  include?: string[];
-  pageSize?: number;
-  pageOffset?: number;
-}
