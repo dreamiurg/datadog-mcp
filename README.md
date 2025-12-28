@@ -159,6 +159,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-incidents` | List incidents | *"Show active incidents"* |
 | `search-logs` | Search logs with queries | *"Find errors in prod last hour"* |
 | `aggregate-logs` | Analytics on log data | *"Count errors by service"* |
+| `get-hosts` | List infrastructure hosts | *"Show all production hosts"* |
+| `get-downtimes` | List scheduled maintenance windows | *"Are there any active downtimes?"* |
+| `get-slos` | List Service Level Objectives | *"Which SLOs are breaching?"* |
+| `get-slo` | Get SLO details by ID | *"Show error budget for SLO xyz"* |
 
 ---
 
@@ -214,6 +218,9 @@ For least-privilege security, create an Application Key with only required scope
 | `get-events` | `events_read` |
 | `search-logs`, `aggregate-logs` | `logs_read_data` |
 | `get-incidents` | `incident_read` |
+| `get-hosts` | `hosts_read` |
+| `get-downtimes` | `monitors_downtime` |
+| `get-slos`, `get-slo` | `slos_read` |
 
 **Create a scoped key:** Organization Settings → Application Keys → New Key → Select scopes
 
