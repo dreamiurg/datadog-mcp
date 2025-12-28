@@ -3,6 +3,7 @@
 [![CI](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp-server)
+[![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/dreamiurg/datadog-mcp-server?utm_source=oss&utm_medium=github&utm_campaign=dreamiurg%2Fdatadog-mcp-server&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)](https://coderabbit.ai)
 
 A [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) server that provides read-only access to Datadog resources. Query monitors, dashboards, logs, metrics, events, and incidents directly from Claude or other MCP-compatible clients.
 

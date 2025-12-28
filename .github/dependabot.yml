@@ -4,21 +4,48 @@ updates:
   - package-ecosystem: npm
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: daily
     open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
     groups:
-      dependency-updates:
+      # Group minor and patch updates for auto-merge
+      minor-and-patch:
         patterns:
           - "*"
         update-types:
           - minor
           - patch
+    # Create separate PRs for major updates (require manual review)
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # Major updates get their own PRs
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+    # Only handle major updates
+    allow:
+      - dependency-type: all
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
 
   # GitHub Actions
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
-      day: monday
+      interval: daily
     open-pull-requests-limit: 10
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      actions:
+        patterns:
+          - "*"
