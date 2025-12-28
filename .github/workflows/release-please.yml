@@ -6,6 +6,9 @@ on:
 
 permissions: {}
 
+env:
+  NODE_VERSION: 20
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -14,21 +17,21 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: googleapis/release-please-action@16a9c90856f42705d54a6fda1823352bdc62cf38 # v4.4.0
+      - uses: googleapis/release-please-action@a02a34c4d625f9be7cb89571f0180647c42ee0ea # v4.2.0
         id: release
         with:
           release-type: node
 
       # Build and publish when a release is created
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         if: ${{ steps.release.outputs.release_created }}
 
-      - name: Use Node.js 20
+      - name: Setup Node.js
         if: ${{ steps.release.outputs.release_created }}
-        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: 20
-          cache: "npm"
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
 
       - name: Install dependencies
         if: ${{ steps.release.outputs.release_created }}
@@ -40,7 +43,7 @@ jobs:
 
       - name: Run tests
         if: ${{ steps.release.outputs.release_created }}
-        run: npm run test
+        run: npm test
 
       - name: Build
         if: ${{ steps.release.outputs.release_created }}
