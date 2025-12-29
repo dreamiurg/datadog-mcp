@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.1.0...v1.1.1) (2025-12-29)
+
+
+### Bug Fixes
+
+* address code review findings for production readiness ([bc2ba91](https://github.com/dreamiurg/datadog-mcp-server/commit/bc2ba91ee1d3807e15cd42946293181bb16ac00e))
+* code quality improvements from review ([554207f](https://github.com/dreamiurg/datadog-mcp-server/commit/554207f10e43f94310afbff494e85f01cb5064ec))
+* prevent clear-text logging false positive (CodeQL) ([#14](https://github.com/dreamiurg/datadog-mcp-server/issues/14)) ([fb868a8](https://github.com/dreamiurg/datadog-mcp-server/commit/fb868a8c629d0b9dbeb42c873685f031829ab2d8))
+
 ## [1.1.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.0.9...v1.1.0) (2025-12-28)
 
 
