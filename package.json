@@ -22,7 +22,7 @@
     "test:coverage": "vitest run --coverage",
     "prepublishOnly": "npm run audit && npm run check && npm run build",
     "publish:dry-run": "npm pack --dry-run",
-    "prepare": "husky"
+    "prepare": "node scripts/prepare.js"
   },
   "keywords": [
     "datadog",
