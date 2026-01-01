@@ -62,3 +62,85 @@ export interface LogsAggregateResponse {
     };
   };
 }
+
+/**
+ * Span entry from the Datadog Spans API
+ */
+export interface SpanEntry {
+  id?: string;
+  type?: string;
+  attributes?: {
+    timestamp?: string;
+    service?: string;
+    resource_name?: string;
+    span_id?: string;
+    trace_id?: string;
+    parent_id?: string;
+    duration?: number;
+    status?: string;
+    error?: number;
+    meta?: Record<string, string>;
+    metrics?: Record<string, number>;
+    [key: string]: unknown;
+  };
+}
+
+/**
+ * Response from the spans search endpoint
+ */
+export interface SpansSearchResponse {
+  data?: SpanEntry[];
+  meta?: {
+    page?: {
+      after?: string;
+    };
+    status?: string;
+    elapsed?: number;
+    request_id?: string;
+  };
+  links?: {
+    next?: string;
+  };
+}
+
+/**
+ * Aggregation bucket from spans analytics
+ */
+export interface SpansAggregateBucket {
+  by?: Record<string, string>;
+  computes?: Record<string, number>;
+}
+
+/**
+ * Response from the spans aggregate endpoint
+ */
+export interface SpansAggregateResponse {
+  data?: {
+    buckets?: SpansAggregateBucket[];
+  };
+  meta?: {
+    status?: string;
+    elapsed?: number;
+    request_id?: string;
+    page?: {
+      after?: string;
+    };
+  };
+}
+
+/**
+ * Service entry from the APM services endpoint
+ */
+export interface ServiceEntry {
+  name: string;
+  env?: string;
+}
+
+/**
+ * Response from the services list endpoint (v1 API)
+ */
+export interface ServicesResponse {
+  [serviceName: string]: {
+    [envName: string]: unknown;
+  };
+}

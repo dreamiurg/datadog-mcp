@@ -3,7 +3,7 @@ import { client } from "@datadog/datadog-api-client";
 /**
  * Supported Datadog service types that may use different regional endpoints
  */
-export type DatadogService = "default" | "logs" | "metrics";
+export type DatadogService = "default" | "logs" | "metrics" | "apm";
 
 /**
  * Configuration options for creating a Datadog API client configuration
@@ -28,6 +28,8 @@ function getSiteForService(service: DatadogService): string | undefined {
       return process.env.DD_LOGS_SITE;
     case "metrics":
       return process.env.DD_METRICS_SITE;
+    case "apm":
+      return process.env.DD_APM_SITE;
     default:
       return process.env.DD_SITE;
   }

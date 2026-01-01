@@ -19,6 +19,10 @@ const SCOPE_HINTS: Record<string, string> = {
   "fetching downtimes": "monitors_downtime",
   "fetching SLOs": "slos_read",
   "fetching SLO": "slos_read",
+  "searching spans": "apm_read",
+  "aggregating spans": "apm_read",
+  "getting services": "apm_service_catalog_read",
+  "getting trace": "apm_read",
 };
 
 /**

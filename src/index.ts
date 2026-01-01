@@ -18,6 +18,7 @@ const VERSION = packageJson.version;
 
 // Import tools
 import { aggregateLogs } from "./tools/aggregateLogs.js";
+import { aggregateSpans } from "./tools/aggregateSpans.js";
 import { getDashboard } from "./tools/getDashboard.js";
 import { getDashboards } from "./tools/getDashboards.js";
 import { getDowntimes } from "./tools/getDowntimes.js";
@@ -28,9 +29,12 @@ import { getMetricMetadata } from "./tools/getMetricMetadata.js";
 import { getMetrics } from "./tools/getMetrics.js";
 import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitors } from "./tools/getMonitors.js";
+import { getServices } from "./tools/getServices.js";
 import { getSLO } from "./tools/getSLO.js";
 import { getSLOs } from "./tools/getSLOs.js";
+import { getTrace } from "./tools/getTrace.js";
 import { searchLogs } from "./tools/searchLogs.js";
+import { searchSpans } from "./tools/searchSpans.js";
 
 // Helper function to mask sensitive credentials for logging
 const maskCredential = (credential: string | undefined): string => {
@@ -129,6 +133,14 @@ getSLOs.initialize();
 logger.info({ tool: "get-slos" }, "Tool initialized");
 getSLO.initialize();
 logger.info({ tool: "get-slo" }, "Tool initialized");
+searchSpans.initialize();
+logger.info({ tool: "search-spans" }, "Tool initialized");
+aggregateSpans.initialize();
+logger.info({ tool: "aggregate-spans" }, "Tool initialized");
+getServices.initialize();
+logger.info({ tool: "get-services" }, "Tool initialized");
+getTrace.initialize();
+logger.info({ tool: "get-trace" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -492,6 +504,130 @@ server.tool(
     const result = await getSLO.execute(args);
     const durationMs = Date.now() - startTime;
     logger.debug({ tool: "get-slo", durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "search-spans",
+  "Search APM spans/traces. Use for 'find slow requests', 'show errors in payment service', or investigating latency. Query syntax: 'service:web status:error @duration:>1s'. Returns individual spans with trace IDs. Use get-trace for full trace context.",
+  {
+    filter: z
+      .object({
+        query: z.string().optional().describe("Span query (e.g., 'service:api status:error')"),
+        from: z.string().optional().describe("Start time (e.g., 'now-15m' or ISO8601)"),
+        to: z.string().optional().describe("End time (e.g., 'now' or ISO8601)"),
+      })
+      .optional(),
+    sort: z.string().optional().describe("Sort order ('timestamp' or '-timestamp')"),
+    page: z
+      .object({
+        limit: z.number().optional().describe("Number of spans per page (max 1000)"),
+        cursor: z.string().optional().describe("Pagination cursor"),
+      })
+      .optional(),
+    limit: z.number().default(100).describe("Maximum spans to return"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "search-spans", args }, "Tool call started");
+    const result = await searchSpans.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "search-spans", resultCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "aggregate-spans",
+  "Compute statistics on APM spans. Use for 'p99 latency by service', 'error rate per endpoint', 'request count over time'. Supports count, avg, sum, min, max, percentiles (pc75/90/95/99). Use search-spans to see actual span details.",
+  {
+    filter: z
+      .object({
+        query: z.string().optional().describe("Span query (e.g., 'service:api')"),
+        from: z.string().optional().describe("Start time"),
+        to: z.string().optional().describe("End time"),
+      })
+      .optional(),
+    compute: z
+      .array(
+        z.object({
+          aggregation: z
+            .string()
+            .describe("Aggregation type (count, avg, sum, min, max, pc75, pc90, pc95, pc99)"),
+          metric: z.string().optional().describe("Metric to aggregate (e.g., '@duration')"),
+          type: z.string().optional().describe("Result type ('total' or 'timeseries')"),
+        }),
+      )
+      .optional(),
+    groupBy: z
+      .array(
+        z.object({
+          facet: z.string().describe("Field to group by (e.g., 'service', 'resource_name')"),
+          limit: z.number().optional().describe("Max groups to return"),
+          sort: z
+            .object({
+              aggregation: z.string(),
+              order: z.string().describe("'asc' or 'desc'"),
+            })
+            .optional(),
+        }),
+      )
+      .optional(),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "aggregate-spans", args }, "Tool call started");
+    const result = await aggregateSpans.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "aggregate-spans", durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-services",
+  "List all APM-instrumented services. Use to discover traced services, find service names for span queries, or get an overview of your distributed system. Returns service names and their environments.",
+  {
+    env: z.string().optional().describe("Filter services by environment"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-services", args }, "Tool call started");
+    const result = await getServices.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result?.services?.length || 0;
+    logger.debug({ tool: "get-services", resultCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-trace",
+  "Get all spans for a specific trace ID. Use after search-spans to see the full request flow across services. Returns all spans in the trace with timing, service, resource, and error information.",
+  {
+    traceId: z.string().describe("The trace ID to retrieve (hexadecimal string)"),
+    from: z.string().optional().describe("Start time (defaults to 'now-1h')"),
+    to: z.string().optional().describe("End time (defaults to 'now')"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-trace", args }, "Tool call started");
+    const result = await getTrace.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "get-trace", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };

@@ -7,7 +7,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js 20+](https://img.shields.io/badge/node-20%2B-brightgreen)](https://nodejs.org)
 
-> **Query Datadog from AI assistants.** Access monitors, dashboards, logs, metrics, and incidents directly from Claude, Cursor, VS Code, and other MCP-compatible clients.
+> **Query Datadog from AI assistants.** Access monitors, dashboards, logs, metrics, incidents, and APM traces directly from Claude, Cursor, VS Code, and other MCP-compatible clients.
 
 
 ---
@@ -163,6 +163,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-downtimes` | List scheduled maintenance windows | *"Are there any active downtimes?"* |
 | `get-slos` | List Service Level Objectives | *"Which SLOs are breaching?"* |
 | `get-slo` | Get SLO details by ID | *"Show error budget for SLO xyz"* |
+| `search-spans` | Search APM spans/traces | *"Find slow requests in payment service"* |
+| `aggregate-spans` | Compute APM statistics | *"Show p99 latency by service"* |
+| `get-services` | List APM-instrumented services | *"What services are being traced?"* |
+| `get-trace` | Get full trace by ID | *"Show all spans for trace abc123"* |
 
 ---
 
@@ -221,6 +225,8 @@ For least-privilege security, create an Application Key with only required scope
 | `get-hosts` | `hosts_read` |
 | `get-downtimes` | `monitors_downtime` |
 | `get-slos`, `get-slo` | `slos_read` |
+| `search-spans`, `aggregate-spans`, `get-trace` | `apm_read` |
+| `get-services` | `apm_service_catalog_read` |
 
 **Create a scoped key:** Organization Settings → Application Keys → New Key → Select scopes
 
