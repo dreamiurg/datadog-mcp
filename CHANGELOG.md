@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.1.1...v1.2.0) (2026-02-05)
+
+
+### Features
+
+* add APM trace retrieval support ([#20](https://github.com/dreamiurg/datadog-mcp-server/issues/20)) ([9a0d2bb](https://github.com/dreamiurg/datadog-mcp-server/commit/9a0d2bb57f4bca46070925c83a538c987a3b500e))
+
 ## [1.1.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.1.0...v1.1.1) (2025-12-29)
 
 
