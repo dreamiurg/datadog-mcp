@@ -3,9 +3,6 @@
 [![CI](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp-server)
-[![CodeRabbit Reviews](https://img.shields.io/coderabbit/prs/github/dreamiurg/datadog-mcp-server?labelColor=171717&color=FF570A&label=CodeRabbit)](https://coderabbit.ai)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js 20+](https://img.shields.io/badge/node-20%2B-brightgreen)](https://nodejs.org)
 
 > **Query Datadog from AI assistants.** Access monitors, dashboards, logs, metrics, incidents, and APM traces directly from Claude, Cursor, VS Code, and other MCP-compatible clients.
 
