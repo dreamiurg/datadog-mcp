@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.4.1...v1.5.0) (2026-02-06)
+
+
+### Features
+
+* add 12 configuration and RBAC tools (60 total) ([#17](https://github.com/dreamiurg/datadog-mcp-server/issues/17)) ([f4321c7](https://github.com/dreamiurg/datadog-mcp-server/commit/f4321c744842a7f1f34553990fb8587fc603901a))
+
 ## [1.4.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.4.0...v1.4.1) (2026-02-06)
 
 
