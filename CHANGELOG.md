@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.4.0...v1.4.1) (2026-02-06)
+
+
+### Bug Fixes
+
+* correct dashboard lists API path from v2 to v1 ([#14](https://github.com/dreamiurg/datadog-mcp-server/issues/14)) ([628f3f9](https://github.com/dreamiurg/datadog-mcp-server/commit/628f3f993604bc82c8354a8bc72ae7260b31bf5d))
+
+
+### Documentation
+
+* rewrite README with tongue-in-cheek marketing style ([#16](https://github.com/dreamiurg/datadog-mcp-server/issues/16)) ([bce3458](https://github.com/dreamiurg/datadog-mcp-server/commit/bce34585ddcccc09e83fdb9e71549841f4ce6a0d))
+
 ## [1.4.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.3.0...v1.4.0) (2026-02-06)
 
 
