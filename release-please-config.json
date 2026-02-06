@@ -5,7 +5,6 @@
   "packages": {
     ".": {
       "release-type": "node",
-      "release-as": "1.2.1",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "changelog-sections": [
