@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.2.1...v1.3.0) (2026-02-06)
+
+
+### Features
+
+* add 15 read-only observability tools ([#11](https://github.com/dreamiurg/datadog-mcp-server/issues/11)) ([92ad965](https://github.com/dreamiurg/datadog-mcp-server/commit/92ad965207e58845e7a0c59321c3bc2af9a89fde))
+
+
+### Bug Fixes
+
+* consolidate npm publish into release-please workflow ([#8](https://github.com/dreamiurg/datadog-mcp-server/issues/8)) ([71c8c3d](https://github.com/dreamiurg/datadog-mcp-server/commit/71c8c3d7948621df5c7c243563b7e29510d1f80f))
+* remove id-token permission causing phantom workflow failures ([#9](https://github.com/dreamiurg/datadog-mcp-server/issues/9)) ([f9622d2](https://github.com/dreamiurg/datadog-mcp-server/commit/f9622d2421d77282f837ec48ce868c7ca69923d6))
+* revert release-please.yml to last working state ([#10](https://github.com/dreamiurg/datadog-mcp-server/issues/10)) ([6564133](https://github.com/dreamiurg/datadog-mcp-server/commit/6564133a7d3ffec8dde8a5bfe409ef28d41bb8c6))
+
+
+### Miscellaneous Chores
+
+* remove release-as override after v1.2.1 release ([#6](https://github.com/dreamiurg/datadog-mcp-server/issues/6)) ([25f538c](https://github.com/dreamiurg/datadog-mcp-server/commit/25f538c7ca70ae2b3bb22df3415573fce96a9140))
+
 ## [1.2.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.2.0...v1.2.1) (2026-02-06)
 
 
