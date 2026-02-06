@@ -19,23 +19,39 @@ const VERSION = packageJson.version;
 // Import tools
 import { aggregateLogs } from "./tools/aggregateLogs.js";
 import { aggregateSpans } from "./tools/aggregateSpans.js";
+import { getAuditEvents } from "./tools/getAuditEvents.js";
+import { getContainers } from "./tools/getContainers.js";
 import { getDashboard } from "./tools/getDashboard.js";
 import { getDashboards } from "./tools/getDashboards.js";
+import { getDbmSamples } from "./tools/getDbmSamples.js";
 import { getDowntimes } from "./tools/getDowntimes.js";
 import { getEvents } from "./tools/getEvents.js";
 import { getHosts } from "./tools/getHosts.js";
+import { getHostTags } from "./tools/getHostTags.js";
 import { getIncidents } from "./tools/getIncidents.js";
+import { getLogIndexes } from "./tools/getLogIndexes.js";
+import { getLogPipelines } from "./tools/getLogPipelines.js";
 import { getMetricMetadata } from "./tools/getMetricMetadata.js";
 import { getMetrics } from "./tools/getMetrics.js";
 import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitors } from "./tools/getMonitors.js";
+import { getNotebooks } from "./tools/getNotebooks.js";
 import { getSecurityFinding } from "./tools/getSecurityFinding.js";
 import { getServices } from "./tools/getServices.js";
 import { getSLO } from "./tools/getSLO.js";
 import { getSLOs } from "./tools/getSLOs.js";
+import { getSloHistory } from "./tools/getSloHistory.js";
+import { getSyntheticResults } from "./tools/getSyntheticResults.js";
+import { getSyntheticTests } from "./tools/getSyntheticTests.js";
 import { getTrace } from "./tools/getTrace.js";
+import { getUsage } from "./tools/getUsage.js";
 import { listPostureFindings } from "./tools/listPostureFindings.js";
+import { listRumApplications } from "./tools/listRumApplications.js";
+// New observability tools
+import { queryMetrics } from "./tools/queryMetrics.js";
+import { searchErrorTrackingEvents } from "./tools/searchErrorTrackingEvents.js";
 import { searchLogs } from "./tools/searchLogs.js";
+import { searchRumEvents } from "./tools/searchRumEvents.js";
 import { searchSecurityFindings } from "./tools/searchSecurityFindings.js";
 import { searchSpans } from "./tools/searchSpans.js";
 
@@ -150,6 +166,38 @@ getSecurityFinding.initialize();
 logger.info({ tool: "get-security-finding" }, "Tool initialized");
 listPostureFindings.initialize();
 logger.info({ tool: "list-posture-findings" }, "Tool initialized");
+
+// New observability tools
+queryMetrics.initialize();
+logger.info({ tool: "query-metrics" }, "Tool initialized");
+getSyntheticTests.initialize();
+logger.info({ tool: "get-synthetic-tests" }, "Tool initialized");
+getSyntheticResults.initialize();
+logger.info({ tool: "get-synthetic-results" }, "Tool initialized");
+searchRumEvents.initialize();
+logger.info({ tool: "search-rum-events" }, "Tool initialized");
+listRumApplications.initialize();
+logger.info({ tool: "list-rum-applications" }, "Tool initialized");
+searchErrorTrackingEvents.initialize();
+logger.info({ tool: "search-error-tracking-events" }, "Tool initialized");
+getContainers.initialize();
+logger.info({ tool: "get-containers" }, "Tool initialized");
+getHostTags.initialize();
+logger.info({ tool: "get-host-tags" }, "Tool initialized");
+getAuditEvents.initialize();
+logger.info({ tool: "get-audit-events" }, "Tool initialized");
+getSloHistory.initialize();
+logger.info({ tool: "get-slo-history" }, "Tool initialized");
+getNotebooks.initialize();
+logger.info({ tool: "get-notebooks" }, "Tool initialized");
+getUsage.initialize();
+logger.info({ tool: "get-usage" }, "Tool initialized");
+getLogPipelines.initialize();
+logger.info({ tool: "get-log-pipelines" }, "Tool initialized");
+getLogIndexes.initialize();
+logger.info({ tool: "get-log-indexes" }, "Tool initialized");
+getDbmSamples.initialize();
+logger.info({ tool: "get-dbm-samples" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -732,6 +780,399 @@ server.tool(
       { tool: "list-posture-findings", resultCount, durationMs },
       "Tool execution completed",
     );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+// --- New observability tools ---
+
+server.tool(
+  "query-metrics",
+  "Query time-series metric data from Datadog. The backbone of observability — use for 'CPU usage over last hour', 'request rate for web service', or any metric query. Query syntax: 'avg:system.cpu.user{host:web-1}'. Returns data points with timestamps.",
+  {
+    query: z.string().describe("Metrics query (e.g., 'avg:system.cpu.user{host:web-1}')"),
+    from: z.number().describe("Start time as Unix epoch seconds"),
+    to: z.number().describe("End time as Unix epoch seconds"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "query-metrics", args }, "Tool call started");
+    const result = await queryMetrics.execute(args);
+    const durationMs = Date.now() - startTime;
+    const seriesCount = result?.series?.length || 0;
+    logger.debug({ tool: "query-metrics", seriesCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-synthetic-tests",
+  "List Datadog Synthetic tests (API and browser). Use for 'show all synthetic tests', 'what API tests exist', or 'which tests are failing'. Returns test names, types, status, locations, and tags.",
+  {
+    pageSize: z.number().optional().describe("Number of tests per page"),
+    pageNumber: z.number().optional().describe("Page number for pagination"),
+    type: z.string().optional().describe("Filter by test type ('api' or 'browser')"),
+    locations: z.string().optional().describe("Comma-separated location filter"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-synthetic-tests", args }, "Tool call started");
+    const result = await getSyntheticTests.execute(args);
+    const durationMs = Date.now() - startTime;
+    const testCount = result?.tests?.length || 0;
+    logger.debug(
+      { tool: "get-synthetic-tests", testCount, durationMs },
+      "Tool execution completed",
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-synthetic-results",
+  "Get execution results for a specific Synthetic test. Use after get-synthetic-tests to see pass/fail history, response times, and probe locations. Returns individual check results with timing data.",
+  {
+    publicId: z.string().describe("The synthetic test's public ID"),
+    fromTs: z.number().optional().describe("Start timestamp (Unix epoch milliseconds)"),
+    toTs: z.number().optional().describe("End timestamp (Unix epoch milliseconds)"),
+    probeDc: z.array(z.string()).optional().describe("Filter by probe datacenter locations"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-synthetic-results", args }, "Tool call started");
+    const result = await getSyntheticResults.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount = result?.results?.length || 0;
+    logger.debug(
+      { tool: "get-synthetic-results", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "search-rum-events",
+  "Search Real User Monitoring (RUM) events. Use for 'frontend errors in production', 'slow page loads', 'user session analysis'. Query syntax similar to logs: '@type:error @application.id:abc'. Returns user sessions, views, actions, and errors.",
+  {
+    filter: z
+      .object({
+        query: z.string().optional().describe("RUM query (e.g., '@type:error service:frontend')"),
+        from: z.string().optional().describe("Start time (e.g., 'now-1h' or ISO8601)"),
+        to: z.string().optional().describe("End time (e.g., 'now' or ISO8601)"),
+      })
+      .optional(),
+    sort: z.string().optional().describe("Sort order ('timestamp' or '-timestamp')"),
+    page: z
+      .object({
+        limit: z.number().optional().describe("Results per page"),
+        cursor: z.string().optional().describe("Pagination cursor"),
+      })
+      .optional(),
+    limit: z.number().default(100).describe("Maximum events to return"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "search-rum-events", args }, "Tool call started");
+    const result = await searchRumEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "search-rum-events", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "list-rum-applications",
+  "List all RUM applications configured in Datadog. Use to discover which frontend apps are monitored, get application IDs for RUM queries, or see who created them. Companion to search-rum-events.",
+  {},
+  async () => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-rum-applications" }, "Tool call started");
+    const result = await listRumApplications.execute({});
+    const durationMs = Date.now() - startTime;
+    const appCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "list-rum-applications", appCount, durationMs },
+      "Tool execution completed",
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "search-error-tracking-events",
+  "Search Error Tracking events across services. Use for 'what errors are happening in production', 'error groups for payment service', 'new errors this week'. Returns error groups with counts, first/last seen, and affected services.",
+  {
+    filter: z
+      .object({
+        query: z.string().optional().describe("Error tracking query"),
+        from: z.string().optional().describe("Start time"),
+        to: z.string().optional().describe("End time"),
+      })
+      .optional(),
+    sort: z.string().optional().describe("Sort order"),
+    page: z
+      .object({
+        limit: z.number().optional(),
+        cursor: z.string().optional(),
+      })
+      .optional(),
+    limit: z.number().default(100).describe("Maximum events to return"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "search-error-tracking-events", args }, "Tool call started");
+    const result = await searchErrorTrackingEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "search-error-tracking-events", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-containers",
+  "List containers monitored by Datadog. Use for 'show running containers', 'containers for web service', 'container status by image'. Returns container names, images, tags, state, and start time.",
+  {
+    filterTags: z
+      .string()
+      .optional()
+      .describe("Comma-separated tags (e.g., 'env:prod,service:web')"),
+    groupBy: z.string().optional().describe("Group by attribute (e.g., 'short_image')"),
+    sort: z.string().optional().describe("Sort field (e.g., 'name', '-name')"),
+    pageSize: z.number().optional().describe("Results per page"),
+    pageCursor: z.string().optional().describe("Pagination cursor"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-containers", args }, "Tool call started");
+    const result = await getContainers.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "get-containers", resultCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-host-tags",
+  "Get all tags associated with hosts. Use for 'what tags are on my hosts', 'which hosts have team:platform tag', or to understand host groupings. Returns a map of tag names to host lists.",
+  {
+    source: z
+      .string()
+      .optional()
+      .describe("Tag source filter (e.g., 'datadog-agent', 'users', 'chef')"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-host-tags", args }, "Tool call started");
+    const result = await getHostTags.execute(args);
+    const durationMs = Date.now() - startTime;
+    const tagCount = result?.tags ? Object.keys(result.tags).length : 0;
+    logger.debug({ tool: "get-host-tags", tagCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-audit-events",
+  "Search Datadog organization audit events. Use for 'who changed this monitor', 'what config changes happened today', 'audit trail for user X'. Returns timestamped events with actor, action, and affected resource.",
+  {
+    filter: z
+      .object({
+        query: z
+          .string()
+          .optional()
+          .describe("Audit query (e.g., '@action:modified @resource_type:monitor')"),
+        from: z.string().optional().describe("Start time"),
+        to: z.string().optional().describe("End time"),
+      })
+      .optional(),
+    sort: z.string().optional().describe("Sort order"),
+    page: z
+      .object({
+        limit: z.number().optional(),
+        cursor: z.string().optional(),
+      })
+      .optional(),
+    limit: z.number().default(100).describe("Maximum events to return"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-audit-events", args }, "Tool call started");
+    const result = await getAuditEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "get-audit-events", resultCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-slo-history",
+  "Get historical SLO data over a time range. Use after get-slo to see 'SLO performance last 30 days', 'error budget consumption over time', or 'SLI trend for checkout service'. Returns SLI values, thresholds, and time range data.",
+  {
+    sloId: z.string().describe("The SLO ID"),
+    fromTs: z.number().describe("Start time as Unix epoch seconds"),
+    toTs: z.number().describe("End time as Unix epoch seconds"),
+    target: z.number().optional().describe("SLO target percentage for calculations"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-slo-history", args }, "Tool call started");
+    const result = await getSloHistory.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-slo-history", durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-notebooks",
+  "List Datadog notebooks. Use for 'show investigation notebooks', 'find notebooks by team', or 'recent notebooks about outage'. Notebooks are collaborative documents used during incidents and investigations.",
+  {
+    authorHandle: z.string().optional().describe("Filter by author's email handle"),
+    excludeAuthorHandle: z.string().optional().describe("Exclude specific author"),
+    count: z.number().optional().describe("Number of notebooks to return"),
+    start: z.number().optional().describe("Pagination offset"),
+    sortField: z.string().optional().describe("Sort field ('modified' or 'name')"),
+    sortDir: z.string().optional().describe("Sort direction ('asc' or 'desc')"),
+    query: z.string().optional().describe("Search notebooks by text"),
+    includeCells: z.boolean().optional().describe("Include notebook cell content"),
+    isTemplate: z.boolean().optional().describe("Filter by template status"),
+    type: z.string().optional().describe("Filter by notebook type"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-notebooks", args }, "Tool call started");
+    const result = await getNotebooks.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "get-notebooks", resultCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-usage",
+  "Get hourly usage data by product family. Use for 'how many infra hosts this month', 'log ingestion volume', 'APM usage trends'. Returns usage records with timestamps for billing and capacity planning.",
+  {
+    startHr: z.string().describe("Start time ISO8601 (e.g., '2024-01-01T00:00:00+00:00')"),
+    endHr: z.string().optional().describe("End time ISO8601"),
+    productFamilies: z
+      .string()
+      .optional()
+      .describe("Comma-separated families (e.g., 'infra_hosts,logs,apm')"),
+    pageLimit: z.number().optional().describe("Max records to return"),
+    pageNextRecordId: z.string().optional().describe("Pagination cursor"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-usage", args }, "Tool call started");
+    const result = await getUsage.execute(args);
+    const durationMs = Date.now() - startTime;
+    const recordCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "get-usage", recordCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-log-pipelines",
+  "List all log processing pipelines. Use for 'how are logs being processed', 'which pipelines are active', 'what parsing rules exist'. Returns pipeline names, filters, processors, and enabled status. Essential for understanding log processing configuration.",
+  {},
+  async () => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-log-pipelines" }, "Tool call started");
+    const result = await getLogPipelines.execute({});
+    const durationMs = Date.now() - startTime;
+    const pipelineCount = Array.isArray(result) ? result.length : 0;
+    logger.debug(
+      { tool: "get-log-pipelines", pipelineCount, durationMs },
+      "Tool execution completed",
+    );
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-log-indexes",
+  "List all log indexes and their configuration. Use for 'where are logs being stored', 'what retention is configured', 'which logs are being excluded'. Returns index names, filters, retention days, daily limits, and exclusion filters.",
+  {},
+  async () => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-log-indexes" }, "Tool call started");
+    const result = await getLogIndexes.execute({});
+    const durationMs = Date.now() - startTime;
+    const indexCount = result?.indexes?.length || 0;
+    logger.debug({ tool: "get-log-indexes", indexCount, durationMs }, "Tool execution completed");
+    return {
+      content: [{ type: "text", text: JSON.stringify(result) }],
+    };
+  },
+);
+
+server.tool(
+  "get-dbm-samples",
+  "Get Database Monitoring query samples. Use for 'slow database queries', 'what queries are running on postgres', 'DB performance issues'. Returns query samples with execution time, affected rows, and database context.",
+  {
+    start: z.number().optional().describe("Start timestamp (Unix seconds)"),
+    end: z.number().optional().describe("End timestamp (Unix seconds)"),
+    source: z.string().optional().describe("Database type (e.g., 'postgresql', 'mysql')"),
+    dbHost: z.string().optional().describe("Database hostname filter"),
+    dbName: z.string().optional().describe("Database name filter"),
+    limit: z.number().optional().describe("Max results to return"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-dbm-samples", args }, "Tool call started");
+    const result = await getDbmSamples.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "get-dbm-samples", resultCount, durationMs }, "Tool execution completed");
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
