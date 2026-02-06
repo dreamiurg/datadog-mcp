@@ -65,7 +65,7 @@ describe("listDashboardLists", () => {
 
       expect(mockFetch).toHaveBeenCalledTimes(1);
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/dashboard/lists/manual",
+        "https://datadoghq.com/api/v1/dashboard/lists/manual",
         {
           method: "GET",
           headers: {

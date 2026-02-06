@@ -42,7 +42,7 @@ export const listDashboardLists = {
       log.debug("Fetching dashboard lists");
       const response = await datadogRequest<ListDashboardListsResponse>({
         service: "default",
-        path: "/api/v2/dashboard/lists/manual",
+        path: "/api/v1/dashboard/lists/manual",
         method: "GET",
       });
       log.debug({ count: response.dashboard_lists?.length ?? 0 }, "Retrieved dashboard lists");
