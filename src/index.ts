@@ -18,8 +18,11 @@ const VERSION = packageJson.version;
 
 // Import tools
 import { aggregateLogs } from "./tools/aggregateLogs.js";
+import { aggregateRumEvents } from "./tools/aggregateRumEvents.js";
 import { aggregateSpans } from "./tools/aggregateSpans.js";
+import { getActiveHostsCount } from "./tools/getActiveHostsCount.js";
 import { getAuditEvents } from "./tools/getAuditEvents.js";
+import { getCIPipelineEvents } from "./tools/getCIPipelineEvents.js";
 import { getContainers } from "./tools/getContainers.js";
 import { getDashboard } from "./tools/getDashboard.js";
 import { getDashboards } from "./tools/getDashboards.js";
@@ -37,6 +40,7 @@ import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitors } from "./tools/getMonitors.js";
 import { getNotebooks } from "./tools/getNotebooks.js";
 import { getSecurityFinding } from "./tools/getSecurityFinding.js";
+import { getServiceDefinition } from "./tools/getServiceDefinition.js";
 import { getServices } from "./tools/getServices.js";
 import { getSLO } from "./tools/getSLO.js";
 import { getSLOs } from "./tools/getSLOs.js";
@@ -45,14 +49,22 @@ import { getSyntheticResults } from "./tools/getSyntheticResults.js";
 import { getSyntheticTests } from "./tools/getSyntheticTests.js";
 import { getTrace } from "./tools/getTrace.js";
 import { getUsage } from "./tools/getUsage.js";
+import { listCIPipelines } from "./tools/listCIPipelines.js";
+import { listDashboardLists } from "./tools/listDashboardLists.js";
 import { listPostureFindings } from "./tools/listPostureFindings.js";
+import { listProcesses } from "./tools/listProcesses.js";
 import { listRumApplications } from "./tools/listRumApplications.js";
+import { listServiceDefinitions } from "./tools/listServiceDefinitions.js";
+import { listTeams } from "./tools/listTeams.js";
+import { listUsers } from "./tools/listUsers.js";
 // New observability tools
 import { queryMetrics } from "./tools/queryMetrics.js";
 import { searchErrorTrackingEvents } from "./tools/searchErrorTrackingEvents.js";
 import { searchLogs } from "./tools/searchLogs.js";
+import { searchMetricVolumes } from "./tools/searchMetricVolumes.js";
 import { searchRumEvents } from "./tools/searchRumEvents.js";
 import { searchSecurityFindings } from "./tools/searchSecurityFindings.js";
+import { searchSecuritySignals } from "./tools/searchSecuritySignals.js";
 import { searchSpans } from "./tools/searchSpans.js";
 
 // Helper function to mask sensitive credentials for logging
@@ -198,6 +210,30 @@ getLogIndexes.initialize();
 logger.info({ tool: "get-log-indexes" }, "Tool initialized");
 getDbmSamples.initialize();
 logger.info({ tool: "get-dbm-samples" }, "Tool initialized");
+aggregateRumEvents.initialize();
+logger.info({ tool: "aggregate-rum-events" }, "Tool initialized");
+getActiveHostsCount.initialize();
+logger.info({ tool: "get-active-hosts-count" }, "Tool initialized");
+listProcesses.initialize();
+logger.info({ tool: "list-processes" }, "Tool initialized");
+listServiceDefinitions.initialize();
+logger.info({ tool: "list-service-definitions" }, "Tool initialized");
+getServiceDefinition.initialize();
+logger.info({ tool: "get-service-definition" }, "Tool initialized");
+listCIPipelines.initialize();
+logger.info({ tool: "list-ci-pipelines" }, "Tool initialized");
+getCIPipelineEvents.initialize();
+logger.info({ tool: "get-ci-pipeline-events" }, "Tool initialized");
+listTeams.initialize();
+logger.info({ tool: "list-teams" }, "Tool initialized");
+listUsers.initialize();
+logger.info({ tool: "list-users" }, "Tool initialized");
+searchSecuritySignals.initialize();
+logger.info({ tool: "search-security-signals" }, "Tool initialized");
+listDashboardLists.initialize();
+logger.info({ tool: "list-dashboard-lists" }, "Tool initialized");
+searchMetricVolumes.initialize();
+logger.info({ tool: "search-metric-volumes" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -1176,6 +1212,320 @@ server.tool(
     return {
       content: [{ type: "text", text: JSON.stringify(result) }],
     };
+  },
+);
+
+server.tool(
+  "aggregate-rum-events",
+  "Aggregate RUM events with compute operations (count, avg, sum, min, max, percentile) and group-by facets. Use for 'RUM page load times by country', 'error count by browser', 'average session duration by app version'.",
+  {
+    compute: z
+      .array(
+        z.object({
+          aggregation: z
+            .string()
+            .describe("Aggregation type: count, avg, sum, min, max, percentile"),
+          metric: z.string().optional().describe("Metric to aggregate on"),
+          type: z.string().optional().describe("Type of compute: timeseries or total"),
+        }),
+      )
+      .describe("Compute operations to perform"),
+    filter: z
+      .object({
+        query: z.string().optional().describe("RUM query filter"),
+        from: z.string().optional().describe("Start time (ISO 8601)"),
+        to: z.string().optional().describe("End time (ISO 8601)"),
+      })
+      .optional()
+      .describe("Filter criteria"),
+    group_by: z
+      .array(
+        z.object({
+          facet: z.string().describe("Facet to group by"),
+          limit: z.number().optional().describe("Max groups"),
+          sort: z
+            .object({
+              aggregation: z.string().describe("Sort aggregation"),
+              order: z.string().optional().describe("Sort order: asc or desc"),
+            })
+            .optional(),
+        }),
+      )
+      .optional()
+      .describe("Group-by facets"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "aggregate-rum-events" }, "Tool call started");
+    const result = await aggregateRumEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "aggregate-rum-events", durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "get-active-hosts-count",
+  "Get total number of active and up hosts. Use for 'how many hosts are running', 'infrastructure host count', 'active host summary'.",
+  {
+    from: z.number().optional().describe("Seconds since Unix epoch to scope the count"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-active-hosts-count" }, "Tool call started");
+    const result = await getActiveHostsCount.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-active-hosts-count", durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-processes",
+  "List running processes with optional filtering by search term or tags. Use for 'what processes are running', 'find java processes', 'process list for host'.",
+  {
+    search: z.string().optional().describe("Search term to filter processes"),
+    tags: z.string().optional().describe("Comma-separated tags to filter"),
+    from: z.number().optional().describe("Start timestamp (Unix seconds)"),
+    to: z.number().optional().describe("End timestamp (Unix seconds)"),
+    pageLimit: z.number().optional().describe("Max results per page"),
+    pageCursor: z.string().optional().describe("Pagination cursor"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-processes" }, "Tool call started");
+    const result = await listProcesses.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "list-processes", resultCount, durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-service-definitions",
+  "List service definitions from the Datadog Service Catalog. Use for 'what services exist', 'service catalog', 'list all registered services'.",
+  {
+    pageSize: z.number().optional().describe("Number of results per page"),
+    pageNumber: z.number().optional().describe("Page number"),
+    schemaVersion: z.string().optional().describe("Schema version: v1, v2, v2.1, or v2.2"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-service-definitions" }, "Tool call started");
+    const result = await listServiceDefinitions.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "list-service-definitions", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "get-service-definition",
+  "Get a single service definition by name from the Service Catalog. Use for 'show service X details', 'what team owns service Y', 'service definition for Z'.",
+  {
+    serviceName: z.string().describe("The service name to look up"),
+    schemaVersion: z.string().optional().describe("Schema version: v1, v2, v2.1, or v2.2"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-service-definition", service: args.serviceName }, "Tool call started");
+    const result = await getServiceDefinition.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-service-definition", durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-ci-pipelines",
+  "List CI pipeline events (pipeline runs/executions). Use for 'recent CI builds', 'failed pipelines', 'CI pipeline status', 'deployment history'.",
+  {
+    filterQuery: z.string().optional().describe("Query to filter pipeline events"),
+    filterFrom: z.string().optional().describe("Start time (ISO 8601)"),
+    filterTo: z.string().optional().describe("End time (ISO 8601)"),
+    pageLimit: z.number().optional().describe("Max results per page"),
+    pageCursor: z.string().optional().describe("Pagination cursor"),
+    sort: z.string().optional().describe("Sort field"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-ci-pipelines" }, "Tool call started");
+    const result = await listCIPipelines.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "list-ci-pipelines", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "get-ci-pipeline-events",
+  "Aggregate CI pipeline analytics with compute operations. Use for 'average pipeline duration', 'failure rate by pipeline', 'CI performance trends'.",
+  {
+    compute: z
+      .array(
+        z.object({
+          aggregation: z.string().describe("Aggregation type: count, avg, sum, min, max"),
+          metric: z.string().optional().describe("Metric to aggregate"),
+          type: z.string().optional().describe("Compute type"),
+        }),
+      )
+      .describe("Compute operations"),
+    filter: z
+      .object({
+        query: z.string().optional().describe("Pipeline query filter"),
+        from: z.string().optional().describe("Start time (ISO 8601)"),
+        to: z.string().optional().describe("End time (ISO 8601)"),
+      })
+      .optional(),
+    group_by: z
+      .array(
+        z.object({
+          facet: z.string().describe("Facet to group by"),
+          limit: z.number().optional().describe("Max groups"),
+        }),
+      )
+      .optional(),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "get-ci-pipeline-events" }, "Tool call started");
+    const result = await getCIPipelineEvents.execute(args);
+    const durationMs = Date.now() - startTime;
+    logger.debug({ tool: "get-ci-pipeline-events", durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-teams",
+  "List teams in the Datadog organization. Use for 'what teams exist', 'team structure', 'find team by name'.",
+  {
+    pageNumber: z.number().optional().describe("Page number"),
+    pageSize: z.number().optional().describe("Results per page"),
+    sort: z.string().optional().describe("Sort field: name, -name, user_count, -user_count"),
+    filterKeyword: z.string().optional().describe("Filter teams by keyword"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-teams" }, "Tool call started");
+    const result = await listTeams.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "list-teams", resultCount, durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-users",
+  "List users in the Datadog organization. Use for 'who has access', 'list all users', 'find user by email'.",
+  {
+    pageSize: z.number().optional().describe("Results per page"),
+    pageNumber: z.number().optional().describe("Page number"),
+    sort: z.string().optional().describe("Sort field"),
+    sortDir: z.string().optional().describe("Sort direction: asc or desc"),
+    filter: z.string().optional().describe("Filter by name or email"),
+    filterStatus: z.string().optional().describe("Filter by status: Active, Pending, Disabled"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-users" }, "Tool call started");
+    const result = await listUsers.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug({ tool: "list-users", resultCount, durationMs }, "Tool execution completed");
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "search-security-signals",
+  "Search security monitoring signals (threat detections, security alerts). Use for 'recent security alerts', 'threat detections', 'security signal search'.",
+  {
+    filter: z
+      .object({
+        query: z.string().optional().describe("Security signal query"),
+        from: z.string().optional().describe("Start time (ISO 8601)"),
+        to: z.string().optional().describe("End time (ISO 8601)"),
+      })
+      .optional(),
+    sort: z.string().optional().describe("Sort order"),
+    page: z
+      .object({
+        limit: z.number().optional().describe("Max results"),
+        cursor: z.string().optional().describe("Pagination cursor"),
+      })
+      .optional(),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "search-security-signals" }, "Tool call started");
+    const result = await searchSecuritySignals.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "search-security-signals", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-dashboard-lists",
+  "List all custom dashboard lists. Use for 'what dashboard lists exist', 'organized dashboards', 'dashboard collections'.",
+  {},
+  async () => {
+    const startTime = Date.now();
+    logger.info({ tool: "list-dashboard-lists" }, "Tool call started");
+    const result = await listDashboardLists.execute({});
+    const durationMs = Date.now() - startTime;
+    const listCount = result?.dashboard_lists?.length || 0;
+    logger.debug(
+      { tool: "list-dashboard-lists", listCount, durationMs },
+      "Tool execution completed",
+    );
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "search-metric-volumes",
+  "Search metrics by name pattern with volume and ingestion data. Use for 'find metrics matching pattern', 'metric ingestion volume', 'what metrics are configured'.",
+  {
+    filterMetric: z.string().optional().describe("Metric name filter with wildcard support"),
+    filterConfigured: z.boolean().optional().describe("Only show configured metrics"),
+    filterTagsConfigured: z.string().optional().describe("Filter by tag configuration"),
+    filterActiveWithin: z.number().optional().describe("Only metrics active within N hours"),
+    windowSeconds: z.number().optional().describe("Time window for volume data"),
+  },
+  async (args) => {
+    const startTime = Date.now();
+    logger.info({ tool: "search-metric-volumes" }, "Tool call started");
+    const result = await searchMetricVolumes.execute(args);
+    const durationMs = Date.now() - startTime;
+    const resultCount =
+      result && "data" in result && Array.isArray(result.data) ? result.data.length : 0;
+    logger.debug(
+      { tool: "search-metric-volumes", resultCount, durationMs },
+      "Tool execution completed",
+    );
+    return { content: [{ type: "text", text: JSON.stringify(result) }] };
   },
 );
 
