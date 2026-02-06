@@ -34,31 +34,43 @@ import { getHostTags } from "./tools/getHostTags.js";
 import { getIncidents } from "./tools/getIncidents.js";
 import { getLogIndexes } from "./tools/getLogIndexes.js";
 import { getLogPipelines } from "./tools/getLogPipelines.js";
+import { getLogsArchives } from "./tools/getLogsArchives.js";
+import { getLogsIndexes } from "./tools/getLogsIndexes.js";
+import { getLogsMetrics } from "./tools/getLogsMetrics.js";
+import { getLogsPipelines } from "./tools/getLogsPipelines.js";
 import { getMetricMetadata } from "./tools/getMetricMetadata.js";
 import { getMetrics } from "./tools/getMetrics.js";
 import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitors } from "./tools/getMonitors.js";
 import { getNotebooks } from "./tools/getNotebooks.js";
+import { getPowerpacks } from "./tools/getPowerpacks.js";
 import { getSecurityFinding } from "./tools/getSecurityFinding.js";
 import { getServiceDefinition } from "./tools/getServiceDefinition.js";
+import { getServiceDependencies } from "./tools/getServiceDependencies.js";
 import { getServices } from "./tools/getServices.js";
 import { getSLO } from "./tools/getSLO.js";
 import { getSLOs } from "./tools/getSLOs.js";
 import { getSloHistory } from "./tools/getSloHistory.js";
+import { getSpansMetrics } from "./tools/getSpansMetrics.js";
 import { getSyntheticResults } from "./tools/getSyntheticResults.js";
 import { getSyntheticTests } from "./tools/getSyntheticTests.js";
 import { getTrace } from "./tools/getTrace.js";
 import { getUsage } from "./tools/getUsage.js";
 import { listCIPipelines } from "./tools/listCIPipelines.js";
 import { listDashboardLists } from "./tools/listDashboardLists.js";
+import { listPermissions } from "./tools/listPermissions.js";
 import { listPostureFindings } from "./tools/listPostureFindings.js";
 import { listProcesses } from "./tools/listProcesses.js";
+import { listRoles } from "./tools/listRoles.js";
 import { listRumApplications } from "./tools/listRumApplications.js";
+import { listScorecardOutcomes } from "./tools/listScorecardOutcomes.js";
+import { listScorecardRules } from "./tools/listScorecardRules.js";
 import { listServiceDefinitions } from "./tools/listServiceDefinitions.js";
 import { listTeams } from "./tools/listTeams.js";
 import { listUsers } from "./tools/listUsers.js";
 // New observability tools
 import { queryMetrics } from "./tools/queryMetrics.js";
+import { searchCases } from "./tools/searchCases.js";
 import { searchErrorTrackingEvents } from "./tools/searchErrorTrackingEvents.js";
 import { searchLogs } from "./tools/searchLogs.js";
 import { searchMetricVolumes } from "./tools/searchMetricVolumes.js";
@@ -234,6 +246,30 @@ listDashboardLists.initialize();
 logger.info({ tool: "list-dashboard-lists" }, "Tool initialized");
 searchMetricVolumes.initialize();
 logger.info({ tool: "search-metric-volumes" }, "Tool initialized");
+listRoles.initialize();
+logger.info({ tool: "list-roles" }, "Tool initialized");
+listPermissions.initialize();
+logger.info({ tool: "list-permissions" }, "Tool initialized");
+getLogsMetrics.initialize();
+logger.info({ tool: "get-logs-metrics" }, "Tool initialized");
+getSpansMetrics.initialize();
+logger.info({ tool: "get-spans-metrics" }, "Tool initialized");
+getLogsArchives.initialize();
+logger.info({ tool: "get-logs-archives" }, "Tool initialized");
+getServiceDependencies.initialize();
+logger.info({ tool: "get-service-dependencies" }, "Tool initialized");
+listScorecardRules.initialize();
+logger.info({ tool: "list-scorecard-rules" }, "Tool initialized");
+listScorecardOutcomes.initialize();
+logger.info({ tool: "list-scorecard-outcomes" }, "Tool initialized");
+searchCases.initialize();
+logger.info({ tool: "search-cases" }, "Tool initialized");
+getPowerpacks.initialize();
+logger.info({ tool: "get-powerpacks" }, "Tool initialized");
+getLogsIndexes.initialize();
+logger.info({ tool: "get-logs-indexes" }, "Tool initialized");
+getLogsPipelines.initialize();
+logger.info({ tool: "get-logs-pipelines" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -1526,6 +1562,141 @@ server.tool(
       "Tool execution completed",
     );
     return { content: [{ type: "text", text: JSON.stringify(result) }] };
+  },
+);
+
+server.tool(
+  "list-roles",
+  "List RBAC roles in your Datadog organization",
+  {
+    page_size: z.number().optional().describe("Number of roles per page"),
+    page_number: z.number().optional().describe("Page number"),
+    filter: z.string().optional().describe("Filter roles by name"),
+  },
+  async (args) => {
+    const result = await listRoles.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool("list-permissions", "List all available permissions in Datadog", {}, async (args) => {
+  const result = await listPermissions.execute(args);
+  return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+});
+
+server.tool("get-logs-metrics", "Get all log-based metric configurations", {}, async (args) => {
+  const result = await getLogsMetrics.execute(args);
+  return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+});
+
+server.tool(
+  "get-spans-metrics",
+  "Get all span-based metric configurations from APM",
+  {},
+  async (args) => {
+    const result = await getSpansMetrics.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get-logs-archives",
+  "Get log archive configurations showing where logs are stored",
+  {},
+  async (args) => {
+    const result = await getLogsArchives.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get-service-dependencies",
+  "Get service dependency graph for APM services in a given environment",
+  {
+    env: z.string().describe("Environment name (e.g. production, staging)"),
+  },
+  async (args) => {
+    const result = await getServiceDependencies.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list-scorecard-rules",
+  "List service scorecard rules for evaluating service quality",
+  {
+    page_size: z.number().optional().describe("Number of results per page"),
+    page_offset: z.number().optional().describe("Page offset"),
+    filter_rule_id: z.string().optional().describe("Filter by rule ID"),
+    filter_rule_name: z.string().optional().describe("Filter by rule name"),
+  },
+  async (args) => {
+    const result = await listScorecardRules.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list-scorecard-outcomes",
+  "List scorecard rule evaluation outcomes for services",
+  {
+    page_size: z.number().optional().describe("Number of results per page"),
+    page_offset: z.number().optional().describe("Page offset"),
+    filter_rule_id: z.string().optional().describe("Filter by rule ID"),
+    filter_service_name: z.string().optional().describe("Filter by service name"),
+  },
+  async (args) => {
+    const result = await listScorecardOutcomes.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "search-cases",
+  "Search Datadog cases for incident investigation",
+  {
+    page_size: z.number().optional().describe("Number of results per page"),
+    page_offset: z.number().optional().describe("Page offset"),
+    sort_field: z.string().optional().describe("Field to sort by"),
+    filter: z.string().optional().describe("Filter expression"),
+    sort_asc: z.boolean().optional().describe("Sort ascending"),
+  },
+  async (args) => {
+    const result = await searchCases.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get-powerpacks",
+  "Get reusable dashboard widget templates (Powerpacks)",
+  {
+    page_limit: z.number().optional().describe("Maximum number of results"),
+    page_offset: z.number().optional().describe("Page offset"),
+  },
+  async (args) => {
+    const result = await getPowerpacks.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get-logs-indexes",
+  "Get log index configurations including retention and exclusion filters",
+  {},
+  async (args) => {
+    const result = await getLogsIndexes.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get-logs-pipelines",
+  "Get log processing pipeline configurations",
+  {},
+  async (args) => {
+    const result = await getLogsPipelines.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   },
 );
 
