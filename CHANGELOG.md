@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.7.0...v1.8.0) (2026-02-07)
+
+
+### Features
+
+* add 12 Wave 6 observability tools (84→96 total) ([#24](https://github.com/dreamiurg/datadog-mcp-server/issues/24)) ([0f98e5c](https://github.com/dreamiurg/datadog-mcp-server/commit/0f98e5cc66669e7a08d8bbe21b92d1943c7c3900))
+
+
+### Documentation
+
+* update README to reflect 96 tools ([#26](https://github.com/dreamiurg/datadog-mcp-server/issues/26)) ([0bdc437](https://github.com/dreamiurg/datadog-mcp-server/commit/0bdc437bc38ccf25377c8cea150a5964b25b3fca))
+
 ## [1.7.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.6.0...v1.7.0) (2026-02-07)
 
 
