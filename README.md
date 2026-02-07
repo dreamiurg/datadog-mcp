@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp-server)
 
-> **The Datadog MCP server your AI deserves.** 106 read-only tools. Every observability pillar. Zero writes. Zero regrets.
+> **The Datadog MCP server your AI deserves.** 116 read-only tools. Every observability pillar. Zero writes. Zero regrets.
 
 ---
 
@@ -12,45 +12,44 @@
 
 Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you some time.
 
-| Feature | **Us (106 tools)** | Next Best (29 tools) | The Others (3-13 tools) |
-|---------|:-----------------:|:-------------------:|:----------------------:|
-| Logs (search + aggregate + pipelines + indexes) | **7 tools** | 1 tool | 0-1 tool |
-| APM (traces, spans, services, dependencies) | **7 tools** | 1 tool | 0 tools |
-| RUM (events, apps, aggregation) | **3 tools** | 3 tools | 0 tools |
-| Monitors (list, get, search) | **4 tools** | 1 tool | 0-1 tool |
-| Dashboards (get, list, collections) | **3 tools** | 1 tool | 0-1 tool |
-| SLOs (list, get, history) | **5 tools** | 0 tools | 0-1 tool |
-| Synthetics (tests, results, locations) | **5 tools** | 0 tools | 0-1 tool |
-| Security (findings, posture, signals, rules, scanning) | **10 tools** | 0 tools | 0-1 tool |
-| Infrastructure (hosts, tags, containers, processes) | **8 tools** | 2 tools | 0-1 tool |
-| Service Catalog | **2 tools** | 0 tools | 0-1 tool |
-| CI Visibility | **2 tools** | 0 tools | 0-1 tool |
-| Organization | **3 tools** | 0 tools | 0-1 tool |
-| Metrics (query, metadata, volumes, list) | **4 tools** | 1 tool | 0-1 tool |
-| Error Tracking | **2 tools** | 0 tools | 0 tools |
-| Database Monitoring | **1 tool** | 0 tools | 0 tools |
-| Audit Trail | **2 tools** | 0 tools | 0 tools |
-| Usage & Billing | **4 tools** | 0 tools | 0 tools |
-| Notebooks | **3 tools** | 0 tools | 0 tools |
-| Events & Incidents | **6 tools** | 2 tools | 0-1 tool |
-| Downtimes | **2 tools** | 1 tool | 0-1 tool |
-| Network Monitoring | **2 tools** | 0 tools | 0 tools |
-| Cloud Cost Management | **1 tool** | 0 tools | 0 tools |
-| DORA Metrics | **1 tool** | 0 tools | 0 tools |
-| Workflows & Automation | **1 tool** | 0 tools | 0 tools |
-| Fleet Management | **1 tool** | 0 tools | 0 tools |
-| Cloud Integrations (AWS/GCP/Azure/Cloudflare/Confluent) | **5 tools** | 0 tools | 0 tools |
-| Webhooks | **1 tool** | 0 tools | 0 tools |
-| Access Control | **1 tool** | 0 tools | 0 tools |
-| API Key Management | **1 tool** | 0 tools | 0 tools |
-| Monitor Notifications | **1 tool** | 0 tools | 0 tools |
-| IP Ranges & Config | **1 tool** | 0 tools | 0 tools |
-| **Total** | **106** | **20** | **3-13** |
-| Accidentally deletes your monitors | No | No | No |
-| Can mute your hosts at 3 AM | **No** | Yes | No |
-| Test coverage | 90%+ | Unknown | Hopeful |
+| Feature | **Us (116 tools)** | Another Server | Yet Another | A Third One |
+|---------|:-----------------:|:-------------------:|:----------------------:|:----------------------:|
+| Logs (search + aggregate + pipelines + indexes) | **7 tools** | 1 tool | 0-1 tool | 0-1 tool |
+| APM (traces, spans, services, dependencies) | **7 tools** | 1 tool | 0 tools | 0 tools |
+| RUM (events, apps, aggregation) | **3 tools** | 3 tools | 0 tools | 0 tools |
+| Monitors (list, get, search) | **4 tools** | 1 tool | 0-1 tool | 0-1 tool |
+| Dashboards (get, list, collections) | **3 tools** | 1 tool | 0-1 tool | 0-1 tool |
+| SLOs (list, get, history, search, corrections) | **5 tools** | 0 tools | 0-1 tool | 0-1 tool |
+| Synthetics (tests, results, locations) | **5 tools** | 0 tools | 0-1 tool | 0 tools |
+| Security (findings, posture, signals, rules, scanning) | **10 tools** | 0 tools | 0-1 tool | 0 tools |
+| Infrastructure (hosts, tags, containers, processes) | **8 tools** | 2 tools | 0-1 tool | 0-1 tool |
+| Service Catalog | **3 tools** | 0 tools | 0-1 tool | 0 tools |
+| CI Visibility (pipelines + tests) | **4 tools** | 0 tools | 0-1 tool | 0 tools |
+| Organization (teams, users, auth) | **5 tools** | 0 tools | 0-1 tool | 0 tools |
+| Metrics (query, metadata, volumes, tags) | **6 tools** | 1 tool | 0-1 tool | 0 tools |
+| Error Tracking | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Database Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Audit Trail | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Usage & Billing | **4 tools** | 0 tools | 0 tools | 0 tools |
+| Notebooks | **3 tools** | 0 tools | 0 tools | 0 tools |
+| Events & Incidents | **7 tools** | 2 tools | 0-1 tool | 0 tools |
+| Downtimes | **2 tools** | 1 tool | 0-1 tool | 0 tools |
+| Network Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Cloud Cost Management | **1 tool** | 0 tools | 0 tools | 0 tools |
+| DORA Metrics | **1 tool** | 0 tools | 0 tools | 0 tools |
+| Workflows & Automation | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Fleet Management | **1 tool** | 0 tools | 0 tools | 0 tools |
+| Cloud Integrations (AWS/GCP/Azure/Cloudflare/Confluent) | **5 tools** | 0 tools | 0 tools | 0 tools |
+| Webhooks | **1 tool** | 0 tools | 0 tools | 0 tools |
+| Access Control (keys, mappings, policies) | **4 tools** | 0 tools | 0 tools | 0 tools |
+| Monitor Notifications | **1 tool** | 0 tools | 0 tools | 0 tools |
+| IP Ranges & Config | **1 tool** | 0 tools | 0 tools | 0 tools |
+| **Total** | **116** | ~20 | ~13 | ~29 |
+| Accidentally deletes your monitors | No | No | No | No |
+| Can mute your hosts at 3 AM | **No** | No | No | Yes |
+| Test coverage | 90%+ | Unknown | Unknown | Unknown |
 
-We're not saying the other MCP servers are bad. They're lovely. Some of them have features we don't, like the ability to *mute your production hosts* and *schedule downtimes* from an AI chat window. We chose not to include those. On purpose. You're welcome.
+We're not saying the other MCP servers are bad. They're all built by talented engineers who are contributing to open source. Some of them have features we don't, like the ability to *write* to your Datadog account from an AI chat window. We chose not to include those. On purpose. You're welcome.
 
 ### The Philosophy
 
@@ -180,7 +179,7 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 
 ---
 
-## The Full Arsenal (106 Tools)
+## The Full Arsenal (116 Tools)
 
 ### Logs & Log Management
 
@@ -214,6 +213,8 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-metrics` | List available metrics | *"What metrics are available?"* |
 | `get-metric-metadata` | Get metric metadata and descriptions | *"Describe the system.cpu.user metric"* |
 | `search-metric-volumes` | Search metrics by name with volume data | *"Which metrics matching 'aws.*' have the highest volume?"* |
+| `get-metric-tag-config` | Get tag configuration for a specific metric | *"What tags are indexed for system.cpu.user?"* |
+| `list-metric-tag-configs` | List metric tag configurations | *"Which metrics have custom tag configurations?"* |
 
 ### Monitors & Alerting
 
@@ -287,6 +288,8 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 |------|-------------|------------|
 | `list-ci-pipelines` | List CI pipeline events | *"Show recent CI pipeline runs"* |
 | `get-ci-pipeline-events` | Aggregate CI pipeline analytics | *"Average pipeline duration by repo"* |
+| `list-ci-tests` | List CI test events | *"Show failed tests in the last hour"* |
+| `search-ci-test-events` | Search CI test events with filters | *"Find flaky tests in the checkout service"* |
 
 ### Security
 
@@ -309,7 +312,9 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 |------|-------------|------------|
 | `get-organization` | Get Datadog organization info | *"Show organization details and settings"* |
 | `list-teams` | List Datadog teams | *"What teams exist in our org?"* |
+| `list-team-members` | List members of a Datadog team | *"Who is on the platform team?"* |
 | `list-users` | List Datadog users | *"Who has access to Datadog?"* |
+| `list-authn-mappings` | List SAML/OIDC authentication mappings | *"How do IdP groups map to Datadog roles?"* |
 
 ### Everything Else
 
@@ -319,6 +324,7 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-downtimes` | List scheduled maintenance | *"Any active downtimes?"* |
 | `list-downtime-schedules` | List scheduled downtimes (v2) | *"What downtimes are scheduled?"* |
 | `get-dbm-samples` | Get Database Monitoring query samples | *"Show slow postgres queries"* |
+| `get-dbm-query-metrics` | Get Database Monitoring query metrics | *"Which queries have the highest latency?"* |
 | `get-ip-ranges` | Get Datadog IP ranges for firewall config | *"What IPs should I allowlist for Datadog?"* |
 
 ### Audit & Usage
@@ -367,6 +373,7 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 |------|-------------|------------|
 | `search-incidents` | Search incidents with advanced filters | *"Find P1 incidents related to database"* |
 | `get-incident-todos` | Get action items for an incident | *"What's pending for this P0?"* |
+| `get-incident-timeline` | Get timeline events for an incident | *"Show the timeline for incident xyz"* |
 | `get-incident-services` | List incident services | *"What services are configured for incident management?"* |
 
 ### Cloud & Integrations
@@ -387,6 +394,7 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 |------|-------------|------------|
 | `list-dora-deployments` | List DORA deployment events | *"Show deployment frequency for web service"* |
 | `list-workflows` | List workflow automations | *"What incident response workflows exist?"* |
+| `list-workflow-executions` | List execution instances for a workflow | *"Show run history for the incident workflow"* |
 | `list-fleet-agents` | List Datadog agents across fleet | *"Which agents are outdated?"* |
 | `list-monitor-notification-rules` | List monitor notification routing | *"Who gets alerted for this monitor?"* |
 | `list-cost-budgets` | List cloud cost budgets | *"Are any teams over budget?"* |
@@ -396,6 +404,8 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `list-restriction-policies` | Get restriction policy for a resource | *"What access restrictions are configured?"* |
+| `list-app-keys` | List application keys for the current user | *"What application keys do I have?"* |
+| `list-authn-mappings` | List authentication mappings | *"How do SAML groups map to Datadog roles?"* |
 
 ---
 
@@ -403,25 +413,25 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 
 There are approximately seven thousand Datadog MCP servers on GitHub. Here's how they stack up:
 
-| Capability | **Us** | winor30 | GeLi2001 | shelfio | ppandrangi |
+| Capability | **Us** | Another Server | Another Server | Another Server | Another Server |
 |-----------|:------:|:-------:|:--------:|:-------:|:---------:|
-| Total tools | **106** | 20 | 10 | 13 | 29 |
+| Total tools | **116** | ~20 | ~10 | ~13 | ~29 |
 | Read-only by design | Yes | No | Yes | Yes | No |
 | Can mute your hosts | No | **Yes** | No | No | No |
 | Can delete your dashboards | No | No | No | No | **Yes** |
 | Can schedule downtimes | No | **Yes** | No | No | **Yes** |
-| Test suite | 480 tests | - | - | - | - |
+| Test suite | 570 tests | - | - | - | - |
 | Last meaningful update | Today | Recent | Dec 2025 | Jan 2026 | Dec 2025 |
 
-> **A note on write operations:** Some competitors let your AI create monitors, delete dashboards, and schedule downtimes. That's a feature. It's also the plot of every "AI gone wrong" movie. We chose the boring path: read everything, touch nothing.
+> **A note on write operations:** Some servers let your AI create monitors, delete dashboards, and schedule downtimes. That's a feature. It's also the plot of every "AI gone wrong" movie. We chose the boring path: read everything, touch nothing.
 
 ### What They Have That We Don't
 
 In the interest of full transparency:
 
-- **winor30** can mute/unmute hosts and schedule downtimes (write operations we intentionally excluded)
-- **ppandrangi** can CRUD monitors and dashboards (see above re: AI movies)
-- **shelfio** has some unique metric field exploration tools
+- Some servers can mute/unmute hosts and schedule downtimes (write operations we intentionally excluded)
+- Some servers can CRUD monitors and dashboards (see above re: AI movies)
+- Some servers have unique metric field exploration tools
 
 We sleep well at night.
 
@@ -475,10 +485,10 @@ For least-privilege security, create an Application Key with only required scope
 |-------|----------------|
 | Monitors (`get-monitors`, `get-monitor`, `search-monitors`) | `monitors_read` |
 | Dashboards (`get-dashboards`, `get-dashboard`, `list-dashboard-lists`) | `dashboards_read` |
-| Metrics (`get-metrics`, `get-metric-metadata`, `query-metrics`, `search-metric-volumes`) | `metrics_read` |
+| Metrics (`get-metrics`, `get-metric-metadata`, `query-metrics`, `search-metric-volumes`, `get-metric-tag-config`, `list-metric-tag-configs`) | `metrics_read` |
 | Events (`get-events`) | `events_read` |
 | Logs (`search-logs`, `aggregate-logs`, `get-log-pipelines`, `get-log-indexes`) | `logs_read_data` |
-| Incidents (`search-incidents`, `get-incident-todos`) | `incident_read` |
+
 | Hosts (`get-hosts`, `get-host-tags`, `get-active-hosts-count`) | `hosts_read` |
 | Containers (`list-containers`) | `containers_read` |
 | Downtimes (`get-downtimes`) | `monitors_downtime` |
@@ -492,19 +502,23 @@ For least-privilege security, create an Application Key with only required scope
 | Security Rules (`list-security-rules`) | `security_monitoring_rules_read` |
 | CSM (`get-csm-coverage`, `list-csm-threats-agent-rules`) | `csm_agents_read` |
 | Vulnerabilities (`list-vulnerabilities`) | `security_monitoring_findings_read` |
-| Teams (`list-teams`) | `teams_read` |
+| Teams (`list-teams`, `list-team-members`) | `teams_read` |
 | Users (`list-users`) | `user_access_read` |
 | Notebooks (`list-notebooks`, `get-notebook`) | `notebooks_read` |
-| CI Visibility (`list-ci-pipelines`, `get-ci-pipeline-events`) | `ci_visibility_pipelines_read` |
+| CI Pipelines (`list-ci-pipelines`, `get-ci-pipeline-events`) | `ci_visibility_pipelines_read` |
+| CI Tests (`list-ci-tests`, `search-ci-test-events`) | `ci_visibility_read` |
 | Error Tracking (`search-error-tracking-issues`) | `error_tracking_read` |
 | Audit (`search-audit-logs`) | `audit_trail_read` |
-| DBM (`get-dbm-samples`) | `dbm_read` |
+| DBM (`get-dbm-samples`, `get-dbm-query-metrics`) | `dbm_read` |
 | Usage (`get-hourly-usage`, `get-top-avg-metrics`) | `usage_read` |
 | Network (`list-network-devices`, `aggregate-network-connections`) | `ndm_read` |
 | AWS Integration (`list-aws-accounts`) | `aws_configuration_read` |
 | API Keys (`list-api-keys`) | `api_keys_read` |
+| Application Keys (`list-app-keys`) | `api_keys_read` |
+| Auth Mappings (`list-authn-mappings`) | `auth_n_mappings_read` |
+| Incidents (`search-incidents`, `get-incident-todos`, `get-incident-timeline`) | `incident_read` |
 | DORA (`list-dora-deployments`) | `dora_deployment_read` |
-| Workflows (`list-workflows`) | `workflows_read` |
+| Workflows (`list-workflows`, `list-workflow-executions`) | `workflows_read` |
 | Fleet (`list-fleet-agents`) | `fleet_read` |
 | Cost (`list-cost-budgets`) | `cost_management_read` |
 | Monitor Notifications (`list-monitor-notification-rules`) | `monitors_read` |
@@ -561,7 +575,7 @@ npm test
 | Script | Description |
 |--------|-------------|
 | `npm run build` | Compile TypeScript |
-| `npm test` | Run tests (480 tests in 96 files) |
+| `npm test` | Run tests (570 tests in 120 files) |
 | `npm run test:coverage` | Run tests with coverage (90%+ enforced) |
 | `npm run lint` | Run Biome linter |
 | `npm run typecheck` | Type check |
@@ -587,3 +601,9 @@ PRs welcome. We have strong opinions about read-only access, 90% test coverage, 
 ## License
 
 [MIT](LICENSE) - Use freely in personal and commercial projects.
+
+---
+
+## Disclaimer
+
+The comparison tables above are written with tongue firmly in cheek. Every Datadog MCP server out there was built by engineers who cared enough to ship something. Open source is better when there are options. If our 116 read-only tools aren't what you need, go find the one that is. Seriously. Check them all out, pick what fits your workflow, and build something great. Sleep tight.
