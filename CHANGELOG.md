@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.6.0...v1.7.0) (2026-02-07)
+
+
+### Features
+
+* add 12 network, security, cost, and DevOps tools (84 total) ([#21](https://github.com/dreamiurg/datadog-mcp-server/issues/21)) ([d56a092](https://github.com/dreamiurg/datadog-mcp-server/commit/d56a092551848f1ea13df298a5b0a4e10c17d847))
+
+
+### Documentation
+
+* update README to reflect 84 tools and new categories ([#23](https://github.com/dreamiurg/datadog-mcp-server/issues/23)) ([1f74b66](https://github.com/dreamiurg/datadog-mcp-server/commit/1f74b662e9699e36bf0fee21664dadc36b2e815a))
+
 ## [1.6.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.5.0...v1.6.0) (2026-02-07)
 
 
