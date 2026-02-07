@@ -66,7 +66,7 @@ describe("searchMetricVolumes", () => {
       const result = await searchMetricVolumes.execute({});
 
       expect(mockFetch).toHaveBeenCalledTimes(1);
-      expect(mockFetch).toHaveBeenCalledWith("https://datadoghq.com/api/v2/metrics", {
+      expect(mockFetch).toHaveBeenCalledWith("https://api.datadoghq.com/api/v2/metrics", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
