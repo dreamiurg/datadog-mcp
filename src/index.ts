@@ -18,12 +18,14 @@ const VERSION = packageJson.version;
 
 // Import tools
 import { aggregateLogs } from "./tools/aggregateLogs.js";
+import { aggregateNetworkConnections } from "./tools/aggregateNetworkConnections.js";
 import { aggregateRumEvents } from "./tools/aggregateRumEvents.js";
 import { aggregateSpans } from "./tools/aggregateSpans.js";
 import { getActiveHostsCount } from "./tools/getActiveHostsCount.js";
 import { getAuditEvents } from "./tools/getAuditEvents.js";
 import { getCIPipelineEvents } from "./tools/getCIPipelineEvents.js";
 import { getContainers } from "./tools/getContainers.js";
+import { getCSMCoverage } from "./tools/getCSMCoverage.js";
 import { getDashboard } from "./tools/getDashboard.js";
 import { getDashboards } from "./tools/getDashboards.js";
 import { getDbmSamples } from "./tools/getDbmSamples.js";
@@ -57,13 +59,20 @@ import { getSloHistory } from "./tools/getSloHistory.js";
 import { getSpansMetrics } from "./tools/getSpansMetrics.js";
 import { getSyntheticResults } from "./tools/getSyntheticResults.js";
 import { getSyntheticTests } from "./tools/getSyntheticTests.js";
+import { getTopAvgMetrics } from "./tools/getTopAvgMetrics.js";
 import { getTrace } from "./tools/getTrace.js";
 import { getUsage } from "./tools/getUsage.js";
 import { listApiKeys } from "./tools/listApiKeys.js";
 import { listAWSAccounts } from "./tools/listAWSAccounts.js";
 import { listCIPipelines } from "./tools/listCIPipelines.js";
 import { listContainers } from "./tools/listContainers.js";
+import { listCostBudgets } from "./tools/listCostBudgets.js";
+import { listCSMThreatsAgentRules } from "./tools/listCSMThreatsAgentRules.js";
 import { listDashboardLists } from "./tools/listDashboardLists.js";
+import { listDORADeployments } from "./tools/listDORADeployments.js";
+import { listFleetAgents } from "./tools/listFleetAgents.js";
+import { listMonitorNotificationRules } from "./tools/listMonitorNotificationRules.js";
+import { listNetworkDevices } from "./tools/listNetworkDevices.js";
 import { listNotebooks } from "./tools/listNotebooks.js";
 import { listPermissions } from "./tools/listPermissions.js";
 import { listPostureFindings } from "./tools/listPostureFindings.js";
@@ -76,12 +85,15 @@ import { listSecurityRules } from "./tools/listSecurityRules.js";
 import { listServiceDefinitions } from "./tools/listServiceDefinitions.js";
 import { listTeams } from "./tools/listTeams.js";
 import { listUsers } from "./tools/listUsers.js";
+import { listVulnerabilities } from "./tools/listVulnerabilities.js";
+import { listWorkflows } from "./tools/listWorkflows.js";
 // New observability tools
 import { queryMetrics } from "./tools/queryMetrics.js";
 import { searchAuditLogs } from "./tools/searchAuditLogs.js";
 import { searchCases } from "./tools/searchCases.js";
 import { searchErrorTrackingEvents } from "./tools/searchErrorTrackingEvents.js";
 import { searchErrorTrackingIssues } from "./tools/searchErrorTrackingIssues.js";
+import { searchIncidents } from "./tools/searchIncidents.js";
 import { searchLogs } from "./tools/searchLogs.js";
 import { searchMetricVolumes } from "./tools/searchMetricVolumes.js";
 import { searchRumEvents } from "./tools/searchRumEvents.js";
@@ -300,6 +312,30 @@ getIncidentTodos.initialize();
 logger.info({ tool: "get-incident-todos" }, "Tool initialized");
 listAWSAccounts.initialize();
 logger.info({ tool: "list-aws-accounts" }, "Tool initialized");
+aggregateNetworkConnections.initialize();
+logger.info({ tool: "aggregate-network-connections" }, "Tool initialized");
+getCSMCoverage.initialize();
+logger.info({ tool: "get-csm-coverage" }, "Tool initialized");
+getTopAvgMetrics.initialize();
+logger.info({ tool: "get-top-avg-metrics" }, "Tool initialized");
+listCostBudgets.initialize();
+logger.info({ tool: "list-cost-budgets" }, "Tool initialized");
+listCSMThreatsAgentRules.initialize();
+logger.info({ tool: "list-csm-threats-agent-rules" }, "Tool initialized");
+listDORADeployments.initialize();
+logger.info({ tool: "list-dora-deployments" }, "Tool initialized");
+listFleetAgents.initialize();
+logger.info({ tool: "list-fleet-agents" }, "Tool initialized");
+listMonitorNotificationRules.initialize();
+logger.info({ tool: "list-monitor-notification-rules" }, "Tool initialized");
+listNetworkDevices.initialize();
+logger.info({ tool: "list-network-devices" }, "Tool initialized");
+listVulnerabilities.initialize();
+logger.info({ tool: "list-vulnerabilities" }, "Tool initialized");
+listWorkflows.initialize();
+logger.info({ tool: "list-workflows" }, "Tool initialized");
+searchIncidents.initialize();
+logger.info({ tool: "search-incidents" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -1876,6 +1912,183 @@ server.tool(
   },
   async (args) => {
     const result = await listAWSAccounts.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_network_devices",
+  "List network devices monitored by Datadog NDM with filtering and pagination",
+  {
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+    filter_tag: z.string().optional(),
+    sort: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listNetworkDevices.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_csm_coverage",
+  "Get Cloud Security Management coverage across cloud accounts",
+  {
+    page_size: z.number().optional(),
+    page_cursor: z.string().optional(),
+  },
+  async (params) => {
+    const result = await getCSMCoverage.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "search_incidents",
+  "Search Datadog incidents with advanced filtering by severity, status, and time range",
+  {
+    query: z.string(),
+    filter_created_start: z.string().optional(),
+    filter_created_end: z.string().optional(),
+    page_size: z.number().optional(),
+    page_offset: z.number().optional(),
+    sort: z.string().optional(),
+  },
+  async (params) => {
+    const result = await searchIncidents.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_cost_budgets",
+  "List cloud cost management budgets for tracking team spending",
+  {
+    page_size: z.number().optional(),
+    page_offset: z.number().optional(),
+  },
+  async (params) => {
+    const result = await listCostBudgets.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_vulnerabilities",
+  "List security vulnerability findings with filtering by type, severity, and status",
+  {
+    page_size: z.number().optional(),
+    page_cursor: z.string().optional(),
+    filter_type: z.string().optional(),
+    filter_severity: z.string().optional(),
+    filter_status: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listVulnerabilities.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "aggregate_network_connections",
+  "Aggregate network connection analytics with grouping and filtering",
+  {
+    filter_from: z.string().optional(),
+    filter_to: z.string().optional(),
+    filter_query: z.string().optional(),
+    group_by: z.array(z.string()).optional(),
+    aggregate: z.string().optional(),
+  },
+  async (params) => {
+    const result = await aggregateNetworkConnections.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_workflows",
+  "List Datadog workflow automations for incident response and remediation",
+  {
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+    filter_name: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listWorkflows.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_monitor_notification_rules",
+  "List monitor notification routing rules showing who gets alerted",
+  {
+    page_size: z.number().optional(),
+    page_offset: z.number().optional(),
+  },
+  async (params) => {
+    const result = await listMonitorNotificationRules.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_top_avg_metrics",
+  "Get top custom metrics by average hourly count for cost and cardinality analysis",
+  {
+    month: z.string().optional(),
+    day: z.string().optional(),
+    names: z.array(z.string()).optional(),
+    limit: z.number().optional(),
+    next_record_id: z.string().optional(),
+  },
+  async (params) => {
+    const result = await getTopAvgMetrics.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_csm_threats_agent_rules",
+  "List CSM Threats agent rules for workload security monitoring",
+  {
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+  },
+  async (params) => {
+    const result = await listCSMThreatsAgentRules.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_dora_deployments",
+  "List DORA metric deployments for tracking deployment frequency and lead time",
+  {
+    filter_from: z.string().optional(),
+    filter_to: z.string().optional(),
+    filter_service: z.string().optional(),
+    filter_env: z.string().optional(),
+    page_size: z.number().optional(),
+    page_cursor: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listDORADeployments.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_fleet_agents",
+  "List Datadog fleet agents with version, OS, and status information",
+  {
+    page_size: z.number().optional(),
+    page_cursor: z.string().optional(),
+    filter_query: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listFleetAgents.execute(params);
     return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   },
 );
