@@ -30,21 +30,26 @@ import { getDashboard } from "./tools/getDashboard.js";
 import { getDashboards } from "./tools/getDashboards.js";
 import { getDbmSamples } from "./tools/getDbmSamples.js";
 import { getDowntimes } from "./tools/getDowntimes.js";
+import { getEstimatedCost } from "./tools/getEstimatedCost.js";
 import { getEvents } from "./tools/getEvents.js";
 import { getHosts } from "./tools/getHosts.js";
 import { getHostTags } from "./tools/getHostTags.js";
 import { getHourlyUsage } from "./tools/getHourlyUsage.js";
 import { getIncidents } from "./tools/getIncidents.js";
 import { getIncidentTodos } from "./tools/getIncidentTodos.js";
+import { getIPRanges } from "./tools/getIPRanges.js";
 import { getLogIndexes } from "./tools/getLogIndexes.js";
 import { getLogPipelines } from "./tools/getLogPipelines.js";
+import { getLogsArchiveOrder } from "./tools/getLogsArchiveOrder.js";
 import { getLogsArchives } from "./tools/getLogsArchives.js";
 import { getLogsIndexes } from "./tools/getLogsIndexes.js";
 import { getLogsMetrics } from "./tools/getLogsMetrics.js";
+import { getLogsPipelineOrder } from "./tools/getLogsPipelineOrder.js";
 import { getLogsPipelines } from "./tools/getLogsPipelines.js";
 import { getMetricMetadata } from "./tools/getMetricMetadata.js";
 import { getMetrics } from "./tools/getMetrics.js";
 import { getMonitor } from "./tools/getMonitor.js";
+import { getMonitorConfigPolicies } from "./tools/getMonitorConfigPolicies.js";
 import { getMonitors } from "./tools/getMonitors.js";
 import { getNotebook } from "./tools/getNotebook.js";
 import { getNotebooks } from "./tools/getNotebooks.js";
@@ -54,6 +59,7 @@ import { getServiceDefinition } from "./tools/getServiceDefinition.js";
 import { getServiceDependencies } from "./tools/getServiceDependencies.js";
 import { getServices } from "./tools/getServices.js";
 import { getSLO } from "./tools/getSLO.js";
+import { getSLOCorrections } from "./tools/getSLOCorrections.js";
 import { getSLOs } from "./tools/getSLOs.js";
 import { getSloHistory } from "./tools/getSloHistory.js";
 import { getSpansMetrics } from "./tools/getSpansMetrics.js";
@@ -70,7 +76,9 @@ import { listCostBudgets } from "./tools/listCostBudgets.js";
 import { listCSMThreatsAgentRules } from "./tools/listCSMThreatsAgentRules.js";
 import { listDashboardLists } from "./tools/listDashboardLists.js";
 import { listDORADeployments } from "./tools/listDORADeployments.js";
+import { listDowntimeSchedules } from "./tools/listDowntimeSchedules.js";
 import { listFleetAgents } from "./tools/listFleetAgents.js";
+import { listLogsMetrics } from "./tools/listLogsMetrics.js";
 import { listMonitorNotificationRules } from "./tools/listMonitorNotificationRules.js";
 import { listNetworkDevices } from "./tools/listNetworkDevices.js";
 import { listNotebooks } from "./tools/listNotebooks.js";
@@ -83,6 +91,9 @@ import { listScorecardOutcomes } from "./tools/listScorecardOutcomes.js";
 import { listScorecardRules } from "./tools/listScorecardRules.js";
 import { listSecurityRules } from "./tools/listSecurityRules.js";
 import { listServiceDefinitions } from "./tools/listServiceDefinitions.js";
+import { listSpansMetrics } from "./tools/listSpansMetrics.js";
+import { listSyntheticsGlobalVariables } from "./tools/listSyntheticsGlobalVariables.js";
+import { listSyntheticsLocations } from "./tools/listSyntheticsLocations.js";
 import { listTeams } from "./tools/listTeams.js";
 import { listUsers } from "./tools/listUsers.js";
 import { listVulnerabilities } from "./tools/listVulnerabilities.js";
@@ -99,6 +110,7 @@ import { searchMetricVolumes } from "./tools/searchMetricVolumes.js";
 import { searchRumEvents } from "./tools/searchRumEvents.js";
 import { searchSecurityFindings } from "./tools/searchSecurityFindings.js";
 import { searchSecuritySignals } from "./tools/searchSecuritySignals.js";
+import { searchSLOs } from "./tools/searchSLOs.js";
 import { searchSpans } from "./tools/searchSpans.js";
 
 // Helper function to mask sensitive credentials for logging
@@ -336,6 +348,30 @@ listWorkflows.initialize();
 logger.info({ tool: "list-workflows" }, "Tool initialized");
 searchIncidents.initialize();
 logger.info({ tool: "search-incidents" }, "Tool initialized");
+getSLOCorrections.initialize();
+logger.info({ tool: "get-slo-corrections" }, "Tool initialized");
+getIPRanges.initialize();
+logger.info({ tool: "get-ip-ranges" }, "Tool initialized");
+getLogsPipelineOrder.initialize();
+logger.info({ tool: "get-logs-pipeline-order" }, "Tool initialized");
+getLogsArchiveOrder.initialize();
+logger.info({ tool: "get-logs-archive-order" }, "Tool initialized");
+searchSLOs.initialize();
+logger.info({ tool: "search-slos" }, "Tool initialized");
+getEstimatedCost.initialize();
+logger.info({ tool: "get-estimated-cost" }, "Tool initialized");
+listSyntheticsGlobalVariables.initialize();
+logger.info({ tool: "list-synthetics-global-variables" }, "Tool initialized");
+listDowntimeSchedules.initialize();
+logger.info({ tool: "list-downtime-schedules" }, "Tool initialized");
+listSpansMetrics.initialize();
+logger.info({ tool: "list-spans-metrics" }, "Tool initialized");
+getMonitorConfigPolicies.initialize();
+logger.info({ tool: "get-monitor-config-policies" }, "Tool initialized");
+listSyntheticsLocations.initialize();
+logger.info({ tool: "list-synthetics-locations" }, "Tool initialized");
+listLogsMetrics.initialize();
+logger.info({ tool: "list-logs-metrics" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -2089,6 +2125,144 @@ server.tool(
   },
   async (params) => {
     const result = await listFleetAgents.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_slo_corrections",
+  "List all SLO corrections (status adjustments) across your organization. Shows maintenance windows and planned downtime exclusions that affect SLO calculations.",
+  {
+    offset: z.number().optional(),
+    limit: z.number().optional(),
+  },
+  async (params) => {
+    const result = await getSLOCorrections.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_ip_ranges",
+  "Get Datadog IP ranges used by agents, APIs, APM, logs, process collection, synthetics, and webhooks. Useful for firewall/allowlist configuration.",
+  {},
+  async () => {
+    const result = await getIPRanges.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_logs_pipeline_order",
+  "Get the ordered list of log pipeline IDs, showing the processing order for log pipelines.",
+  {},
+  async () => {
+    const result = await getLogsPipelineOrder.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_logs_archive_order",
+  "Get the ordered list of log archive IDs, showing the priority order for log archiving.",
+  {},
+  async () => {
+    const result = await getLogsArchiveOrder.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "search_slos",
+  "Search and filter SLOs by query string. Supports pagination and faceted search for finding specific SLOs by name, tags, or other attributes.",
+  {
+    query: z.string().optional(),
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+    include_facets: z.boolean().optional(),
+  },
+  async (params) => {
+    const result = await searchSLOs.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_estimated_cost",
+  "Get estimated cost data for your Datadog usage. Filter by date range and view type (sub_org, summary). Useful for cost monitoring and budget planning.",
+  {
+    view: z.string().optional(),
+    start_month: z.string().optional(),
+    end_month: z.string().optional(),
+    start_date: z.string().optional(),
+    end_date: z.string().optional(),
+  },
+  async (params) => {
+    const result = await getEstimatedCost.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_synthetics_global_variables",
+  "List all Synthetics global variables used across synthetic tests for shared configuration like URLs, credentials, and test data.",
+  {},
+  async () => {
+    const result = await listSyntheticsGlobalVariables.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_downtime_schedules",
+  "List scheduled downtimes (v2 API). Filter by current/upcoming schedules. Shows muted monitors, scopes, and schedule details.",
+  {
+    page_limit: z.number().optional(),
+    page_offset: z.number().optional(),
+    current_only: z.boolean().optional(),
+  },
+  async (params) => {
+    const result = await listDowntimeSchedules.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_spans_metrics",
+  "List all span-based metrics (APM custom metrics) configured for generating metrics from APM spans.",
+  {},
+  async () => {
+    const result = await listSpansMetrics.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_monitor_config_policies",
+  "Get monitor configuration policies that enforce tag and setting requirements on monitors across your organization.",
+  {},
+  async () => {
+    const result = await getMonitorConfigPolicies.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_synthetics_locations",
+  "List available Synthetics testing locations (both managed by Datadog and private). Useful for configuring where synthetic tests run.",
+  {},
+  async () => {
+    const result = await listSyntheticsLocations.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_logs_metrics",
+  "List all log-based metrics configured for generating custom metrics from log data.",
+  {},
+  async () => {
+    const result = await listLogsMetrics.execute({} as Record<string, never>);
     return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   },
 );
