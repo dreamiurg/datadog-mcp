@@ -24,10 +24,13 @@ import { aggregateSpans } from "./tools/aggregateSpans.js";
 import { getActiveHostsCount } from "./tools/getActiveHostsCount.js";
 import { getAuditEvents } from "./tools/getAuditEvents.js";
 import { getCIPipelineEvents } from "./tools/getCIPipelineEvents.js";
+// Wave 8 tools
+import { getCITestEvents } from "./tools/getCITestEvents.js";
 import { getContainers } from "./tools/getContainers.js";
 import { getCSMCoverage } from "./tools/getCSMCoverage.js";
 import { getDashboard } from "./tools/getDashboard.js";
 import { getDashboards } from "./tools/getDashboards.js";
+import { getDbmQueryMetrics } from "./tools/getDbmQueryMetrics.js";
 import { getDbmSamples } from "./tools/getDbmSamples.js";
 import { getDowntimes } from "./tools/getDowntimes.js";
 import { getEstimatedCost } from "./tools/getEstimatedCost.js";
@@ -37,6 +40,7 @@ import { getHostTags } from "./tools/getHostTags.js";
 import { getHourlyUsage } from "./tools/getHourlyUsage.js";
 import { getIncidentServices } from "./tools/getIncidentServices.js";
 import { getIncidents } from "./tools/getIncidents.js";
+import { getIncidentTimeline } from "./tools/getIncidentTimeline.js";
 import { getIncidentTodos } from "./tools/getIncidentTodos.js";
 import { getIPRanges } from "./tools/getIPRanges.js";
 import { getLogIndexes } from "./tools/getLogIndexes.js";
@@ -49,6 +53,7 @@ import { getLogsPipelineOrder } from "./tools/getLogsPipelineOrder.js";
 import { getLogsPipelines } from "./tools/getLogsPipelines.js";
 import { getMetricMetadata } from "./tools/getMetricMetadata.js";
 import { getMetrics } from "./tools/getMetrics.js";
+import { getMetricTagConfig } from "./tools/getMetricTagConfig.js";
 import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitorConfigPolicies } from "./tools/getMonitorConfigPolicies.js";
 import { getMonitors } from "./tools/getMonitors.js";
@@ -72,9 +77,12 @@ import { getTopAvgMetrics } from "./tools/getTopAvgMetrics.js";
 import { getTrace } from "./tools/getTrace.js";
 import { getUsage } from "./tools/getUsage.js";
 import { listApiKeys } from "./tools/listApiKeys.js";
+import { listAppKeys } from "./tools/listAppKeys.js";
+import { listAuthNMappings } from "./tools/listAuthNMappings.js";
 import { listAWSAccounts } from "./tools/listAWSAccounts.js";
 import { listAzureIntegration } from "./tools/listAzureIntegration.js";
 import { listCIPipelines } from "./tools/listCIPipelines.js";
+import { listCITests } from "./tools/listCITests.js";
 import { listCloudflareAccounts } from "./tools/listCloudflareAccounts.js";
 import { listConfluentAccounts } from "./tools/listConfluentAccounts.js";
 import { listContainers } from "./tools/listContainers.js";
@@ -87,6 +95,7 @@ import { listFleetAgents } from "./tools/listFleetAgents.js";
 import { listGCPIntegration } from "./tools/listGCPIntegration.js";
 import { listHostTotals } from "./tools/listHostTotals.js";
 import { listLogsMetrics } from "./tools/listLogsMetrics.js";
+import { listMetricTagConfigs } from "./tools/listMetricTagConfigs.js";
 import { listMonitorNotificationRules } from "./tools/listMonitorNotificationRules.js";
 import { listNetworkDevices } from "./tools/listNetworkDevices.js";
 import { listNotebooks } from "./tools/listNotebooks.js";
@@ -105,10 +114,12 @@ import { listSpansMetrics } from "./tools/listSpansMetrics.js";
 import { listSyntheticsGlobalVariables } from "./tools/listSyntheticsGlobalVariables.js";
 import { listSyntheticsLocations } from "./tools/listSyntheticsLocations.js";
 import { listSyntheticsPrivateLocations } from "./tools/listSyntheticsPrivateLocations.js";
+import { listTeamMembers } from "./tools/listTeamMembers.js";
 import { listTeams } from "./tools/listTeams.js";
 import { listUsers } from "./tools/listUsers.js";
 import { listVulnerabilities } from "./tools/listVulnerabilities.js";
 import { listWebhooks } from "./tools/listWebhooks.js";
+import { listWorkflowExecutions } from "./tools/listWorkflowExecutions.js";
 import { listWorkflows } from "./tools/listWorkflows.js";
 // New observability tools
 import { queryMetrics } from "./tools/queryMetrics.js";
@@ -408,6 +419,26 @@ listRestrictionPolicies.initialize();
 logger.info({ tool: "list-restriction-policies" }, "Tool initialized");
 listConfluentAccounts.initialize();
 logger.info({ tool: "list-confluent-accounts" }, "Tool initialized");
+listCITests.initialize();
+logger.info({ tool: "list-ci-tests" }, "Tool initialized");
+getCITestEvents.initialize();
+logger.info({ tool: "get-ci-test-events" }, "Tool initialized");
+getIncidentTimeline.initialize();
+logger.info({ tool: "get-incident-timeline" }, "Tool initialized");
+listTeamMembers.initialize();
+logger.info({ tool: "list-team-members" }, "Tool initialized");
+listAppKeys.initialize();
+logger.info({ tool: "list-app-keys" }, "Tool initialized");
+getMetricTagConfig.initialize();
+logger.info({ tool: "get-metric-tag-config" }, "Tool initialized");
+listMetricTagConfigs.initialize();
+logger.info({ tool: "list-metric-tag-configs" }, "Tool initialized");
+listAuthNMappings.initialize();
+logger.info({ tool: "list-authn-mappings" }, "Tool initialized");
+listWorkflowExecutions.initialize();
+logger.info({ tool: "list-workflow-executions" }, "Tool initialized");
+getDbmQueryMetrics.initialize();
+logger.info({ tool: "get-dbm-query-metrics" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -2428,6 +2459,222 @@ server.tool(
   {},
   async () => {
     const result = await listConfluentAccounts.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+// Wave 8 tools
+server.tool(
+  "list_ci_tests",
+  "List CI test events from Datadog CI Visibility. Filter by query, time range. Use for 'show failed tests', 'test results for service X'.",
+  {
+    filter_query: z.string().optional(),
+    filter_from: z.string().optional(),
+    filter_to: z.string().optional(),
+    page_limit: z.number().optional(),
+    page_cursor: z.string().optional(),
+    sort: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listCITests.execute({
+      filterQuery: params.filter_query,
+      filterFrom: params.filter_from,
+      filterTo: params.filter_to,
+      pageLimit: params.page_limit,
+      pageCursor: params.page_cursor,
+      sort: params.sort,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "search_ci_test_events",
+  "Search CI test events with filters. Use for 'find flaky tests', 'test failures in last hour', 'test duration analysis'.",
+  {
+    filter: z
+      .object({
+        query: z.string().optional(),
+        from: z.string().optional(),
+        to: z.string().optional(),
+      })
+      .optional(),
+    sort: z.string().optional(),
+    page: z
+      .object({
+        limit: z.number().optional(),
+        cursor: z.string().optional(),
+      })
+      .optional(),
+  },
+  async (params) => {
+    const result = await getCITestEvents.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_incident_timeline",
+  "Get timeline events for a Datadog incident. Shows status changes, messages, tasks, notifications.",
+  {
+    incident_id: z.string(),
+    page_size: z.number().optional(),
+    page_offset: z.number().optional(),
+    filter_type: z.string().optional(),
+  },
+  async (params) => {
+    const result = await getIncidentTimeline.execute({
+      incidentId: params.incident_id,
+      pageSize: params.page_size,
+      pageOffset: params.page_offset,
+      filterType: params.filter_type,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_team_members",
+  "List members of a Datadog team. Shows user roles and membership details.",
+  {
+    team_id: z.string(),
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+    sort: z.string().optional(),
+    filter_keyword: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listTeamMembers.execute({
+      teamId: params.team_id,
+      pageSize: params.page_size,
+      pageNumber: params.page_number,
+      sort: params.sort,
+      filterKeyword: params.filter_keyword,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_app_keys",
+  "List application keys for the current user. Shows key names, scopes, and creation dates.",
+  {
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+    sort: z.string().optional(),
+    filter_name: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listAppKeys.execute({
+      pageSize: params.page_size,
+      pageNumber: params.page_number,
+      sort: params.sort,
+      filterName: params.filter_name,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_metric_tag_config",
+  "Get tag configuration for a specific metric. Shows which tags are indexed and queryable.",
+  {
+    metric_name: z.string(),
+  },
+  async (params) => {
+    const result = await getMetricTagConfig.execute({
+      metricName: params.metric_name,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_metric_tag_configs",
+  "List metric tag configurations. Filter by configured status, tags, activity window.",
+  {
+    filter_configured: z.boolean().optional(),
+    filter_tags_configured: z.string().optional(),
+    filter_metric: z.string().optional(),
+    filter_active_within: z.number().optional(),
+    window_seconds: z.number().optional(),
+    page_size: z.number().optional(),
+    page_cursor: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listMetricTagConfigs.execute({
+      filterConfigured: params.filter_configured,
+      filterTagsConfigured: params.filter_tags_configured,
+      filterMetric: params.filter_metric,
+      filterActiveWithin: params.filter_active_within,
+      windowSeconds: params.window_seconds,
+      pageSize: params.page_size,
+      pageCursor: params.page_cursor,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_authn_mappings",
+  "List authentication mappings (SAML/OIDC). Shows how identity provider attributes map to Datadog roles.",
+  {
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+    sort: z.string().optional(),
+    filter_query: z.string().optional(),
+  },
+  async (params) => {
+    const result = await listAuthNMappings.execute({
+      pageSize: params.page_size,
+      pageNumber: params.page_number,
+      sort: params.sort,
+      filterQuery: params.filter_query,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_workflow_executions",
+  "List execution instances for a Datadog workflow. Shows run history, status, and timing.",
+  {
+    workflow_id: z.string(),
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+  },
+  async (params) => {
+    const result = await listWorkflowExecutions.execute({
+      workflowId: params.workflow_id,
+      pageSize: params.page_size,
+      pageNumber: params.page_number,
+    });
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_dbm_query_metrics",
+  "Get Database Monitoring query metrics. Filter by database type, host, query text, and time range.",
+  {
+    filter_db_type: z.string().optional(),
+    filter_host: z.string().optional(),
+    filter_query: z.string().optional(),
+    filter_from: z.string().optional(),
+    filter_to: z.string().optional(),
+    page_limit: z.number().optional(),
+    page_cursor: z.string().optional(),
+  },
+  async (params) => {
+    const result = await getDbmQueryMetrics.execute({
+      filterDbType: params.filter_db_type,
+      filterHost: params.filter_host,
+      filterQuery: params.filter_query,
+      filterFrom: params.filter_from,
+      filterTo: params.filter_to,
+      pageLimit: params.page_limit,
+      pageCursor: params.page_cursor,
+    });
     return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   },
 );
