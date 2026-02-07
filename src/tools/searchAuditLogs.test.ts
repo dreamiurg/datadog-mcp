@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { listProcesses } from "./listProcesses.js";
+import { searchAuditLogs } from "./searchAuditLogs.js";
 
-describe("listProcesses", () => {
+describe("searchAuditLogs", () => {
   const originalEnv = process.env;
   const mockFetch = vi.fn();
 
@@ -24,50 +24,56 @@ describe("listProcesses", () => {
 
   describe("initialize", () => {
     it("sets initialized state", () => {
-      expect(() => listProcesses.initialize()).not.toThrow();
+      expect(() => searchAuditLogs.initialize()).not.toThrow();
     });
   });
 
   describe("execute", () => {
     it("throws if not initialized", async () => {
       vi.resetModules();
-      const { listProcesses: fresh } = await import("./listProcesses.js");
-      await expect(fresh.execute({})).rejects.toThrow("listProcesses not initialized");
+      const { searchAuditLogs: fresh } = await import("./searchAuditLogs.js");
+      await expect(fresh.execute({})).rejects.toThrow("searchAuditLogs not initialized");
     });
 
     it("makes correct API call and returns results", async () => {
-      listProcesses.initialize();
+      searchAuditLogs.initialize();
       const mockResponse = {
-        data: [{ id: "p-1", type: "process", attributes: { pid: 1234, name: "nginx" } }],
+        data: [
+          {
+            id: "event-1",
+            type: "audit",
+            attributes: { timestamp: "2024-01-01T00:00:00Z", service: "monitors" },
+          },
+        ],
       };
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-      const result = await listProcesses.execute({});
+      const result = await searchAuditLogs.execute({});
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/v2/processes"),
-        expect.objectContaining({ method: "GET" }),
+        expect.stringContaining("/api/v2/audit/events/search"),
+        expect.objectContaining({ method: "POST" }),
       );
       expect(result).toEqual(mockResponse);
     });
 
-    it("includes query params when provided", async () => {
-      listProcesses.initialize();
+    it("includes filter params in request body", async () => {
+      searchAuditLogs.initialize();
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ data: [] }) });
-      await listProcesses.execute({ search: "nginx", page_limit: 10 });
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("search=nginx"),
-        expect.objectContaining({ method: "GET" }),
-      );
+      await searchAuditLogs.execute({ filter_query: "@type:monitor", page_limit: 10 });
+      const callArgs = mockFetch.mock.calls[0];
+      const body = JSON.parse(callArgs[1].body);
+      expect(body.filter.query).toBe("@type:monitor");
+      expect(body.page.limit).toBe(10);
     });
 
     it("handles API errors", async () => {
-      listProcesses.initialize();
+      searchAuditLogs.initialize();
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 403,
         statusText: "Forbidden",
         json: async () => ({ errors: ["Forbidden"] }),
       });
-      await expect(listProcesses.execute({})).rejects.toThrow();
+      await expect(searchAuditLogs.execute({})).rejects.toThrow();
     });
   });
 });

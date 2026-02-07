@@ -5,23 +5,18 @@ import {
   handleApiError,
 } from "../lib/index.js";
 
-const log = createToolLogger("getHostTags");
+const log = createToolLogger("get-host-tags");
 
 interface GetHostTagsParams {
+  host_name: string;
   source?: string;
 }
 
 interface GetHostTagsResponse {
-  tags?: Record<string, string[]>;
+  tags?: string[];
 }
 
 let initialized = false;
-
-function buildQueryString(params: Record<string, string | undefined>): string {
-  const entries = Object.entries(params).filter(([, v]) => v !== undefined);
-  if (entries.length === 0) return "";
-  return "?" + entries.map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
-}
 
 export const getHostTags = {
   initialize: () => {
@@ -29,30 +24,30 @@ export const getHostTags = {
     createDatadogConfiguration({ service: "default" });
     initialized = true;
   },
-
   execute: async (params: GetHostTagsParams) => {
     if (!initialized) {
       throw new Error("getHostTags not initialized. Call initialize() first.");
     }
     try {
-      log.debug({ source: params.source }, "execute() called");
-
-      const queryParams: Record<string, string | undefined> = {};
-      if (params.source !== undefined) queryParams["source"] = params.source;
-
-      const path = `/api/v1/tags/hosts${buildQueryString(queryParams)}`;
-
-      const data = await datadogRequest<GetHostTagsResponse>({
+      const queryParams = new URLSearchParams();
+      if (params.source !== undefined) {
+        queryParams.append("source", params.source);
+      }
+      const queryString = queryParams.toString();
+      const path = queryString
+        ? `/api/v1/tags/hosts/${encodeURIComponent(params.host_name)}?${queryString}`
+        : `/api/v1/tags/hosts/${encodeURIComponent(params.host_name)}`;
+      log.debug({ host_name: params.host_name }, "Fetching host tags");
+      const response = await datadogRequest<GetHostTagsResponse>({
         service: "default",
         path,
         method: "GET",
       });
-
-      log.info({ tagCount: Object.keys(data.tags || {}).length }, "getHostTags completed");
-      return data;
+      log.debug({ count: response.tags?.length ?? 0 }, "Retrieved host tags");
+      return response;
     } catch (error: unknown) {
-      log.error({ error }, "getHostTags failed");
-      handleApiError(error, "Failed to fetch host tags");
+      log.error({ error }, "get-host-tags failed");
+      handleApiError(error, "Failed to get host tags");
     }
   },
 };

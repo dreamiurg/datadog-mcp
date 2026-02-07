@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { listProcesses } from "./listProcesses.js";
+import { listAWSAccounts } from "./listAWSAccounts.js";
 
-describe("listProcesses", () => {
+describe("listAWSAccounts", () => {
   const originalEnv = process.env;
   const mockFetch = vi.fn();
 
@@ -24,50 +24,56 @@ describe("listProcesses", () => {
 
   describe("initialize", () => {
     it("sets initialized state", () => {
-      expect(() => listProcesses.initialize()).not.toThrow();
+      expect(() => listAWSAccounts.initialize()).not.toThrow();
     });
   });
 
   describe("execute", () => {
     it("throws if not initialized", async () => {
       vi.resetModules();
-      const { listProcesses: fresh } = await import("./listProcesses.js");
-      await expect(fresh.execute({})).rejects.toThrow("listProcesses not initialized");
+      const { listAWSAccounts: fresh } = await import("./listAWSAccounts.js");
+      await expect(fresh.execute({})).rejects.toThrow("listAWSAccounts not initialized");
     });
 
     it("makes correct API call and returns results", async () => {
-      listProcesses.initialize();
+      listAWSAccounts.initialize();
       const mockResponse = {
-        data: [{ id: "p-1", type: "process", attributes: { pid: 1234, name: "nginx" } }],
+        data: [
+          {
+            id: "aws-1",
+            type: "aws_account",
+            attributes: { aws_account_id: "123456789012", aws_partition: "aws" },
+          },
+        ],
       };
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-      const result = await listProcesses.execute({});
+      const result = await listAWSAccounts.execute({});
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/v2/processes"),
+        expect.stringContaining("/api/v2/integration/aws/accounts"),
         expect.objectContaining({ method: "GET" }),
       );
       expect(result).toEqual(mockResponse);
     });
 
     it("includes query params when provided", async () => {
-      listProcesses.initialize();
+      listAWSAccounts.initialize();
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ data: [] }) });
-      await listProcesses.execute({ search: "nginx", page_limit: 10 });
+      await listAWSAccounts.execute({ aws_account_id: "123456789012" });
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("search=nginx"),
+        expect.stringContaining("aws_account_id=123456789012"),
         expect.objectContaining({ method: "GET" }),
       );
     });
 
     it("handles API errors", async () => {
-      listProcesses.initialize();
+      listAWSAccounts.initialize();
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 403,
         statusText: "Forbidden",
         json: async () => ({ errors: ["Forbidden"] }),
       });
-      await expect(listProcesses.execute({})).rejects.toThrow();
+      await expect(listAWSAccounts.execute({})).rejects.toThrow();
     });
   });
 });

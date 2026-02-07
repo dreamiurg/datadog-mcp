@@ -31,7 +31,9 @@ import { getDowntimes } from "./tools/getDowntimes.js";
 import { getEvents } from "./tools/getEvents.js";
 import { getHosts } from "./tools/getHosts.js";
 import { getHostTags } from "./tools/getHostTags.js";
+import { getHourlyUsage } from "./tools/getHourlyUsage.js";
 import { getIncidents } from "./tools/getIncidents.js";
+import { getIncidentTodos } from "./tools/getIncidentTodos.js";
 import { getLogIndexes } from "./tools/getLogIndexes.js";
 import { getLogPipelines } from "./tools/getLogPipelines.js";
 import { getLogsArchives } from "./tools/getLogsArchives.js";
@@ -42,6 +44,7 @@ import { getMetricMetadata } from "./tools/getMetricMetadata.js";
 import { getMetrics } from "./tools/getMetrics.js";
 import { getMonitor } from "./tools/getMonitor.js";
 import { getMonitors } from "./tools/getMonitors.js";
+import { getNotebook } from "./tools/getNotebook.js";
 import { getNotebooks } from "./tools/getNotebooks.js";
 import { getPowerpacks } from "./tools/getPowerpacks.js";
 import { getSecurityFinding } from "./tools/getSecurityFinding.js";
@@ -56,8 +59,12 @@ import { getSyntheticResults } from "./tools/getSyntheticResults.js";
 import { getSyntheticTests } from "./tools/getSyntheticTests.js";
 import { getTrace } from "./tools/getTrace.js";
 import { getUsage } from "./tools/getUsage.js";
+import { listApiKeys } from "./tools/listApiKeys.js";
+import { listAWSAccounts } from "./tools/listAWSAccounts.js";
 import { listCIPipelines } from "./tools/listCIPipelines.js";
+import { listContainers } from "./tools/listContainers.js";
 import { listDashboardLists } from "./tools/listDashboardLists.js";
+import { listNotebooks } from "./tools/listNotebooks.js";
 import { listPermissions } from "./tools/listPermissions.js";
 import { listPostureFindings } from "./tools/listPostureFindings.js";
 import { listProcesses } from "./tools/listProcesses.js";
@@ -65,13 +72,16 @@ import { listRoles } from "./tools/listRoles.js";
 import { listRumApplications } from "./tools/listRumApplications.js";
 import { listScorecardOutcomes } from "./tools/listScorecardOutcomes.js";
 import { listScorecardRules } from "./tools/listScorecardRules.js";
+import { listSecurityRules } from "./tools/listSecurityRules.js";
 import { listServiceDefinitions } from "./tools/listServiceDefinitions.js";
 import { listTeams } from "./tools/listTeams.js";
 import { listUsers } from "./tools/listUsers.js";
 // New observability tools
 import { queryMetrics } from "./tools/queryMetrics.js";
+import { searchAuditLogs } from "./tools/searchAuditLogs.js";
 import { searchCases } from "./tools/searchCases.js";
 import { searchErrorTrackingEvents } from "./tools/searchErrorTrackingEvents.js";
+import { searchErrorTrackingIssues } from "./tools/searchErrorTrackingIssues.js";
 import { searchLogs } from "./tools/searchLogs.js";
 import { searchMetricVolumes } from "./tools/searchMetricVolumes.js";
 import { searchRumEvents } from "./tools/searchRumEvents.js";
@@ -270,6 +280,26 @@ getLogsIndexes.initialize();
 logger.info({ tool: "get-logs-indexes" }, "Tool initialized");
 getLogsPipelines.initialize();
 logger.info({ tool: "get-logs-pipelines" }, "Tool initialized");
+searchAuditLogs.initialize();
+logger.info({ tool: "search-audit-logs" }, "Tool initialized");
+getHourlyUsage.initialize();
+logger.info({ tool: "get-hourly-usage" }, "Tool initialized");
+listContainers.initialize();
+logger.info({ tool: "list-containers" }, "Tool initialized");
+searchErrorTrackingIssues.initialize();
+logger.info({ tool: "search-error-tracking-issues" }, "Tool initialized");
+listNotebooks.initialize();
+logger.info({ tool: "list-notebooks" }, "Tool initialized");
+getNotebook.initialize();
+logger.info({ tool: "get-notebook" }, "Tool initialized");
+listSecurityRules.initialize();
+logger.info({ tool: "list-security-rules" }, "Tool initialized");
+listApiKeys.initialize();
+logger.info({ tool: "list-api-keys" }, "Tool initialized");
+getIncidentTodos.initialize();
+logger.info({ tool: "get-incident-todos" }, "Tool initialized");
+listAWSAccounts.initialize();
+logger.info({ tool: "list-aws-accounts" }, "Tool initialized");
 
 // Set up MCP server
 const server = new McpServer({
@@ -1057,6 +1087,7 @@ server.tool(
   "get-host-tags",
   "Get all tags associated with hosts. Use for 'what tags are on my hosts', 'which hosts have team:platform tag', or to understand host groupings. Returns a map of tag names to host lists.",
   {
+    host_name: z.string().describe("Host name to get tags for"),
     source: z
       .string()
       .optional()
@@ -1696,6 +1727,155 @@ server.tool(
   {},
   async (args) => {
     const result = await getLogsPipelines.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "search_audit_logs",
+  "Search Datadog audit logs for configuration changes, user actions, and API calls",
+  {
+    filter_query: z.string().optional().describe("Audit log search query"),
+    filter_from: z.string().optional().describe("Start time (ISO 8601)"),
+    filter_to: z.string().optional().describe("End time (ISO 8601)"),
+    page_limit: z.number().optional().describe("Max results per page"),
+    page_cursor: z.string().optional().describe("Pagination cursor"),
+    sort: z.string().optional().describe("Sort order (timestamp or -timestamp)"),
+  },
+  async (args) => {
+    const result = await searchAuditLogs.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_hourly_usage",
+  "Get Datadog hourly usage by product family for cost analysis",
+  {
+    filter_timestamp_start: z.string().describe("Start time (ISO 8601, required)"),
+    filter_timestamp_end: z.string().optional().describe("End time (ISO 8601)"),
+    filter_product_families: z
+      .string()
+      .describe("Comma-separated product families (e.g. infra_hosts,logs)"),
+    page_limit: z.number().optional().describe("Max results per page"),
+    page_next_record_id: z.string().optional().describe("Pagination record ID"),
+  },
+  async (args) => {
+    const result = await getHourlyUsage.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_containers",
+  "List Datadog-monitored containers with their metadata and health status",
+  {
+    filter_tags: z.string().optional().describe("Filter by tags (e.g. env:prod)"),
+    group_by: z.string().optional().describe("Group results by field"),
+    sort: z.string().optional().describe("Sort field"),
+    page_size: z.number().optional().describe("Page size"),
+    page_cursor: z.string().optional().describe("Pagination cursor"),
+  },
+  async (args) => {
+    const result = await listContainers.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "search_error_tracking_issues",
+  "Search Datadog error tracking issues for user-facing errors and exceptions",
+  {
+    filter_query: z.string().optional().describe("Error tracking search query"),
+    filter_from: z.string().optional().describe("Start time (ISO 8601)"),
+    filter_to: z.string().optional().describe("End time (ISO 8601)"),
+    page_limit: z.number().optional().describe("Max results per page"),
+    page_cursor: z.string().optional().describe("Pagination cursor"),
+    sort: z.string().optional().describe("Sort order"),
+  },
+  async (args) => {
+    const result = await searchErrorTrackingIssues.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_notebooks",
+  "List Datadog notebooks (investigation documents, runbooks, postmortems)",
+  {
+    query: z.string().optional().describe("Search query for notebook name"),
+    count: z.number().optional().describe("Number of notebooks to return"),
+    start: z.number().optional().describe("Offset for pagination"),
+    sort_field: z.string().optional().describe("Field to sort by (e.g. modified)"),
+    sort_dir: z.string().optional().describe("Sort direction (asc or desc)"),
+    author_handle: z.string().optional().describe("Filter by author handle"),
+  },
+  async (args) => {
+    const result = await listNotebooks.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_notebook",
+  "Get a specific Datadog notebook by ID with all cells and content",
+  {
+    notebook_id: z.number().describe("Notebook ID"),
+  },
+  async (args) => {
+    const result = await getNotebook.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_security_rules",
+  "List Datadog security monitoring detection rules",
+  {
+    page_size: z.number().optional().describe("Number of rules per page"),
+    page_number: z.number().optional().describe("Page number"),
+  },
+  async (args) => {
+    const result = await listSecurityRules.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_api_keys",
+  "List Datadog API keys for key management and security audit",
+  {
+    page_size: z.number().optional().describe("Number of keys per page"),
+    page_number: z.number().optional().describe("Page number"),
+    filter: z.string().optional().describe("Filter by key name"),
+    sort: z.string().optional().describe("Sort field"),
+  },
+  async (args) => {
+    const result = await listApiKeys.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_incident_todos",
+  "Get action items/todos for a specific Datadog incident",
+  {
+    incident_id: z.string().describe("Incident ID"),
+  },
+  async (args) => {
+    const result = await getIncidentTodos.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_aws_accounts",
+  "List AWS accounts integrated with Datadog",
+  {
+    aws_account_id: z.string().optional().describe("Filter by AWS account ID"),
+  },
+  async (args) => {
+    const result = await listAWSAccounts.execute(args);
     return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   },
 );

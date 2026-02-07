@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { listProcesses } from "./listProcesses.js";
+import { getNotebook } from "./getNotebook.js";
 
-describe("listProcesses", () => {
+describe("getNotebook", () => {
   const originalEnv = process.env;
   const mockFetch = vi.fn();
 
@@ -24,50 +24,46 @@ describe("listProcesses", () => {
 
   describe("initialize", () => {
     it("sets initialized state", () => {
-      expect(() => listProcesses.initialize()).not.toThrow();
+      expect(() => getNotebook.initialize()).not.toThrow();
     });
   });
 
   describe("execute", () => {
     it("throws if not initialized", async () => {
       vi.resetModules();
-      const { listProcesses: fresh } = await import("./listProcesses.js");
-      await expect(fresh.execute({})).rejects.toThrow("listProcesses not initialized");
+      const { getNotebook: fresh } = await import("./getNotebook.js");
+      await expect(fresh.execute({ notebook_id: 123 })).rejects.toThrow(
+        "getNotebook not initialized",
+      );
     });
 
     it("makes correct API call and returns results", async () => {
-      listProcesses.initialize();
+      getNotebook.initialize();
       const mockResponse = {
-        data: [{ id: "p-1", type: "process", attributes: { pid: 1234, name: "nginx" } }],
+        data: {
+          id: 123,
+          type: "notebooks",
+          attributes: { name: "Incident Investigation", status: "published" },
+        },
       };
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-      const result = await listProcesses.execute({});
+      const result = await getNotebook.execute({ notebook_id: 123 });
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/v2/processes"),
+        expect.stringContaining("/api/v1/notebooks/123"),
         expect.objectContaining({ method: "GET" }),
       );
       expect(result).toEqual(mockResponse);
     });
 
-    it("includes query params when provided", async () => {
-      listProcesses.initialize();
-      mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ data: [] }) });
-      await listProcesses.execute({ search: "nginx", page_limit: 10 });
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("search=nginx"),
-        expect.objectContaining({ method: "GET" }),
-      );
-    });
-
     it("handles API errors", async () => {
-      listProcesses.initialize();
+      getNotebook.initialize();
       mockFetch.mockResolvedValueOnce({
         ok: false,
-        status: 403,
-        statusText: "Forbidden",
-        json: async () => ({ errors: ["Forbidden"] }),
+        status: 404,
+        statusText: "Not Found",
+        json: async () => ({ errors: ["Not Found"] }),
       });
-      await expect(listProcesses.execute({})).rejects.toThrow();
+      await expect(getNotebook.execute({ notebook_id: 999 })).rejects.toThrow();
     });
   });
 });

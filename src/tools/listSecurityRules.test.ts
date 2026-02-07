@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { listProcesses } from "./listProcesses.js";
+import { listSecurityRules } from "./listSecurityRules.js";
 
-describe("listProcesses", () => {
+describe("listSecurityRules", () => {
   const originalEnv = process.env;
   const mockFetch = vi.fn();
 
@@ -24,50 +24,56 @@ describe("listProcesses", () => {
 
   describe("initialize", () => {
     it("sets initialized state", () => {
-      expect(() => listProcesses.initialize()).not.toThrow();
+      expect(() => listSecurityRules.initialize()).not.toThrow();
     });
   });
 
   describe("execute", () => {
     it("throws if not initialized", async () => {
       vi.resetModules();
-      const { listProcesses: fresh } = await import("./listProcesses.js");
-      await expect(fresh.execute({})).rejects.toThrow("listProcesses not initialized");
+      const { listSecurityRules: fresh } = await import("./listSecurityRules.js");
+      await expect(fresh.execute({})).rejects.toThrow("listSecurityRules not initialized");
     });
 
     it("makes correct API call and returns results", async () => {
-      listProcesses.initialize();
+      listSecurityRules.initialize();
       const mockResponse = {
-        data: [{ id: "p-1", type: "process", attributes: { pid: 1234, name: "nginx" } }],
+        data: [
+          {
+            id: "rule-1",
+            type: "security_rule",
+            attributes: { name: "SSH Brute Force", is_enabled: true },
+          },
+        ],
       };
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-      const result = await listProcesses.execute({});
+      const result = await listSecurityRules.execute({});
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/v2/processes"),
+        expect.stringContaining("/api/v2/security_monitoring/rules"),
         expect.objectContaining({ method: "GET" }),
       );
       expect(result).toEqual(mockResponse);
     });
 
     it("includes query params when provided", async () => {
-      listProcesses.initialize();
+      listSecurityRules.initialize();
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ data: [] }) });
-      await listProcesses.execute({ search: "nginx", page_limit: 10 });
+      await listSecurityRules.execute({ page_size: 10 });
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("search=nginx"),
+        expect.stringContaining("page%5Bsize%5D=10"),
         expect.objectContaining({ method: "GET" }),
       );
     });
 
     it("handles API errors", async () => {
-      listProcesses.initialize();
+      listSecurityRules.initialize();
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 403,
         statusText: "Forbidden",
         json: async () => ({ errors: ["Forbidden"] }),
       });
-      await expect(listProcesses.execute({})).rejects.toThrow();
+      await expect(listSecurityRules.execute({})).rejects.toThrow();
     });
   });
 });

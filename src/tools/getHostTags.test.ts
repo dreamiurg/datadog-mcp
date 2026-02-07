@@ -32,53 +32,42 @@ describe("getHostTags", () => {
     it("throws if not initialized", async () => {
       vi.resetModules();
       const { getHostTags: fresh } = await import("./getHostTags.js");
-      await expect(fresh.execute({})).rejects.toThrow("getHostTags not initialized");
+      await expect(fresh.execute({ host_name: "myhost" })).rejects.toThrow(
+        "getHostTags not initialized",
+      );
     });
 
     it("makes correct API call and returns results", async () => {
       getHostTags.initialize();
-      const mockResponse = {
-        tags: {
-          "env:prod": ["host1", "host2"],
-          "service:web": ["host1"],
-          "team:backend": ["host2"],
-        },
-      };
+      const mockResponse = { tags: ["env:prod", "service:web", "team:backend"] };
       mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-
-      const result = await getHostTags.execute({});
-
+      const result = await getHostTags.execute({ host_name: "web-server-01" });
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/v1/tags/hosts"),
+        expect.stringContaining("/api/v1/tags/hosts/web-server-01"),
         expect.objectContaining({ method: "GET" }),
       );
       expect(result).toEqual(mockResponse);
     });
 
-    it("handles source parameter", async () => {
+    it("includes source param when provided", async () => {
       getHostTags.initialize();
-      const mockResponse = { tags: {} };
-      mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-
-      await getHostTags.execute({ source: "datadog-agent" });
-
+      mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ tags: [] }) });
+      await getHostTags.execute({ host_name: "myhost", source: "datadog-agent" });
       expect(mockFetch).toHaveBeenCalledWith(
         expect.stringContaining("source=datadog-agent"),
-        expect.anything(),
+        expect.objectContaining({ method: "GET" }),
       );
     });
 
-    it("does not add query string when no source provided", async () => {
+    it("handles API errors", async () => {
       getHostTags.initialize();
-      const mockResponse = { tags: {} };
-      mockFetch.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(mockResponse) });
-
-      await getHostTags.execute({});
-
-      expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/v1/tags/hosts"),
-        expect.anything(),
-      );
+      mockFetch.mockResolvedValueOnce({
+        ok: false,
+        status: 404,
+        statusText: "Not Found",
+        json: async () => ({ errors: ["Not Found"] }),
+      });
+      await expect(getHostTags.execute({ host_name: "unknown" })).rejects.toThrow();
     });
   });
 });
