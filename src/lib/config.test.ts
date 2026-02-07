@@ -49,38 +49,48 @@ describe("config", () => {
   });
 
   describe("getServiceBaseUrl", () => {
-    it("returns default site URL when no env var is set", () => {
+    it("returns api-prefixed default site URL when no env var is set", () => {
       delete process.env.DD_SITE;
       delete process.env.DD_LOGS_SITE;
       delete process.env.DD_METRICS_SITE;
 
-      expect(getServiceBaseUrl("default")).toBe("https://datadoghq.com");
+      expect(getServiceBaseUrl("default")).toBe("https://api.datadoghq.com");
     });
 
-    it("uses DD_SITE for default service", () => {
+    it("prepends api. to DD_SITE for default service", () => {
       process.env.DD_SITE = "datadoghq.eu";
 
-      expect(getServiceBaseUrl("default")).toBe("https://datadoghq.eu");
+      expect(getServiceBaseUrl("default")).toBe("https://api.datadoghq.eu");
     });
 
-    it("uses DD_LOGS_SITE for logs service", () => {
+    it("uses DD_LOGS_SITE as-is when explicitly set to custom value", () => {
+      process.env.DD_SITE = "datadoghq.com";
       process.env.DD_LOGS_SITE = "logs.datadoghq.eu";
 
       expect(getServiceBaseUrl("logs")).toBe("https://logs.datadoghq.eu");
     });
 
-    it("uses DD_METRICS_SITE for metrics service", () => {
+    it("uses DD_METRICS_SITE as-is when explicitly set to custom value", () => {
+      process.env.DD_SITE = "datadoghq.com";
       process.env.DD_METRICS_SITE = "metrics.datadoghq.eu";
 
       expect(getServiceBaseUrl("metrics")).toBe("https://metrics.datadoghq.eu");
     });
 
-    it("falls back to default site when service-specific env is not set", () => {
+    it("prepends api. when service-specific env matches base site", () => {
+      process.env.DD_SITE = "datadoghq.com";
+      process.env.DD_LOGS_SITE = "datadoghq.com";
+
+      expect(getServiceBaseUrl("logs")).toBe("https://api.datadoghq.com");
+    });
+
+    it("falls back to api-prefixed default site when service-specific env is not set", () => {
+      delete process.env.DD_SITE;
       delete process.env.DD_LOGS_SITE;
       delete process.env.DD_METRICS_SITE;
 
-      expect(getServiceBaseUrl("logs")).toBe("https://datadoghq.com");
-      expect(getServiceBaseUrl("metrics")).toBe("https://datadoghq.com");
+      expect(getServiceBaseUrl("logs")).toBe("https://api.datadoghq.com");
+      expect(getServiceBaseUrl("metrics")).toBe("https://api.datadoghq.com");
     });
   });
 

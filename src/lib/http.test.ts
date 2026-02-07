@@ -37,7 +37,7 @@ describe("http", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v1/test",
+        "https://api.datadoghq.com/api/v1/test",
         expect.objectContaining({
           method: "POST",
           headers: expect.objectContaining({

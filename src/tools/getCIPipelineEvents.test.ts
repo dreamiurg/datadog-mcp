@@ -96,7 +96,7 @@ describe("getCIPipelineEvents", () => {
 
       expect(mockFetch).toHaveBeenCalledTimes(1);
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/ci/pipelines/analytics",
+        "https://api.datadoghq.com/api/v2/ci/pipelines/analytics",
         {
           method: "POST",
           headers: {

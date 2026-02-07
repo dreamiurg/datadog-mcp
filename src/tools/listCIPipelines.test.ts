@@ -50,7 +50,7 @@ describe("listCIPipelines", () => {
           },
         ],
         links: {
-          next: "https://datadoghq.com/api/v2/ci/pipelines/events?cursor=xyz",
+          next: "https://api.datadoghq.com/api/v2/ci/pipelines/events?cursor=xyz",
         },
         meta: {
           page: { after: "xyz" },
@@ -66,7 +66,7 @@ describe("listCIPipelines", () => {
       const result = await listCIPipelines.execute({});
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/ci/pipelines/events",
+        "https://api.datadoghq.com/api/v2/ci/pipelines/events",
         expect.objectContaining({
           method: "GET",
           headers: expect.objectContaining({
@@ -98,7 +98,7 @@ describe("listCIPipelines", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/ci/pipelines/events?filter%5Bquery%5D=%40ci.pipeline.name%3Amy-pipeline&filter%5Bfrom%5D=2024-01-01T00%3A00%3A00Z&filter%5Bto%5D=2024-01-31T23%3A59%3A59Z&page%5Blimit%5D=100&page%5Bcursor%5D=abc123&sort=-timestamp",
+        "https://api.datadoghq.com/api/v2/ci/pipelines/events?filter%5Bquery%5D=%40ci.pipeline.name%3Amy-pipeline&filter%5Bfrom%5D=2024-01-01T00%3A00%3A00Z&filter%5Bto%5D=2024-01-31T23%3A59%3A59Z&page%5Blimit%5D=100&page%5Bcursor%5D=abc123&sort=-timestamp",
         expect.any(Object),
       );
     });

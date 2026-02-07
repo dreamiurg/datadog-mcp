@@ -65,7 +65,7 @@ describe("getServiceDefinition", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/services/definitions/my-service",
+        "https://api.datadoghq.com/api/v2/services/definitions/my-service",
         expect.objectContaining({
           method: "GET",
           headers: expect.objectContaining({
@@ -92,7 +92,7 @@ describe("getServiceDefinition", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/services/definitions/my%2Fservice%40v2",
+        "https://api.datadoghq.com/api/v2/services/definitions/my%2Fservice%40v2",
         expect.any(Object),
       );
     });
@@ -112,7 +112,7 @@ describe("getServiceDefinition", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/services/definitions/my-service?schema_version=v2.1",
+        "https://api.datadoghq.com/api/v2/services/definitions/my-service?schema_version=v2.1",
         expect.any(Object),
       );
     });

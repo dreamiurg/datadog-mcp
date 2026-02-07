@@ -82,8 +82,24 @@ export function getCredentials(): { apiKey: string; appKey: string } {
 
 /**
  * Returns the base URL for a given Datadog service.
+ *
+ * For the default service (and when no service-specific env var is set),
+ * prepends "api." to match the official Datadog API endpoint format:
+ * https://api.{site}/api/v1/... (e.g. https://api.datadoghq.com)
+ *
+ * When a service-specific env var (DD_LOGS_SITE, DD_METRICS_SITE, DD_APM_SITE)
+ * is explicitly set, it is used as-is since the user provides the full hostname.
  */
 export function getServiceBaseUrl(service: DatadogService): string {
-  const site = getSiteForService(service) || "datadoghq.com";
-  return `https://${site}`;
+  const serviceSite = getSiteForService(service);
+  const baseSite = process.env.DD_SITE || "datadoghq.com";
+
+  if (service !== "default" && serviceSite && serviceSite !== baseSite) {
+    // Service-specific env var is explicitly set to a custom value — use as-is
+    return `https://${serviceSite}`;
+  }
+
+  // Use base site with api. prefix (matching Datadog SDK behavior)
+  const site = serviceSite || baseSite;
+  return `https://api.${site}`;
 }

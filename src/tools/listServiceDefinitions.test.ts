@@ -63,7 +63,7 @@ describe("listServiceDefinitions", () => {
       const result = await listServiceDefinitions.execute({});
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/services/definitions",
+        "https://api.datadoghq.com/api/v2/services/definitions",
         expect.objectContaining({
           method: "GET",
           headers: expect.objectContaining({
@@ -92,7 +92,7 @@ describe("listServiceDefinitions", () => {
       });
 
       expect(mockFetch).toHaveBeenCalledWith(
-        "https://datadoghq.com/api/v2/services/definitions?page%5Bsize%5D=50&page%5Bnumber%5D=2&schema_version=v2.2",
+        "https://api.datadoghq.com/api/v2/services/definitions?page%5Bsize%5D=50&page%5Bnumber%5D=2&schema_version=v2.2",
         expect.any(Object),
       );
     });
