@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.9.1...v1.9.2) (2026-02-07)
+
+
+### Bug Fixes
+
+* prepend api. subdomain to Datadog API base URLs ([#32](https://github.com/dreamiurg/datadog-mcp-server/issues/32)) ([405fc99](https://github.com/dreamiurg/datadog-mcp-server/commit/405fc994dd4e2ad1a99586dfadfd6ead801436d0))
+
 ## [1.9.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.9.0...v1.9.1) (2026-02-07)
 
 
