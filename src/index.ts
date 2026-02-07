@@ -2303,6 +2303,135 @@ server.tool(
   },
 );
 
+server.tool(
+  "get_organization",
+  "Get your Datadog organization info including name, plan, public ID, and settings. Essential for understanding account configuration.",
+  {},
+  async () => {
+    const result = await getOrganization.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_host_totals",
+  "Get the total number of active and up hosts in your Datadog account. Quick health check for infrastructure scale.",
+  {},
+  async () => {
+    const result = await listHostTotals.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_webhooks",
+  "List all configured webhook integrations. Useful for auditing alert routing and notification channels.",
+  {},
+  async () => {
+    const result = await listWebhooks.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_synthetics_private_locations",
+  "List Synthetics private locations for internal testing. Shows private location IDs, names, and tags.",
+  {},
+  async () => {
+    const result = await listSyntheticsPrivateLocations.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_security_monitoring_rules",
+  "List security monitoring detection rules with pagination. Shows enabled/disabled rules, names, and types.",
+  {
+    page_size: z.number().optional(),
+    page_number: z.number().optional(),
+  },
+  async (params) => {
+    const result = await listSecurityMonitoringRules.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_sensitive_data_scanner_config",
+  "Get Sensitive Data Scanner configuration including scanning groups and rules for PII/sensitive data detection.",
+  {},
+  async () => {
+    const result = await getSensitiveDataScannerConfig.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_incident_services",
+  "List incident services used for categorizing and routing incidents. Filter by name and paginate results.",
+  {
+    page_size: z.number().optional(),
+    page_offset: z.number().optional(),
+    filter: z.string().optional(),
+  },
+  async (params) => {
+    const result = await getIncidentServices.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_gcp_integration",
+  "List Google Cloud Platform integration accounts connected to Datadog.",
+  {},
+  async () => {
+    const result = await listGCPIntegration.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_azure_integration",
+  "List Azure integration accounts connected to Datadog.",
+  {},
+  async () => {
+    const result = await listAzureIntegration.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_cloudflare_accounts",
+  "List Cloudflare accounts integrated with Datadog for monitoring CDN and edge performance.",
+  {},
+  async () => {
+    const result = await listCloudflareAccounts.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_restriction_policies",
+  "Get restriction policy for a specific resource. Shows access control bindings and principals.",
+  {
+    resource_id: z.string(),
+  },
+  async (params) => {
+    const result = await listRestrictionPolicies.execute(params);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "list_confluent_accounts",
+  "List Confluent Cloud accounts integrated with Datadog for monitoring Kafka clusters.",
+  {},
+  async () => {
+    const result = await listConfluentAccounts.execute({} as Record<string, never>);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
 // Start the server
 const transport = new StdioServerTransport();
 server

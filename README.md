@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp-server)
 
-> **The Datadog MCP server your AI deserves.** 108 read-only tools. Every observability pillar. Zero writes. Zero regrets.
+> **The Datadog MCP server your AI deserves.** 106 read-only tools. Every observability pillar. Zero writes. Zero regrets.
 
 ---
 
@@ -12,7 +12,7 @@
 
 Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you some time.
 
-| Feature | **Us (108 tools)** | Next Best (29 tools) | The Others (3-13 tools) |
+| Feature | **Us (106 tools)** | Next Best (29 tools) | The Others (3-13 tools) |
 |---------|:-----------------:|:-------------------:|:----------------------:|
 | Logs (search + aggregate + pipelines + indexes) | **7 tools** | 1 tool | 0-1 tool |
 | APM (traces, spans, services, dependencies) | **7 tools** | 1 tool | 0 tools |
@@ -45,7 +45,7 @@ Look, we get it. You searched "datadog mcp server" and got seven results. You're
 | API Key Management | **1 tool** | 0 tools | 0 tools |
 | Monitor Notifications | **1 tool** | 0 tools | 0 tools |
 | IP Ranges & Config | **1 tool** | 0 tools | 0 tools |
-| **Total** | **108** | **20** | **3-13** |
+| **Total** | **106** | **20** | **3-13** |
 | Accidentally deletes your monitors | No | No | No |
 | Can mute your hosts at 3 AM | **No** | Yes | No |
 | Test coverage | 90%+ | Unknown | Hopeful |
@@ -180,7 +180,7 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 
 ---
 
-## The Full Arsenal (108 Tools)
+## The Full Arsenal (106 Tools)
 
 ### Logs & Log Management
 
@@ -405,7 +405,7 @@ There are approximately seven thousand Datadog MCP servers on GitHub. Here's how
 
 | Capability | **Us** | winor30 | GeLi2001 | shelfio | ppandrangi |
 |-----------|:------:|:-------:|:--------:|:-------:|:---------:|
-| Total tools | **108** | 20 | 10 | 13 | 29 |
+| Total tools | **106** | 20 | 10 | 13 | 29 |
 | Read-only by design | Yes | No | Yes | Yes | No |
 | Can mute your hosts | No | **Yes** | No | No | No |
 | Can delete your dashboards | No | No | No | No | **Yes** |
