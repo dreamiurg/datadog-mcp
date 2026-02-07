@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp-server)
 
-> **The Datadog MCP server your AI deserves.** 48 read-only tools. Every observability pillar. Zero writes. Zero regrets.
+> **The Datadog MCP server your AI deserves.** 84 read-only tools. Every observability pillar. Zero writes. Zero regrets.
 
 ---
 
@@ -12,7 +12,7 @@
 
 Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you some time.
 
-| Feature | **Us (48 tools)** | Next Best (20 tools) | The Others (3-13 tools) |
+| Feature | **Us (84 tools)** | Next Best (29 tools) | The Others (3-13 tools) |
 |---------|:-----------------:|:-------------------:|:----------------------:|
 | Logs (search + aggregate + pipelines + indexes) | **4 tools** | 1 tool | 0-1 tool |
 | APM (traces, spans, services, dependencies) | **6 tools** | 1 tool | 0 tools |
@@ -21,20 +21,28 @@ Look, we get it. You searched "datadog mcp server" and got seven results. You're
 | Dashboards (get, list, collections) | **3 tools** | 1 tool | 0-1 tool |
 | SLOs (list, get, history) | **3 tools** | 0 tools | 0-1 tool |
 | Synthetics (tests + results) | **2 tools** | 0 tools | 0-1 tool |
-| Security (findings, posture, signals) | **4 tools** | 0 tools | 0-1 tool |
-| Infrastructure (hosts, tags, containers, processes) | **4 tools** | 2 tools | 0-1 tool |
+| Security (findings, posture, signals) | **8 tools** | 0 tools | 0-1 tool |
+| Infrastructure (hosts, tags, containers, processes) | **7 tools** | 2 tools | 0-1 tool |
 | Service Catalog | **2 tools** | 0 tools | 0-1 tool |
 | CI Visibility | **2 tools** | 0 tools | 0-1 tool |
 | Organization (teams, users) | **2 tools** | 0 tools | 0-1 tool |
 | Metrics (query, metadata, volumes, list) | **4 tools** | 1 tool | 0-1 tool |
-| Error Tracking | **1 tool** | 0 tools | 0 tools |
+| Error Tracking | **2 tools** | 0 tools | 0 tools |
 | Database Monitoring | **1 tool** | 0 tools | 0 tools |
-| Audit Trail | **1 tool** | 0 tools | 0 tools |
-| Usage & Billing | **1 tool** | 0 tools | 0 tools |
-| Notebooks | **1 tool** | 0 tools | 0 tools |
-| Events & Incidents | **3 tools** | 2 tools | 0-1 tool |
+| Audit Trail | **2 tools** | 0 tools | 0 tools |
+| Usage & Billing | **3 tools** | 0 tools | 0 tools |
+| Notebooks | **3 tools** | 0 tools | 0 tools |
+| Events & Incidents | **5 tools** | 2 tools | 0-1 tool |
 | Downtimes | **1 tool** | 1 tool | 0-1 tool |
-| **Total** | **48** | **20** | **3-13** |
+| Network Monitoring | **2 tools** | 0 tools | 0 tools |
+| Cloud Cost Management | **1 tool** | 0 tools | 0 tools |
+| DORA Metrics | **1 tool** | 0 tools | 0 tools |
+| Workflows & Automation | **1 tool** | 0 tools | 0 tools |
+| Fleet Management | **1 tool** | 0 tools | 0 tools |
+| AWS Integration | **1 tool** | 0 tools | 0 tools |
+| API Key Management | **1 tool** | 0 tools | 0 tools |
+| Monitor Notifications | **1 tool** | 0 tools | 0 tools |
+| **Total** | **84** | **20** | **3-13** |
 | Accidentally deletes your monitors | No | No | No |
 | Can mute your hosts at 3 AM | **No** | Yes | No |
 | Test coverage | 90%+ | Unknown | Hopeful |
@@ -169,7 +177,7 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 
 ---
 
-## The Full Arsenal (48 Tools)
+## The Full Arsenal (84 Tools)
 
 ### Logs & Log Management
 
@@ -246,6 +254,8 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-hosts` | List infrastructure hosts | *"Show all production hosts"* |
 | `get-host-tags` | Get tags for all hosts | *"What tags are on our hosts?"* |
 | `get-active-hosts-count` | Get total active/up host count | *"How many hosts are running?"* |
+| `list-network-devices` | List NDM network devices | *"Show network device status"* |
+| `list-fleet-agents` | List Datadog agents across fleet | *"Which agents are outdated?"* |
 | `get-containers` | List running containers | *"Show containers filtered by image"* |
 | `list-processes` | List running processes | *"Find java processes across hosts"* |
 
@@ -272,6 +282,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-security-finding` | Get a specific security finding | *"Get finding abc123"* |
 | `list-posture-findings` | List compliance/posture findings | *"Show failed compliance checks"* |
 | `search-security-signals` | Search security monitoring signals | *"Recent threat detections"* |
+| `get-csm-coverage` | Get CSM coverage across cloud accounts | *"Which AWS accounts lack security coverage?"* |
+| `list-vulnerabilities` | List vulnerability findings | *"Show critical CVEs in production"* |
+| `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
+| `list-security-rules` | List security monitoring rules | *"What detection rules are active?"* |
 
 ### Organization
 
@@ -285,13 +299,71 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `get-events` | Fetch events in a time range | *"What events happened today?"* |
-| `get-incidents` | List incidents | *"Show active incidents"* |
 | `get-downtimes` | List scheduled maintenance | *"Any active downtimes?"* |
-| `get-notebooks` | List Datadog notebooks | *"What notebooks do we have?"* |
-| `search-error-tracking-events` | Search error tracking issues | *"Recent error tracking events in prod"* |
-| `get-audit-events` | Search audit trail | *"Who changed monitor configs this week?"* |
 | `get-dbm-samples` | Get Database Monitoring query samples | *"Show slow postgres queries"* |
-| `get-usage` | Get usage and billing data | *"What's our log ingestion volume?"* |
+
+### Audit & Usage
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `search-audit-logs` | Search audit trail with filters | *"Who changed configs in the last hour?"* |
+| `get-hourly-usage` | Get hourly usage metering by product | *"Show log ingestion usage trends"* |
+| `get-top-avg-metrics` | Get top custom metrics by hourly average | *"Which custom metrics drive cardinality costs?"* |
+
+### Notebooks
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `list-notebooks` | List Datadog notebooks with filtering | *"Find investigation notebooks"* |
+| `get-notebook` | Get a specific notebook by ID | *"Show notebook 12345"* |
+
+### Containers & Processes
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `list-containers` | List containers with tag filtering | *"Show running containers in us-east-1"* |
+| `list-processes` | List processes across hosts | *"Find Java processes with high memory"* |
+
+### Network Monitoring
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `list-network-devices` | List NDM network devices | *"Show network device status"* |
+| `aggregate-network-connections` | Aggregate network flow analytics | *"Top network flows by bandwidth"* |
+
+### Security & Compliance
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `list-security-rules` | List security monitoring rules | *"What detection rules are active?"* |
+| `search-error-tracking-issues` | Search error tracking issues | *"Top errors by volume in production"* |
+| `get-csm-coverage` | Get CSM coverage across cloud accounts | *"Which AWS accounts lack security coverage?"* |
+| `list-vulnerabilities` | List vulnerability findings | *"Show critical CVEs in production"* |
+| `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
+
+### Incidents
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `search-incidents` | Search incidents with advanced filters | *"Find P1 incidents related to database"* |
+| `get-incident-todos` | Get action items for an incident | *"What's pending for this P0?"* |
+
+### Cloud & Integrations
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `list-aws-accounts` | List integrated AWS accounts | *"Which AWS accounts are connected?"* |
+| `list-api-keys` | List Datadog API keys | *"What API keys are active?"* |
+
+### DevOps & Automation
+
+| Tool | What It Does | Try Asking |
+|------|-------------|------------|
+| `list-dora-deployments` | List DORA deployment events | *"Show deployment frequency for web service"* |
+| `list-workflows` | List workflow automations | *"What incident response workflows exist?"* |
+| `list-fleet-agents` | List Datadog agents across fleet | *"Which agents are outdated?"* |
+| `list-monitor-notification-rules` | List monitor notification routing | *"Who gets alerted for this monitor?"* |
+| `list-cost-budgets` | List cloud cost budgets | *"Are any teams over budget?"* |
 
 ---
 
@@ -301,12 +373,12 @@ There are approximately seven thousand Datadog MCP servers on GitHub. Here's how
 
 | Capability | **Us** | winor30 | GeLi2001 | shelfio | ppandrangi |
 |-----------|:------:|:-------:|:--------:|:-------:|:---------:|
-| Total tools | **48** | 20 | 10 | 13 | 29 |
+| Total tools | **84** | 20 | 10 | 13 | 29 |
 | Read-only by design | Yes | No | Yes | Yes | No |
 | Can mute your hosts | No | **Yes** | No | No | No |
 | Can delete your dashboards | No | No | No | No | **Yes** |
 | Can schedule downtimes | No | **Yes** | No | No | **Yes** |
-| Test suite | 219 tests | - | - | - | - |
+| Test suite | 376 tests | - | - | - | - |
 | Last meaningful update | Today | Recent | Dec 2025 | Jan 2026 | Dec 2025 |
 
 > **A note on write operations:** Some competitors let your AI create monitors, delete dashboards, and schedule downtimes. That's a feature. It's also the plot of every "AI gone wrong" movie. We chose the boring path: read everything, touch nothing.
@@ -374,8 +446,9 @@ For least-privilege security, create an Application Key with only required scope
 | Metrics (`get-metrics`, `get-metric-metadata`, `query-metrics`, `search-metric-volumes`) | `metrics_read` |
 | Events (`get-events`) | `events_read` |
 | Logs (`search-logs`, `aggregate-logs`, `get-log-pipelines`, `get-log-indexes`) | `logs_read_data` |
-| Incidents (`get-incidents`) | `incident_read` |
-| Hosts (`get-hosts`, `get-host-tags`, `get-active-hosts-count`, `get-containers`, `list-processes`) | `hosts_read` |
+| Incidents (`search-incidents`, `get-incident-todos`) | `incident_read` |
+| Hosts (`get-hosts`, `get-host-tags`, `get-active-hosts-count`) | `hosts_read` |
+| Containers (`list-containers`) | `containers_read` |
 | Downtimes (`get-downtimes`) | `monitors_downtime` |
 | SLOs (`get-slos`, `get-slo`, `get-slo-history`) | `slos_read` |
 | APM (`search-spans`, `aggregate-spans`, `get-trace`, `search-apm-events`, `list-active-apm-events`) | `apm_read` |
@@ -384,14 +457,25 @@ For least-privilege security, create an Application Key with only required scope
 | RUM (`search-rum-events`, `list-rum-applications`, `aggregate-rum-events`) | `rum_read` |
 | Synthetics (`get-synthetic-tests`, `get-synthetic-results`) | `synthetics_read` |
 | Security (`search-security-findings`, `get-security-finding`, `list-posture-findings`, `search-security-signals`) | `security_monitoring_findings_read` |
+| Security Rules (`list-security-rules`) | `security_monitoring_rules_read` |
+| CSM (`get-csm-coverage`, `list-csm-threats-agent-rules`) | `csm_agents_read` |
+| Vulnerabilities (`list-vulnerabilities`) | `security_monitoring_findings_read` |
 | Teams (`list-teams`) | `teams_read` |
 | Users (`list-users`) | `user_access_read` |
-| Notebooks (`get-notebooks`) | `notebooks_read` |
+| Notebooks (`list-notebooks`, `get-notebook`) | `notebooks_read` |
 | CI Visibility (`list-ci-pipelines`, `get-ci-pipeline-events`) | `ci_visibility_pipelines_read` |
-| Error Tracking (`search-error-tracking-events`) | `error_tracking_read` |
-| Audit (`get-audit-events`) | `audit_trail_read` |
+| Error Tracking (`search-error-tracking-issues`) | `error_tracking_read` |
+| Audit (`search-audit-logs`) | `audit_trail_read` |
 | DBM (`get-dbm-samples`) | `dbm_read` |
-| Usage (`get-usage`) | `usage_read` |
+| Usage (`get-hourly-usage`, `get-top-avg-metrics`) | `usage_read` |
+| Network (`list-network-devices`, `aggregate-network-connections`) | `ndm_read` |
+| AWS Integration (`list-aws-accounts`) | `aws_configuration_read` |
+| API Keys (`list-api-keys`) | `api_keys_read` |
+| DORA (`list-dora-deployments`) | `dora_deployment_read` |
+| Workflows (`list-workflows`) | `workflows_read` |
+| Fleet (`list-fleet-agents`) | `fleet_read` |
+| Cost (`list-cost-budgets`) | `cost_management_read` |
+| Monitor Notifications (`list-monitor-notification-rules`) | `monitors_read` |
 
 **Create a scoped key:** Organization Settings -> Application Keys -> New Key -> Select scopes
 
@@ -445,7 +529,7 @@ npm test
 | Script | Description |
 |--------|-------------|
 | `npm run build` | Compile TypeScript |
-| `npm test` | Run tests (219 of them) |
+| `npm test` | Run tests (376 of them) |
 | `npm run test:coverage` | Run tests with coverage (90%+ enforced) |
 | `npm run lint` | Run Biome linter |
 | `npm run typecheck` | Type check |
