@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.9.0...v1.9.1) (2026-02-07)
+
+
+### Bug Fixes
+
+* register 12 missing Wave 7 tools and fix README count to 106 ([#30](https://github.com/dreamiurg/datadog-mcp-server/issues/30)) ([295ac4b](https://github.com/dreamiurg/datadog-mcp-server/commit/295ac4b469cfd17ce86a40e6f73aff761a34f176))
+
 ## [1.9.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.8.0...v1.9.0) (2026-02-07)
 
 
