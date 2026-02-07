@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.8.0...v1.9.0) (2026-02-07)
+
+
+### Features
+
+* add 12 Wave 7 tools (96→108 total) ([#27](https://github.com/dreamiurg/datadog-mcp-server/issues/27)) ([d5542d7](https://github.com/dreamiurg/datadog-mcp-server/commit/d5542d7667ecb359c9f936335e0f78123a36b912))
+
+
+### Documentation
+
+* update README to reflect 108 tools ([#29](https://github.com/dreamiurg/datadog-mcp-server/issues/29)) ([2a9a8ac](https://github.com/dreamiurg/datadog-mcp-server/commit/2a9a8acba150d022ec1decaeb27a09694bd149e0))
+
 ## [1.8.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.7.0...v1.8.0) (2026-02-07)
 
 
