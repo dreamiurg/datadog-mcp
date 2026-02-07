@@ -44,6 +44,9 @@ $RECYCLE.BIN/
 logs/
 *.log
 
+# OMC state
+.omc/
+
 # Misc
 .tmp/
 temp/

@@ -39,11 +39,11 @@ When asked to "create a release", the correct action is to merge the pending Rel
 
 ## GitHub
 
-- **Repo**: `dreamiurg/datadog-mcp-server` (standalone, not a fork)
+- **Repo**: `dreamiurg/datadog-mcp` (standalone, not a fork)
 - **Merge strategy**: Squash-only
 - **Branch protection**: Sentinel job (`Required Checks`) via ruleset
 - **CI**: lint, typecheck, test (Node 20/22/23), complexity, build
-- **PRs**: Always use `--repo dreamiurg/datadog-mcp-server` with `gh` CLI
+- **PRs**: Always use `--repo dreamiurg/datadog-mcp` with `gh` CLI
 
 ## Code Style
 

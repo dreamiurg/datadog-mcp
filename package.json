@@ -1,11 +1,11 @@
 {
-  "name": "datadog-mcp-server",
+  "name": "datadog-mcp",
   "version": "1.10.0",
   "description": "MCP Server for Datadog API",
   "main": "dist/index.js",
   "type": "commonjs",
   "bin": {
-    "datadog-mcp-server": "./dist/index.js"
+    "datadog-mcp": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
@@ -63,10 +63,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dreamiurg/datadog-mcp-server.git"
+    "url": "git+https://github.com/dreamiurg/datadog-mcp.git"
   },
   "bugs": {
-    "url": "https://github.com/dreamiurg/datadog-mcp-server/issues"
+    "url": "https://github.com/dreamiurg/datadog-mcp/issues"
   },
-  "homepage": "https://github.com/dreamiurg/datadog-mcp-server#readme"
+  "homepage": "https://github.com/dreamiurg/datadog-mcp#readme"
 }

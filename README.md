@@ -1,8 +1,8 @@
 # Datadog MCP Server
 
-[![CI](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/dreamiurg/datadog-mcp-server/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp-server/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp-server)
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp-server)
+[![CI](https://github.com/dreamiurg/datadog-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/dreamiurg/datadog-mcp/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp)
 
 > **The Datadog MCP server your AI deserves.** 116 read-only tools. Every observability pillar. Zero writes. Zero regrets.
 
@@ -10,59 +10,70 @@
 
 ## Why This One?
 
-Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you some time.
+Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you approximately forty-five seconds of reading other READMEs that say "supports monitors and dashboards" like that's supposed to impress someone.
 
-| Feature | **Us (116 tools)** | Another Server | Yet Another | A Third One |
+| Feature | **Us (116 tools)** | Project 1 | Project 2 | Project 3 |
 |---------|:-----------------:|:-------------------:|:----------------------:|:----------------------:|
+| | | | | |
+| **Observability Core** | | | | |
 | Logs (search + aggregate + pipelines + indexes) | **7 tools** | 1 tool | 0-1 tool | 0-1 tool |
 | APM (traces, spans, services, dependencies) | **7 tools** | 1 tool | 0 tools | 0 tools |
+| Metrics (query, metadata, volumes, tags) | **6 tools** | 1 tool | 0-1 tool | 0 tools |
 | RUM (events, apps, aggregation) | **3 tools** | 3 tools | 0 tools | 0 tools |
+| | | | | |
+| **Alerting & Reliability** | | | | |
 | Monitors (list, get, search) | **4 tools** | 1 tool | 0-1 tool | 0-1 tool |
 | Dashboards (get, list, collections) | **3 tools** | 1 tool | 0-1 tool | 0-1 tool |
 | SLOs (list, get, history, search, corrections) | **5 tools** | 0 tools | 0-1 tool | 0-1 tool |
 | Synthetics (tests, results, locations) | **5 tools** | 0 tools | 0-1 tool | 0 tools |
-| Security (findings, posture, signals, rules, scanning) | **10 tools** | 0 tools | 0-1 tool | 0 tools |
+| Events & Incidents | **7 tools** | 2 tools | 0-1 tool | 0 tools |
+| Downtimes | **2 tools** | 1 tool | 0-1 tool | 0 tools |
+| | | | | |
+| **Infrastructure & Security** | | | | |
 | Infrastructure (hosts, tags, containers, processes) | **8 tools** | 2 tools | 0-1 tool | 0-1 tool |
+| Security (findings, posture, signals, rules, scanning) | **10 tools** | 0 tools | 0-1 tool | 0 tools |
+| Network Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Cloud Integrations (AWS/GCP/Azure/Cloudflare/Confluent) | **5 tools** | 0 tools | 0 tools | 0 tools |
+| | | | | |
+| **Platform & DevOps** | | | | |
 | Service Catalog | **3 tools** | 0 tools | 0-1 tool | 0 tools |
 | CI Visibility (pipelines + tests) | **4 tools** | 0 tools | 0-1 tool | 0 tools |
 | Organization (teams, users, auth) | **5 tools** | 0 tools | 0-1 tool | 0 tools |
-| Metrics (query, metadata, volumes, tags) | **6 tools** | 1 tool | 0-1 tool | 0 tools |
 | Error Tracking | **2 tools** | 0 tools | 0 tools | 0 tools |
 | Database Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Workflows & Automation | **2 tools** | 0 tools | 0 tools | 0 tools |
+| DORA Metrics | **1 tool** | 0 tools | 0 tools | 0 tools |
+| | | | | |
+| **Governance & Cost** | | | | |
 | Audit Trail | **2 tools** | 0 tools | 0 tools | 0 tools |
 | Usage & Billing | **4 tools** | 0 tools | 0 tools | 0 tools |
-| Notebooks | **3 tools** | 0 tools | 0 tools | 0 tools |
-| Events & Incidents | **7 tools** | 2 tools | 0-1 tool | 0 tools |
-| Downtimes | **2 tools** | 1 tool | 0-1 tool | 0 tools |
-| Network Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
 | Cloud Cost Management | **1 tool** | 0 tools | 0 tools | 0 tools |
-| DORA Metrics | **1 tool** | 0 tools | 0 tools | 0 tools |
-| Workflows & Automation | **2 tools** | 0 tools | 0 tools | 0 tools |
-| Fleet Management | **1 tool** | 0 tools | 0 tools | 0 tools |
-| Cloud Integrations (AWS/GCP/Azure/Cloudflare/Confluent) | **5 tools** | 0 tools | 0 tools | 0 tools |
-| Webhooks | **1 tool** | 0 tools | 0 tools | 0 tools |
 | Access Control (keys, mappings, policies) | **4 tools** | 0 tools | 0 tools | 0 tools |
+| Notebooks | **3 tools** | 0 tools | 0 tools | 0 tools |
+| Fleet Management | **1 tool** | 0 tools | 0 tools | 0 tools |
+| Webhooks | **1 tool** | 0 tools | 0 tools | 0 tools |
 | Monitor Notifications | **1 tool** | 0 tools | 0 tools | 0 tools |
 | IP Ranges & Config | **1 tool** | 0 tools | 0 tools | 0 tools |
+| | | | | |
 | **Total** | **116** | ~20 | ~13 | ~29 |
 | Accidentally deletes your monitors | No | No | No | No |
 | Can mute your hosts at 3 AM | **No** | No | No | Yes |
 | Test coverage | 90%+ | Unknown | Unknown | Unknown |
 
-We're not saying the other MCP servers are bad. They're all built by talented engineers who are contributing to open source. Some of them have features we don't, like the ability to *write* to your Datadog account from an AI chat window. We chose not to include those. On purpose. You're welcome.
+We're not saying the other MCP servers are bad. That would be rude, and also legally questionable. They're all built by talented engineers who are contributing to open source and making the ecosystem better. Some of them have features we don't, like the ability to *write* to your Datadog account from an AI chat window. We chose not to include those. On purpose. You're welcome.
 
 ### The Philosophy
 
 **Read everything. Write nothing.**
 
-Your AI assistant should be able to *see* all of Datadog. It should *not* be able to silence your pager at 3 AM because it decided your alerts were "probably fine." We have opinions about this.
+Your AI assistant should be able to *see* all of Datadog. It should *not* be able to silence your pager at 3 AM because it decided your alerts were "probably fine." That's not a hypothetical scenario. That's a Tuesday. We have opinions about this, and they are all correct.
 
 ---
 
 ## Quick Start
 
 ```bash
-npx github:dreamiurg/datadog-mcp-server --help
+npx github:dreamiurg/datadog-mcp --help
 ```
 
 **That's it.** No installation required. Node.js 20+. Works in 8 seconds. We timed it.
@@ -88,7 +99,7 @@ You need two keys from your [Datadog Organization Settings](https://app.datadogh
 <summary><strong>Claude Code (CLI)</strong></summary>
 
 ```bash
-claude mcp add datadog -- npx github:dreamiurg/datadog-mcp-server \
+claude mcp add datadog -- npx github:dreamiurg/datadog-mcp \
   --apiKey YOUR_API_KEY \
   --appKey YOUR_APP_KEY \
   --site datadoghq.com
@@ -101,7 +112,7 @@ Or add to `~/.claude.json`:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
+      "args": ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
     }
   }
 }
@@ -120,7 +131,7 @@ Add to your config file:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
+      "args": ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
     }
   }
 }
@@ -141,7 +152,7 @@ Add to your config file:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
+      "args": ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
     }
   }
 }
@@ -158,7 +169,7 @@ Add to `~/.gemini/settings.json`:
   "mcpServers": {
     "datadog": {
       "command": "npx",
-      "args": ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
+      "args": ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
     }
   }
 }
@@ -173,7 +184,7 @@ Add to `~/.codex/config.toml`:
 ```toml
 [mcp_servers.datadog]
 command = "npx"
-args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
+args = ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", "YOUR_APP_KEY"]
 ```
 </details>
 
@@ -181,7 +192,8 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 
 ## The Full Arsenal (116 Tools)
 
-### Logs & Log Management
+<details>
+<summary><strong>Logs & Log Management</strong> (7 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -193,7 +205,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-logs-archive-order` | Get log archive priority order | *"Which archives are checked first for rehydration?"* |
 | `list-logs-metrics` | List log-based custom metrics | *"What metrics are generated from logs?"* |
 
-### APM & Traces
+</details>
+
+<details>
+<summary><strong>APM & Traces</strong> (7 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -205,7 +220,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-active-apm-events` | List currently active APM events | *"What APM events are happening right now?"* |
 | `list-spans-metrics` | List span-based APM metrics | *"What custom span metrics are configured?"* |
 
-### Metrics
+</details>
+
+<details>
+<summary><strong>Metrics</strong> (6 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -216,7 +234,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-metric-tag-config` | Get tag configuration for a specific metric | *"What tags are indexed for system.cpu.user?"* |
 | `list-metric-tag-configs` | List metric tag configurations | *"Which metrics have custom tag configurations?"* |
 
-### Monitors & Alerting
+</details>
+
+<details>
+<summary><strong>Monitors & Alerting</strong> (4 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -225,7 +246,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `search-monitors` | Search monitors by query | *"Find monitors related to database"* |
 | `get-monitor-config-policies` | Get monitor configuration policies | *"What monitor config policies are enforced?"* |
 
-### Dashboards
+</details>
+
+<details>
+<summary><strong>Dashboards</strong> (3 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -233,7 +257,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-dashboard` | Get dashboard details and widgets | *"Show the API metrics dashboard"* |
 | `list-dashboard-lists` | List dashboard collections | *"What dashboard lists are organized?"* |
 
-### SLOs
+</details>
+
+<details>
+<summary><strong>SLOs</strong> (5 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -243,7 +270,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-slo-corrections` | List SLO correction periods | *"What SLO corrections have been applied?"* |
 | `search-slos` | Search SLOs with query filters | *"Find all SLOs with error budget below 10%"* |
 
-### Synthetics
+</details>
+
+<details>
+<summary><strong>Synthetics</strong> (5 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -253,7 +283,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-synthetics-locations` | List available Synthetics testing locations | *"Where can I run Synthetics tests from?"* |
 | `list-synthetics-private-locations` | List Synthetics private locations | *"What private locations are configured for testing?"* |
 
-### Real User Monitoring (RUM)
+</details>
+
+<details>
+<summary><strong>Real User Monitoring (RUM)</strong> (3 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -261,7 +294,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-rum-applications` | List registered RUM applications | *"What apps have RUM enabled?"* |
 | `aggregate-rum-events` | Analytics on RUM data (counts, averages, group-by) | *"Average page load time by country"* |
 
-### Infrastructure
+</details>
+
+<details>
+<summary><strong>Infrastructure</strong> (8 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -274,7 +310,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-containers` | List running containers | *"Show containers filtered by image"* |
 | `list-processes` | List running processes | *"Find java processes across hosts"* |
 
-### Service Catalog
+</details>
+
+<details>
+<summary><strong>Service Catalog</strong> (3 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -282,7 +321,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-service-definition` | Get a single service definition | *"Who owns the auth service?"* |
 | `get-service-dependencies` | Get service dependency map | *"What does the payment service depend on?"* |
 
-### CI Visibility
+</details>
+
+<details>
+<summary><strong>CI Visibility</strong> (4 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -291,7 +333,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-ci-tests` | List CI test events | *"Show failed tests in the last hour"* |
 | `search-ci-test-events` | Search CI test events with filters | *"Find flaky tests in the checkout service"* |
 
-### Security
+</details>
+
+<details>
+<summary><strong>Security</strong> (10 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -306,7 +351,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-security-monitoring-rules` | List security monitoring detection rules | *"What security detection rules are configured?"* |
 | `get-sensitive-data-scanner-config` | Get Sensitive Data Scanner configuration | *"What sensitive data scanning rules are active?"* |
 
-### Organization
+</details>
+
+<details>
+<summary><strong>Organization</strong> (5 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -316,7 +364,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-users` | List Datadog users | *"Who has access to Datadog?"* |
 | `list-authn-mappings` | List SAML/OIDC authentication mappings | *"How do IdP groups map to Datadog roles?"* |
 
-### Everything Else
+</details>
+
+<details>
+<summary><strong>Events, Downtimes & Database Monitoring</strong> (6 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -327,7 +378,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-dbm-query-metrics` | Get Database Monitoring query metrics | *"Which queries have the highest latency?"* |
 | `get-ip-ranges` | Get Datadog IP ranges for firewall config | *"What IPs should I allowlist for Datadog?"* |
 
-### Audit & Usage
+</details>
+
+<details>
+<summary><strong>Audit & Usage</strong> (4 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -336,28 +390,40 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-top-avg-metrics` | Get top custom metrics by hourly average | *"Which custom metrics drive cardinality costs?"* |
 | `get-estimated-cost` | Get estimated usage cost data | *"What's our projected Datadog bill this month?"* |
 
-### Notebooks
+</details>
+
+<details>
+<summary><strong>Notebooks</strong> (2 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `list-notebooks` | List Datadog notebooks with filtering | *"Find investigation notebooks"* |
 | `get-notebook` | Get a specific notebook by ID | *"Show notebook 12345"* |
 
-### Containers & Processes
+</details>
+
+<details>
+<summary><strong>Containers & Processes</strong> (2 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `list-containers` | List containers with tag filtering | *"Show running containers in us-east-1"* |
 | `list-processes` | List processes across hosts | *"Find Java processes with high memory"* |
 
-### Network Monitoring
+</details>
+
+<details>
+<summary><strong>Network Monitoring</strong> (2 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `list-network-devices` | List NDM network devices | *"Show network device status"* |
 | `aggregate-network-connections` | Aggregate network flow analytics | *"Top network flows by bandwidth"* |
 
-### Security & Compliance
+</details>
+
+<details>
+<summary><strong>Security & Compliance</strong> (5 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -367,7 +433,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-vulnerabilities` | List vulnerability findings | *"Show critical CVEs in production"* |
 | `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
 
-### Incidents
+</details>
+
+<details>
+<summary><strong>Incidents</strong> (4 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -376,7 +445,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `get-incident-timeline` | Get timeline events for an incident | *"Show the timeline for incident xyz"* |
 | `get-incident-services` | List incident services | *"What services are configured for incident management?"* |
 
-### Cloud & Integrations
+</details>
+
+<details>
+<summary><strong>Cloud & Integrations</strong> (7 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -388,7 +460,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-webhooks` | List webhook integrations | *"What webhooks are configured?"* |
 | `list-api-keys` | List Datadog API keys | *"What API keys are active?"* |
 
-### DevOps & Automation
+</details>
+
+<details>
+<summary><strong>DevOps & Automation</strong> (6 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -399,7 +474,10 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-monitor-notification-rules` | List monitor notification routing | *"Who gets alerted for this monitor?"* |
 | `list-cost-budgets` | List cloud cost budgets | *"Are any teams over budget?"* |
 
-### Access Control
+</details>
+
+<details>
+<summary><strong>Access Control</strong> (3 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
@@ -407,13 +485,16 @@ args = ["github:dreamiurg/datadog-mcp-server", "--apiKey", "YOUR_API_KEY", "--ap
 | `list-app-keys` | List application keys for the current user | *"What application keys do I have?"* |
 | `list-authn-mappings` | List authentication mappings | *"How do SAML groups map to Datadog roles?"* |
 
+</details>
+
 ---
 
-## The Competitive Landscape (We Did the Research So You Don't Have To)
+<details>
+<summary><strong>The Competitive Landscape</strong> (We did the research so you don't have to)</summary>
 
-There are approximately seven thousand Datadog MCP servers on GitHub. Here's how they stack up:
+There are approximately seven thousand Datadog MCP servers on GitHub. We counted. Then we lost count. Then we counted again. Here's how they stack up:
 
-| Capability | **Us** | Another Server | Another Server | Another Server | Another Server |
+| Capability | **Us** | Project 1 | Project 2 | Project 3 | Project 4 |
 |-----------|:------:|:-------:|:--------:|:-------:|:---------:|
 | Total tools | **116** | ~20 | ~10 | ~13 | ~29 |
 | Read-only by design | Yes | No | Yes | Yes | No |
@@ -423,17 +504,19 @@ There are approximately seven thousand Datadog MCP servers on GitHub. Here's how
 | Test suite | 570 tests | - | - | - | - |
 | Last meaningful update | Today | Recent | Dec 2025 | Jan 2026 | Dec 2025 |
 
-> **A note on write operations:** Some servers let your AI create monitors, delete dashboards, and schedule downtimes. That's a feature. It's also the plot of every "AI gone wrong" movie. We chose the boring path: read everything, touch nothing.
+> **A note on write operations:** Some servers let your AI create monitors, delete dashboards, and schedule downtimes. That's a feature. It's also the plot of every "AI gone wrong" movie ever made. We chose the boring path: read everything, touch nothing. Our therapist says this is healthy.
 
 ### What They Have That We Don't
 
-In the interest of full transparency:
+In the interest of full transparency (and because our lawyers said we had to):
 
-- Some servers can mute/unmute hosts and schedule downtimes (write operations we intentionally excluded)
-- Some servers can CRUD monitors and dashboards (see above re: AI movies)
+- Some servers can mute/unmute hosts and schedule downtimes (write operations we intentionally excluded because we enjoy sleeping)
+- Some servers can CRUD monitors and dashboards (see above re: AI movies, and also re: sleeping)
 - Some servers have unique metric field exploration tools
 
-We sleep well at night.
+We sleep *extremely* well at night.
+
+</details>
 
 ---
 
@@ -472,58 +555,56 @@ DD_METRICS_SITE=api.datadoghq.com # Optional, override for metrics API
 
 ```bash
 # Pretty logs for development
-LOG_FORMAT=pretty npx github:dreamiurg/datadog-mcp-server --apiKey ... --appKey ...
+LOG_FORMAT=pretty npx github:dreamiurg/datadog-mcp --apiKey ... --appKey ...
 ```
 
 ---
 
-## Application Key Scopes
+<details>
+<summary><strong>Application Key Scopes</strong> (for least-privilege security)</summary>
 
-For least-privilege security, create an Application Key with only required scopes:
+Create an Application Key with only the scopes you need:
 
-| Tools | Required Scope |
-|-------|----------------|
-| Monitors (`get-monitors`, `get-monitor`, `search-monitors`) | `monitors_read` |
-| Dashboards (`get-dashboards`, `get-dashboard`, `list-dashboard-lists`) | `dashboards_read` |
-| Metrics (`get-metrics`, `get-metric-metadata`, `query-metrics`, `search-metric-volumes`, `get-metric-tag-config`, `list-metric-tag-configs`) | `metrics_read` |
-| Events (`get-events`) | `events_read` |
-| Logs (`search-logs`, `aggregate-logs`, `get-log-pipelines`, `get-log-indexes`) | `logs_read_data` |
-
-| Hosts (`get-hosts`, `get-host-tags`, `get-active-hosts-count`) | `hosts_read` |
-| Containers (`list-containers`) | `containers_read` |
-| Downtimes (`get-downtimes`) | `monitors_downtime` |
-| SLOs (`get-slos`, `get-slo`, `get-slo-history`) | `slos_read` |
-| APM (`search-spans`, `aggregate-spans`, `get-trace`, `search-apm-events`, `list-active-apm-events`) | `apm_read` |
-| Services (`get-services`, `get-service-dependencies`) | `apm_service_catalog_read` |
-| Service Catalog (`list-service-definitions`, `get-service-definition`) | `apm_service_catalog_read` |
-| RUM (`search-rum-events`, `list-rum-applications`, `aggregate-rum-events`) | `rum_read` |
-| Synthetics (`get-synthetic-tests`, `get-synthetic-results`) | `synthetics_read` |
-| Security (`search-security-findings`, `get-security-finding`, `list-posture-findings`, `search-security-signals`) | `security_monitoring_findings_read` |
-| Security Rules (`list-security-rules`) | `security_monitoring_rules_read` |
-| CSM (`get-csm-coverage`, `list-csm-threats-agent-rules`) | `csm_agents_read` |
-| Vulnerabilities (`list-vulnerabilities`) | `security_monitoring_findings_read` |
-| Teams (`list-teams`, `list-team-members`) | `teams_read` |
-| Users (`list-users`) | `user_access_read` |
-| Notebooks (`list-notebooks`, `get-notebook`) | `notebooks_read` |
-| CI Pipelines (`list-ci-pipelines`, `get-ci-pipeline-events`) | `ci_visibility_pipelines_read` |
-| CI Tests (`list-ci-tests`, `search-ci-test-events`) | `ci_visibility_read` |
-| Error Tracking (`search-error-tracking-issues`) | `error_tracking_read` |
-| Audit (`search-audit-logs`) | `audit_trail_read` |
-| DBM (`get-dbm-samples`, `get-dbm-query-metrics`) | `dbm_read` |
-| Usage (`get-hourly-usage`, `get-top-avg-metrics`) | `usage_read` |
-| Network (`list-network-devices`, `aggregate-network-connections`) | `ndm_read` |
-| AWS Integration (`list-aws-accounts`) | `aws_configuration_read` |
-| API Keys (`list-api-keys`) | `api_keys_read` |
-| Application Keys (`list-app-keys`) | `api_keys_read` |
-| Auth Mappings (`list-authn-mappings`) | `auth_n_mappings_read` |
-| Incidents (`search-incidents`, `get-incident-todos`, `get-incident-timeline`) | `incident_read` |
-| DORA (`list-dora-deployments`) | `dora_deployment_read` |
-| Workflows (`list-workflows`, `list-workflow-executions`) | `workflows_read` |
-| Fleet (`list-fleet-agents`) | `fleet_read` |
-| Cost (`list-cost-budgets`) | `cost_management_read` |
-| Monitor Notifications (`list-monitor-notification-rules`) | `monitors_read` |
+| Scope | Tools Unlocked |
+|-------|---------------|
+| `monitors_read` | `get-monitors`, `get-monitor`, `search-monitors`, `get-monitor-config-policies`, `list-monitor-notification-rules` |
+| `dashboards_read` | `get-dashboards`, `get-dashboard`, `list-dashboard-lists` |
+| `metrics_read` | `get-metrics`, `get-metric-metadata`, `query-metrics`, `search-metric-volumes`, `get-metric-tag-config`, `list-metric-tag-configs` |
+| `events_read` | `get-events` |
+| `logs_read_data` | `search-logs`, `aggregate-logs`, `get-log-pipelines`, `get-log-indexes`, `get-logs-pipeline-order`, `get-logs-archive-order`, `list-logs-metrics` |
+| `hosts_read` | `get-hosts`, `get-host-tags`, `get-active-hosts-count`, `list-host-totals` |
+| `containers_read` | `list-containers`, `get-containers` |
+| `monitors_downtime` | `get-downtimes`, `list-downtime-schedules` |
+| `slos_read` | `get-slos`, `get-slo`, `get-slo-history`, `get-slo-corrections`, `search-slos` |
+| `apm_read` | `search-spans`, `aggregate-spans`, `get-trace`, `search-apm-events`, `list-active-apm-events`, `list-spans-metrics` |
+| `apm_service_catalog_read` | `get-services`, `get-service-dependencies`, `list-service-definitions`, `get-service-definition` |
+| `rum_read` | `search-rum-events`, `list-rum-applications`, `aggregate-rum-events` |
+| `synthetics_read` | `get-synthetic-tests`, `get-synthetic-results`, `list-synthetics-global-variables`, `list-synthetics-locations`, `list-synthetics-private-locations` |
+| `security_monitoring_findings_read` | `search-security-findings`, `get-security-finding`, `list-posture-findings`, `search-security-signals`, `list-vulnerabilities` |
+| `security_monitoring_rules_read` | `list-security-rules`, `list-security-monitoring-rules` |
+| `csm_agents_read` | `get-csm-coverage`, `list-csm-threats-agent-rules` |
+| `teams_read` | `list-teams`, `list-team-members` |
+| `user_access_read` | `list-users` |
+| `notebooks_read` | `list-notebooks`, `get-notebook` |
+| `ci_visibility_pipelines_read` | `list-ci-pipelines`, `get-ci-pipeline-events` |
+| `ci_visibility_read` | `list-ci-tests`, `search-ci-test-events` |
+| `error_tracking_read` | `search-error-tracking-issues` |
+| `audit_trail_read` | `search-audit-logs` |
+| `dbm_read` | `get-dbm-samples`, `get-dbm-query-metrics` |
+| `usage_read` | `get-hourly-usage`, `get-top-avg-metrics`, `get-estimated-cost` |
+| `ndm_read` | `list-network-devices`, `aggregate-network-connections` |
+| `aws_configuration_read` | `list-aws-accounts` |
+| `api_keys_read` | `list-api-keys`, `list-app-keys` |
+| `auth_n_mappings_read` | `list-authn-mappings` |
+| `incident_read` | `search-incidents`, `get-incident-todos`, `get-incident-timeline`, `get-incident-services` |
+| `dora_deployment_read` | `list-dora-deployments` |
+| `workflows_read` | `list-workflows`, `list-workflow-executions` |
+| `fleet_read` | `list-fleet-agents` |
+| `cost_management_read` | `list-cost-budgets` |
 
 **Create a scoped key:** Organization Settings -> Application Keys -> New Key -> Select scopes
+
+</details>
 
 ---
 
@@ -556,7 +637,7 @@ Get-Content "$env:APPDATA\Claude\Logs\mcp*.log" -Tail 20 -Wait
 <summary><strong>Debug Mode</strong></summary>
 
 ```bash
-LOG_LEVEL=debug LOG_FORMAT=pretty npx github:dreamiurg/datadog-mcp-server --apiKey ... --appKey ...
+LOG_LEVEL=debug LOG_FORMAT=pretty npx github:dreamiurg/datadog-mcp --apiKey ... --appKey ...
 ```
 </details>
 
@@ -565,8 +646,8 @@ LOG_LEVEL=debug LOG_FORMAT=pretty npx github:dreamiurg/datadog-mcp-server --apiK
 ## Development
 
 ```bash
-git clone https://github.com/dreamiurg/datadog-mcp-server.git
-cd datadog-mcp-server
+git clone https://github.com/dreamiurg/datadog-mcp.git
+cd datadog-mcp
 npm install
 npm run build
 npm test
@@ -606,4 +687,10 @@ PRs welcome. We have strong opinions about read-only access, 90% test coverage, 
 
 ## Disclaimer
 
-The comparison tables above are written with tongue firmly in cheek. Every Datadog MCP server out there was built by engineers who cared enough to ship something. Open source is better when there are options. If our 116 read-only tools aren't what you need, go find the one that is. Seriously. Check them all out, pick what fits your workflow, and build something great. Sleep tight.
+**In case it wasn't abundantly, blindingly, neon-sign-in-the-desert obvious:** the comparison tables above are written with tongue so firmly in cheek it's coming out the other side. This is sarcasm. We are being sarcastic. If you're still not sure, yes, that was also sarcasm.
+
+Every single Datadog MCP server out there was built by engineers who cared enough to ship something real into the world. That's more than most people do on a Saturday. Open source is better when there are options, and the ecosystem is better because all of these projects exist.
+
+If our 116 read-only tools aren't what you need, genuinely and sincerely: go find the one that is. Try them all. Mix and match. Build your own. Fork ours and add write operations if you're feeling brave (and have good backups). The best tool is the one that fits your workflow, not the one with the spiciest README.
+
+Now go build something great. Sleep tight.

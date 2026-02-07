@@ -11,7 +11,7 @@
 If you discover a security vulnerability in this project, please report it responsibly:
 
 1. **Do not** open a public GitHub issue for security vulnerabilities
-2. Email the maintainers directly or use [GitHub's private vulnerability reporting](https://github.com/dreamiurg/datadog-mcp-server/security/advisories/new)
+2. Email the maintainers directly or use [GitHub's private vulnerability reporting](https://github.com/dreamiurg/datadog-mcp/security/advisories/new)
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce

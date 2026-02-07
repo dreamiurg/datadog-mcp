@@ -37,7 +37,7 @@ const transport = isPretty
  * - NODE_ENV: development enables pretty format automatically
  */
 export const logger = pino({
-  name: "datadog-mcp-server",
+  name: "datadog-mcp",
   level: process.env.LOG_LEVEL || "info",
   transport,
   timestamp: pino.stdTimeFunctions.isoTime,
