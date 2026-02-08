@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.10.1](https://github.com/dreamiurg/datadog-mcp/compare/v1.10.0...v1.10.1) (2026-02-07)
+
+
+### Documentation
+
+* rename repo to datadog-mcp, collapsible README sections, crank sarcasm ([#38](https://github.com/dreamiurg/datadog-mcp/issues/38)) ([a6b262e](https://github.com/dreamiurg/datadog-mcp/commit/a6b262e8b1cb1f03125e6e6aa7047bafe2053d4f))
+* uncollapse competitive landscape section ([#40](https://github.com/dreamiurg/datadog-mcp/issues/40)) ([bbdaee0](https://github.com/dreamiurg/datadog-mcp/commit/bbdaee0b0573270b7409f4a740675a4fa6cfda0b))
+
 ## [1.10.0](https://github.com/dreamiurg/datadog-mcp-server/compare/v1.9.2...v1.10.0) (2026-02-07)
 
 
