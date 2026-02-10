@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.10.2](https://github.com/dreamiurg/datadog-mcp/compare/v1.10.1...v1.10.2) (2026-02-10)
+
+
+### Bug Fixes
+
+* correct list-vulnerabilities endpoint and add filter_tool param ([#42](https://github.com/dreamiurg/datadog-mcp/issues/42)) ([9e4fa81](https://github.com/dreamiurg/datadog-mcp/commit/9e4fa81073bf8c9f629567361e96316499847b55))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump the minor-and-patch group with 2 updates ([#41](https://github.com/dreamiurg/datadog-mcp/issues/41)) ([1ff3ddb](https://github.com/dreamiurg/datadog-mcp/commit/1ff3ddbbe66a706359419b53a74cc8bbea540176))
+
 ## [1.10.1](https://github.com/dreamiurg/datadog-mcp/compare/v1.10.0...v1.10.1) (2026-02-07)
 
 
