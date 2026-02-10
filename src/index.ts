@@ -2079,13 +2079,57 @@ server.tool(
 
 server.tool(
   "list_vulnerabilities",
-  "List security vulnerability findings with filtering by type, severity, and status",
+  "List security vulnerability findings with filtering by tool, type, severity, and status",
   {
-    page_size: z.number().optional(),
-    page_cursor: z.string().optional(),
-    filter_type: z.string().optional(),
-    filter_severity: z.string().optional(),
-    filter_status: z.string().optional(),
+    page_token: z
+      .string()
+      .optional()
+      .describe("Pagination token from previous response links.next"),
+    page_number: z.number().optional().describe("Page number (>= 1)"),
+    filter_type: z
+      .string()
+      .optional()
+      .describe(
+        "Vulnerability type (e.g. SqlInjection, Xss, CommandInjection, ComponentWithKnownVulnerability)",
+      ),
+    filter_tool: z.string().optional().describe("Detection tool: SAST, SCA, IAST, or Infra"),
+    filter_status: z
+      .string()
+      .optional()
+      .describe("Status: Open, Muted, Remediated, InProgress, or AutoClosed"),
+    filter_cvss_base_severity: z
+      .string()
+      .optional()
+      .describe("Base severity: Unknown, None, Low, Medium, High, or Critical"),
+    filter_cvss_datadog_severity: z
+      .string()
+      .optional()
+      .describe("Datadog-adjusted severity: Unknown, None, Low, Medium, High, or Critical"),
+    filter_language: z.string().optional().describe("Programming language filter"),
+    filter_ecosystem: z
+      .string()
+      .optional()
+      .describe("Ecosystem: PyPI, Maven, NuGet, Npm, RubyGems, Go, Packagist, Deb, Rpm, Apk, etc."),
+    filter_code_location_file_path: z
+      .string()
+      .optional()
+      .describe("Filter by file path in source code"),
+    filter_fix_available: z.boolean().optional().describe("Filter by fix availability"),
+    filter_asset_name: z.string().optional().describe("Asset name (supports wildcards *)"),
+    filter_asset_type: z
+      .string()
+      .optional()
+      .describe("Asset type: Repository, Service, Host, HostImage, or Image"),
+    filter_asset_environments: z.string().optional().describe("Filter by asset environments"),
+    filter_asset_repository_url: z.string().optional().describe("Filter by repository URL"),
+    filter_asset_risks_in_production: z
+      .boolean()
+      .optional()
+      .describe("Filter assets in production"),
+    filter_asset_risks_under_attack: z
+      .boolean()
+      .optional()
+      .describe("Filter assets under active attack"),
   },
   async (params) => {
     const result = await listVulnerabilities.execute(params);
