@@ -345,7 +345,7 @@ args = ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", 
 | `list-posture-findings` | List compliance/posture findings | *"Show failed compliance checks"* |
 | `search-security-signals` | Search security monitoring signals | *"Recent threat detections"* |
 | `get-csm-coverage` | Get CSM coverage across cloud accounts | *"Which AWS accounts lack security coverage?"* |
-| `list-vulnerabilities` | List vulnerability findings | *"Show critical CVEs in production"* |
+| `list-vulnerabilities` | List vulnerability findings (SAST, SCA, IAST, Infra) | *"Show open SAST vulnerabilities in production"* |
 | `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
 | `list-security-rules` | List security monitoring rules | *"What detection rules are active?"* |
 | `list-security-monitoring-rules` | List security monitoring detection rules | *"What security detection rules are configured?"* |
@@ -430,7 +430,7 @@ args = ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", 
 | `list-security-rules` | List security monitoring rules | *"What detection rules are active?"* |
 | `search-error-tracking-issues` | Search error tracking issues | *"Top errors by volume in production"* |
 | `get-csm-coverage` | Get CSM coverage across cloud accounts | *"Which AWS accounts lack security coverage?"* |
-| `list-vulnerabilities` | List vulnerability findings | *"Show critical CVEs in production"* |
+| `list-vulnerabilities` | List vulnerability findings (SAST, SCA, IAST, Infra) | *"Show open SAST vulnerabilities in production"* |
 | `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
 
 </details>

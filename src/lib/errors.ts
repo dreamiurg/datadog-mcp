@@ -23,6 +23,7 @@ const SCOPE_HINTS: Record<string, string> = {
   "aggregating spans": "apm_read",
   "getting services": "apm_service_catalog_read",
   "getting trace": "apm_read",
+  "listing vulnerabilities": "security_monitoring_findings_read",
 };
 
 /**
