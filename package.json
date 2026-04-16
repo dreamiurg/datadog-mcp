@@ -36,7 +36,7 @@
   "author": "dreamiurg",
   "license": "MIT",
   "dependencies": {
-    "@datadog/datadog-api-client": "^1.53.0",
+    "@datadog/datadog-api-client": "^1.56.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "dotenv": "^17.4.2",
     "minimist": "^1.2.8",
