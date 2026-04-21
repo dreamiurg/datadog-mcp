@@ -12,7 +12,7 @@
 
 Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you approximately forty-five seconds of reading other READMEs that say "supports monitors and dashboards" like that's supposed to impress someone.
 
-| Feature | **Us (116 tools)** | Project 1 | Project 2 | Project 3 |
+| Feature | **Us (117 tools)** | Project 1 | Project 2 | Project 3 |
 |---------|:-----------------:|:-------------------:|:----------------------:|:----------------------:|
 | | | | | |
 | **Observability Core** | | | | |
@@ -39,7 +39,7 @@ Look, we get it. You searched "datadog mcp server" and got seven results. You're
 | Service Catalog | **3 tools** | 0 tools | 0-1 tool | 0 tools |
 | CI Visibility (pipelines + tests) | **4 tools** | 0 tools | 0-1 tool | 0 tools |
 | Organization (teams, users, auth) | **5 tools** | 0 tools | 0-1 tool | 0 tools |
-| Error Tracking | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Error Tracking | **3 tools** | 0 tools | 0 tools | 0 tools |
 | Database Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
 | Workflows & Automation | **2 tools** | 0 tools | 0 tools | 0 tools |
 | DORA Metrics | **1 tool** | 0 tools | 0 tools | 0 tools |
@@ -423,12 +423,13 @@ args = ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", 
 </details>
 
 <details>
-<summary><strong>Security & Compliance</strong> (5 tools)</summary>
+<summary><strong>Security & Compliance</strong> (6 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `list-security-rules` | List security monitoring rules | *"What detection rules are active?"* |
 | `search-error-tracking-issues` | Search error tracking issues | *"Top errors by volume in production"* |
+| `get-error-tracking-issue` | Get error tracking issue details by ID | *"Show details for issue abc123"* |
 | `get-csm-coverage` | Get CSM coverage across cloud accounts | *"Which AWS accounts lack security coverage?"* |
 | `list-vulnerabilities` | List vulnerability findings (SAST, SCA, IAST, Infra) | *"Show open SAST vulnerabilities in production"* |
 | `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
@@ -585,7 +586,7 @@ Create an Application Key with only the scopes you need:
 | `notebooks_read` | `list-notebooks`, `get-notebook` |
 | `ci_visibility_pipelines_read` | `list-ci-pipelines`, `get-ci-pipeline-events` |
 | `ci_visibility_read` | `list-ci-tests`, `search-ci-test-events` |
-| `error_tracking_read` | `search-error-tracking-issues` |
+| `error_tracking_read` | `search-error-tracking-issues`, `get-error-tracking-issue` |
 | `audit_trail_read` | `search-audit-logs` |
 | `dbm_read` | `get-dbm-samples`, `get-dbm-query-metrics` |
 | `usage_read` | `get-hourly-usage`, `get-top-avg-metrics`, `get-estimated-cost` |
