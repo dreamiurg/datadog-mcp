@@ -1,5 +1,68 @@
 # Changelog
 
+## [1.11.0](https://github.com/dreamiurg/datadog-mcp/compare/v1.10.2...v1.11.0) (2026-04-22)
+
+
+### Features
+
+* add get_error_tracking_issue tool ([#91](https://github.com/dreamiurg/datadog-mcp/issues/91)) ([8638437](https://github.com/dreamiurg/datadog-mcp/commit/863843746532fc6fec46524e8755f7d8d217fe9c))
+
+
+### Bug Fixes
+
+* **deps:** resolve all open Dependabot alerts via lockfile refresh ([#93](https://github.com/dreamiurg/datadog-mcp/issues/93)) ([1d192e4](https://github.com/dreamiurg/datadog-mcp/commit/1d192e46d81ebb852bfd055746303470f3b9aa05))
+
+
+### Miscellaneous Chores
+
+* **deps:** bump @biomejs/biome in the minor-and-patch group ([#47](https://github.com/dreamiurg/datadog-mcp/issues/47)) ([9e089fb](https://github.com/dreamiurg/datadog-mcp/commit/9e089fbebc6c88e55e4d15d3b1a43e249a4c17e4))
+* **deps:** bump @biomejs/biome in the minor-and-patch group ([#50](https://github.com/dreamiurg/datadog-mcp/issues/50)) ([434af2f](https://github.com/dreamiurg/datadog-mcp/commit/434af2f59ff5621fe066d311075c9d2bb5ffa66d))
+* **deps:** bump @biomejs/biome in the minor-and-patch group ([#64](https://github.com/dreamiurg/datadog-mcp/issues/64)) ([51fbe07](https://github.com/dreamiurg/datadog-mcp/commit/51fbe0734fb254ce37a16c4791b592b7141228ab))
+* **deps:** bump @biomejs/biome in the minor-and-patch group ([#67](https://github.com/dreamiurg/datadog-mcp/issues/67)) ([1d55ee8](https://github.com/dreamiurg/datadog-mcp/commit/1d55ee8b7bb44902fb24c8ab7caab8ea61207fc2))
+* **deps:** bump @datadog/datadog-api-client ([#88](https://github.com/dreamiurg/datadog-mcp/issues/88)) ([a5037a8](https://github.com/dreamiurg/datadog-mcp/commit/a5037a8e4639160f62f69f21893343ad6a4379cf))
+* **deps:** bump @modelcontextprotocol/sdk in the minor-and-patch group ([#52](https://github.com/dreamiurg/datadog-mcp/issues/52)) ([3058a84](https://github.com/dreamiurg/datadog-mcp/commit/3058a8497fd85fbd00d086ff754987bff24d956e))
+* **deps:** bump @modelcontextprotocol/sdk in the minor-and-patch group ([#53](https://github.com/dreamiurg/datadog-mcp/issues/53)) ([4dc9de6](https://github.com/dreamiurg/datadog-mcp/commit/4dc9de61d4afd8d1627f73147782819fcd87245f))
+* **deps:** bump @types/node in the minor-and-patch group ([#44](https://github.com/dreamiurg/datadog-mcp/issues/44)) ([1b6d165](https://github.com/dreamiurg/datadog-mcp/commit/1b6d165345427ab99e3d3d539c3c62c8760951ce))
+* **deps:** bump @types/node in the minor-and-patch group ([#55](https://github.com/dreamiurg/datadog-mcp/issues/55)) ([e211d0d](https://github.com/dreamiurg/datadog-mcp/commit/e211d0d6d8bbe1b1f84645315c4bf635c3550c69))
+* **deps:** bump @types/node in the minor-and-patch group ([#62](https://github.com/dreamiurg/datadog-mcp/issues/62)) ([f7f8c62](https://github.com/dreamiurg/datadog-mcp/commit/f7f8c629fe5f022cd75c1fa4b7e4758c985a9cc2))
+* **deps:** bump @types/node in the minor-and-patch group ([#77](https://github.com/dreamiurg/datadog-mcp/issues/77)) ([4ee2fd0](https://github.com/dreamiurg/datadog-mcp/commit/4ee2fd00d89fb7b636ae318911d01318dd0e6040))
+* **deps:** bump @types/node in the minor-and-patch group ([#83](https://github.com/dreamiurg/datadog-mcp/issues/83)) ([0d80ce4](https://github.com/dreamiurg/datadog-mcp/commit/0d80ce4d324389e5d3bc0f6cb2f6f0c625b8d09b))
+* **deps:** bump dotenv in the minor-and-patch group ([#76](https://github.com/dreamiurg/datadog-mcp/issues/76)) ([7d4785f](https://github.com/dreamiurg/datadog-mcp/commit/7d4785f7a057e9f2883cfc70b65492a289fde797))
+* **deps:** bump dotenv in the minor-and-patch group ([#78](https://github.com/dreamiurg/datadog-mcp/issues/78)) ([d9fed26](https://github.com/dreamiurg/datadog-mcp/commit/d9fed26d1299dde2aef04c6d5866dbb04ce634bf))
+* **deps:** bump the minor-and-patch group across 1 directory with 2 updates ([#86](https://github.com/dreamiurg/datadog-mcp/issues/86)) ([7073813](https://github.com/dreamiurg/datadog-mcp/commit/70738134767295aaa4988547cc40517037b59725))
+* **deps:** bump the minor-and-patch group across 1 directory with 3 updates ([#61](https://github.com/dreamiurg/datadog-mcp/issues/61)) ([8d43a22](https://github.com/dreamiurg/datadog-mcp/commit/8d43a228d40b44961cf5c648fbaaf82ab60a94f5))
+* **deps:** bump the minor-and-patch group across 1 directory with 4 updates ([#75](https://github.com/dreamiurg/datadog-mcp/issues/75)) ([12a4f17](https://github.com/dreamiurg/datadog-mcp/commit/12a4f178388b7a7008030570f2bcc47260efceea))
+* **deps:** bump the minor-and-patch group with 2 updates ([#45](https://github.com/dreamiurg/datadog-mcp/issues/45)) ([28a5793](https://github.com/dreamiurg/datadog-mcp/commit/28a5793d2bbcb12f912363d34b29f931f8504a22))
+* **deps:** bump the minor-and-patch group with 2 updates ([#48](https://github.com/dreamiurg/datadog-mcp/issues/48)) ([e1ea629](https://github.com/dreamiurg/datadog-mcp/commit/e1ea62908781d8f532121aee074dad497207a5ca))
+* **deps:** bump the minor-and-patch group with 2 updates ([#49](https://github.com/dreamiurg/datadog-mcp/issues/49)) ([884144a](https://github.com/dreamiurg/datadog-mcp/commit/884144af15b93c408a2ea84e83aa96a143b66f03))
+* **deps:** bump the minor-and-patch group with 2 updates ([#57](https://github.com/dreamiurg/datadog-mcp/issues/57)) ([4e46be0](https://github.com/dreamiurg/datadog-mcp/commit/4e46be0673838b0596b1a0314a22508f62de54d2))
+* **deps:** bump the minor-and-patch group with 2 updates ([#69](https://github.com/dreamiurg/datadog-mcp/issues/69)) ([a3c88ec](https://github.com/dreamiurg/datadog-mcp/commit/a3c88ecacc37d66aabffcf0ffd46ec9c46d7f13d))
+* **deps:** bump the minor-and-patch group with 2 updates ([#71](https://github.com/dreamiurg/datadog-mcp/issues/71)) ([e84b34a](https://github.com/dreamiurg/datadog-mcp/commit/e84b34a3a6eda6766ea84d4e2084ec2ec9aaebb9))
+* **deps:** bump the minor-and-patch group with 2 updates ([#80](https://github.com/dreamiurg/datadog-mcp/issues/80)) ([ab2201c](https://github.com/dreamiurg/datadog-mcp/commit/ab2201ca449693b77937982de4dc92842b412854))
+* **deps:** bump the minor-and-patch group with 2 updates ([#92](https://github.com/dreamiurg/datadog-mcp/issues/92)) ([519ceac](https://github.com/dreamiurg/datadog-mcp/commit/519ceacbff0ed95a32a204f15701732acb2ff7c1))
+* **deps:** bump the minor-and-patch group with 3 updates ([#63](https://github.com/dreamiurg/datadog-mcp/issues/63)) ([3fac0f7](https://github.com/dreamiurg/datadog-mcp/commit/3fac0f753695cd7dad2319de88efe705af6488d9))
+* **deps:** bump the minor-and-patch group with 3 updates ([#81](https://github.com/dreamiurg/datadog-mcp/issues/81)) ([ce5c438](https://github.com/dreamiurg/datadog-mcp/commit/ce5c43855e2ea9dbe998cba781fce6592c5aabfa))
+* **deps:** bump typescript from 5.9.3 to 6.0.2 ([#70](https://github.com/dreamiurg/datadog-mcp/issues/70)) ([81e7b0c](https://github.com/dreamiurg/datadog-mcp/commit/81e7b0c0dc864c91fb6955a0f7fba544a9969c71))
+* **deps:** bump typescript in the minor-and-patch group ([#89](https://github.com/dreamiurg/datadog-mcp/issues/89)) ([0cc08fe](https://github.com/dreamiurg/datadog-mcp/commit/0cc08feecfb085d1dc2bf99c4c8ff75ad3c5735a))
+
+
+### Continuous Integration
+
+* **deps:** bump actions/setup-node in the actions group ([#58](https://github.com/dreamiurg/datadog-mcp/issues/58)) ([de642c7](https://github.com/dreamiurg/datadog-mcp/commit/de642c7e3b6cb592748449557344b48035472830))
+* **deps:** bump actions/upload-artifact in the actions group ([#54](https://github.com/dreamiurg/datadog-mcp/issues/54)) ([ed2fe6d](https://github.com/dreamiurg/datadog-mcp/commit/ed2fe6d2db50dd70738a3a92b15e5afcb7c3b6b9))
+* **deps:** bump codecov/codecov-action in the actions group ([#66](https://github.com/dreamiurg/datadog-mcp/issues/66)) ([48ef30f](https://github.com/dreamiurg/datadog-mcp/commit/48ef30f43ed347e546bd7a2def786e47d6f878a6))
+* **deps:** bump github/codeql-action in the actions group ([#46](https://github.com/dreamiurg/datadog-mcp/issues/46)) ([beeac16](https://github.com/dreamiurg/datadog-mcp/commit/beeac16bbe6bccee99d88d74485e1f9e48325cef))
+* **deps:** bump github/codeql-action in the actions group ([#51](https://github.com/dreamiurg/datadog-mcp/issues/51)) ([36e84f9](https://github.com/dreamiurg/datadog-mcp/commit/36e84f94711e929e636d39c4296b998fcd58ca92))
+* **deps:** bump github/codeql-action in the actions group ([#56](https://github.com/dreamiurg/datadog-mcp/issues/56)) ([3f189f5](https://github.com/dreamiurg/datadog-mcp/commit/3f189f531690a75c786b2b9bd4afad53f54d919d))
+* **deps:** bump github/codeql-action in the actions group ([#59](https://github.com/dreamiurg/datadog-mcp/issues/59)) ([85bd3b2](https://github.com/dreamiurg/datadog-mcp/commit/85bd3b25faea6668eb86b7ace7687d4bd4ee4598))
+* **deps:** bump github/codeql-action in the actions group ([#65](https://github.com/dreamiurg/datadog-mcp/issues/65)) ([263beac](https://github.com/dreamiurg/datadog-mcp/commit/263beaca28750555080d5e58e9a0feae47774718))
+* **deps:** bump github/codeql-action in the actions group ([#68](https://github.com/dreamiurg/datadog-mcp/issues/68)) ([073d98e](https://github.com/dreamiurg/datadog-mcp/commit/073d98ef2cbe9739711993079ddac83c543cf0f8))
+* **deps:** bump github/codeql-action in the actions group ([#74](https://github.com/dreamiurg/datadog-mcp/issues/74)) ([2161d06](https://github.com/dreamiurg/datadog-mcp/commit/2161d06bb974e0c4c5cd7218fb03a3f4bb5e1849))
+* **deps:** bump github/codeql-action in the actions group ([#87](https://github.com/dreamiurg/datadog-mcp/issues/87)) ([1bcba03](https://github.com/dreamiurg/datadog-mcp/commit/1bcba03291cb3153fb29fe3812080171cfa1669f))
+* **deps:** bump the actions group across 1 directory with 2 updates ([#85](https://github.com/dreamiurg/datadog-mcp/issues/85)) ([47e71cb](https://github.com/dreamiurg/datadog-mcp/commit/47e71cb336967357c44e5b29d6e510d7de991c27))
+* **deps:** bump the actions group with 2 updates ([#72](https://github.com/dreamiurg/datadog-mcp/issues/72)) ([11fcf1c](https://github.com/dreamiurg/datadog-mcp/commit/11fcf1cf75e91942ad938e870ef77e565c2e53f8))
+* **deps:** bump the actions group with 2 updates ([#90](https://github.com/dreamiurg/datadog-mcp/issues/90)) ([697e052](https://github.com/dreamiurg/datadog-mcp/commit/697e052586ce92bd8b949ac30104cf17f0b2d755))
+
 ## [1.10.2](https://github.com/dreamiurg/datadog-mcp/compare/v1.10.1...v1.10.2) (2026-02-10)
 
 
