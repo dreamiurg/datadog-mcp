@@ -23,10 +23,6 @@ interface GetErrorTrackingIssueResponse {
       last_seen?: string;
       count?: number;
       impacted_accounts?: number;
-      error_type?: string;
-      message?: string;
-      service?: string;
-      env?: string;
     };
   };
 }

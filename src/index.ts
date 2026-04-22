@@ -1943,7 +1943,7 @@ server.tool(
 
 server.tool(
   "get_error_tracking_issue",
-  "Get the details of a Datadog error tracking issue by ID",
+  "Get details of a Datadog error tracking issue (user-facing error/exception) by ID",
   {
     issue_id: z.string().describe("Error tracking issue ID"),
   },
