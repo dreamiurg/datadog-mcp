@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/dreamiurg/datadog-mcp/graph/badge.svg)](https://codecov.io/gh/dreamiurg/datadog-mcp)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dreamiurg/datadog-mcp/badge)](https://scorecard.dev/viewer/?uri=github.com/dreamiurg/datadog-mcp)
 
-> **The Datadog MCP server your AI deserves.** 116 read-only tools. Every observability pillar. Zero writes. Zero regrets.
+> **The Datadog MCP server your AI deserves.** 117 read-only tools. Every observability pillar. Zero writes. Zero regrets.
 
 ---
 
@@ -12,7 +12,7 @@
 
 Look, we get it. You searched "datadog mcp server" and got seven results. You're wondering which one to pick. Let us save you approximately forty-five seconds of reading other READMEs that say "supports monitors and dashboards" like that's supposed to impress someone.
 
-| Feature | **Us (116 tools)** | Project 1 | Project 2 | Project 3 |
+| Feature | **Us (117 tools)** | Project 1 | Project 2 | Project 3 |
 |---------|:-----------------:|:-------------------:|:----------------------:|:----------------------:|
 | | | | | |
 | **Observability Core** | | | | |
@@ -39,7 +39,7 @@ Look, we get it. You searched "datadog mcp server" and got seven results. You're
 | Service Catalog | **3 tools** | 0 tools | 0-1 tool | 0 tools |
 | CI Visibility (pipelines + tests) | **4 tools** | 0 tools | 0-1 tool | 0 tools |
 | Organization (teams, users, auth) | **5 tools** | 0 tools | 0-1 tool | 0 tools |
-| Error Tracking | **2 tools** | 0 tools | 0 tools | 0 tools |
+| Error Tracking | **3 tools** | 0 tools | 0 tools | 0 tools |
 | Database Monitoring | **2 tools** | 0 tools | 0 tools | 0 tools |
 | Workflows & Automation | **2 tools** | 0 tools | 0 tools | 0 tools |
 | DORA Metrics | **1 tool** | 0 tools | 0 tools | 0 tools |
@@ -55,7 +55,7 @@ Look, we get it. You searched "datadog mcp server" and got seven results. You're
 | Monitor Notifications | **1 tool** | 0 tools | 0 tools | 0 tools |
 | IP Ranges & Config | **1 tool** | 0 tools | 0 tools | 0 tools |
 | | | | | |
-| **Total** | **116** | ~20 | ~13 | ~29 |
+| **Total** | **117** | ~20 | ~13 | ~29 |
 | Accidentally deletes your monitors | No | No | No | No |
 | Can mute your hosts at 3 AM | **No** | No | No | Yes |
 | Test coverage | 90%+ | Unknown | Unknown | Unknown |
@@ -190,7 +190,7 @@ args = ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", 
 
 ---
 
-## The Full Arsenal (116 Tools)
+## The Full Arsenal (117 Tools)
 
 <details>
 <summary><strong>Logs & Log Management</strong> (7 tools)</summary>
@@ -423,12 +423,13 @@ args = ["github:dreamiurg/datadog-mcp", "--apiKey", "YOUR_API_KEY", "--appKey", 
 </details>
 
 <details>
-<summary><strong>Security & Compliance</strong> (5 tools)</summary>
+<summary><strong>Security & Compliance</strong> (6 tools)</summary>
 
 | Tool | What It Does | Try Asking |
 |------|-------------|------------|
 | `list-security-rules` | List security monitoring rules | *"What detection rules are active?"* |
 | `search-error-tracking-issues` | Search error tracking issues | *"Top errors by volume in production"* |
+| `get-error-tracking-issue` | Get error tracking issue details by ID | *"Show details for issue abc123"* |
 | `get-csm-coverage` | Get CSM coverage across cloud accounts | *"Which AWS accounts lack security coverage?"* |
 | `list-vulnerabilities` | List vulnerability findings (SAST, SCA, IAST, Infra) | *"Show open SAST vulnerabilities in production"* |
 | `list-csm-threats-agent-rules` | List CSM Threats agent rules | *"What workload security rules are enabled?"* |
@@ -495,7 +496,7 @@ There are approximately seven thousand Datadog MCP servers on GitHub. We counted
 
 | Capability | **Us** | Project 1 | Project 2 | Project 3 | Project 4 |
 |-----------|:------:|:-------:|:--------:|:-------:|:---------:|
-| Total tools | **116** | ~20 | ~10 | ~13 | ~29 |
+| Total tools | **117** | ~20 | ~10 | ~13 | ~29 |
 | Read-only by design | Yes | No | Yes | Yes | No |
 | Can mute your hosts | No | **Yes** | No | No | No |
 | Can delete your dashboards | No | No | No | No | **Yes** |
@@ -585,7 +586,7 @@ Create an Application Key with only the scopes you need:
 | `notebooks_read` | `list-notebooks`, `get-notebook` |
 | `ci_visibility_pipelines_read` | `list-ci-pipelines`, `get-ci-pipeline-events` |
 | `ci_visibility_read` | `list-ci-tests`, `search-ci-test-events` |
-| `error_tracking_read` | `search-error-tracking-issues` |
+| `error_tracking_read` | `search-error-tracking-issues`, `get-error-tracking-issue` |
 | `audit_trail_read` | `search-audit-logs` |
 | `dbm_read` | `get-dbm-samples`, `get-dbm-query-metrics` |
 | `usage_read` | `get-hourly-usage`, `get-top-avg-metrics`, `get-estimated-cost` |
@@ -688,6 +689,6 @@ PRs welcome. We have strong opinions about read-only access, 90% test coverage, 
 
 Every single Datadog MCP server out there was built by engineers who cared enough to ship something real into the world. That's more than most people do on a Saturday. Open source is better when there are options, and the ecosystem is better because all of these projects exist.
 
-If our 116 read-only tools aren't what you need, genuinely and sincerely: go find the one that is. Try them all. Mix and match. Build your own. Fork ours and add write operations if you're feeling brave (and have good backups). The best tool is the one that fits your workflow, not the one with the spiciest README.
+If our 117 read-only tools aren't what you need, genuinely and sincerely: go find the one that is. Try them all. Mix and match. Build your own. Fork ours and add write operations if you're feeling brave (and have good backups). The best tool is the one that fits your workflow, not the one with the spiciest README.
 
 Now go build something great. Sleep tight.

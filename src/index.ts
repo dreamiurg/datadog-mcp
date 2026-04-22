@@ -33,6 +33,7 @@ import { getDashboards } from "./tools/getDashboards.js";
 import { getDbmQueryMetrics } from "./tools/getDbmQueryMetrics.js";
 import { getDbmSamples } from "./tools/getDbmSamples.js";
 import { getDowntimes } from "./tools/getDowntimes.js";
+import { getErrorTrackingIssue } from "./tools/getErrorTrackingIssue.js";
 import { getEstimatedCost } from "./tools/getEstimatedCost.js";
 import { getEvents } from "./tools/getEvents.js";
 import { getHosts } from "./tools/getHosts.js";
@@ -335,6 +336,8 @@ listContainers.initialize();
 logger.info({ tool: "list-containers" }, "Tool initialized");
 searchErrorTrackingIssues.initialize();
 logger.info({ tool: "search-error-tracking-issues" }, "Tool initialized");
+getErrorTrackingIssue.initialize();
+logger.info({ tool: "get-error-tracking-issue" }, "Tool initialized");
 listNotebooks.initialize();
 logger.info({ tool: "list-notebooks" }, "Tool initialized");
 getNotebook.initialize();
@@ -1934,6 +1937,18 @@ server.tool(
   },
   async (args) => {
     const result = await searchErrorTrackingIssues.execute(args);
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  },
+);
+
+server.tool(
+  "get_error_tracking_issue",
+  "Get details of a Datadog error tracking issue (user-facing error/exception) by ID",
+  {
+    issue_id: z.string().describe("Error tracking issue ID"),
+  },
+  async (args) => {
+    const result = await getErrorTrackingIssue.execute(args);
     return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
   },
 );
